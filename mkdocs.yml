@@ -10,6 +10,8 @@ nav:
   - Django: 
       - Django/Django基础.md
       - Django/数据模型.md
+  - Docker:
+      - Docker/Docker详解.md
   - Java:
       - index.md
 
