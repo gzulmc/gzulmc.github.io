@@ -1,0 +1,2122 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+      
+      
+      
+        <link rel="prev" href="../Django%E5%9F%BA%E7%A1%80/">
+      
+      
+        <link rel="next" href="../../Docker/Docker%E8%AF%A6%E8%A7%A3/">
+      
+      
+      <link rel="icon" href="../../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.6.14">
+    
+    
+      
+        <title>数据模型 - gzulmc's 随笔记录</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../assets/stylesheets/main.342714a4.min.css">
+      
+        
+        <link rel="stylesheet" href="../../assets/stylesheets/palette.06af60db.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+    <script>__md_scope=new URL("../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+    
+  </head>
+  
+  
+    
+    
+      
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#_1" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow md-header--lifted" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href="../.." title="gzulmc&#39;s 随笔记录" class="md-header__button md-logo" aria-label="gzulmc's 随笔记录" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            gzulmc's 随笔记录
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              数据模型
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+        <form class="md-header__option" data-md-component="palette">
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo"  aria-label="Switch to dark mode"  type="radio" name="__palette" id="__palette_0">
+    
+      <label class="md-header__button md-icon" title="Switch to dark mode" for="__palette_1" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a4 4 0 0 0-4 4 4 4 0 0 0 4 4 4 4 0 0 0 4-4 4 4 0 0 0-4-4m0 10a6 6 0 0 1-6-6 6 6 0 0 1 6-6 6 6 0 0 1 6 6 6 6 0 0 1-6 6m8-9.31V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12z"/></svg>
+      </label>
+    
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="slate" data-md-color-primary="indigo" data-md-color-accent="indigo"  aria-label="Switch to light mode"  type="radio" name="__palette" id="__palette_1">
+    
+      <label class="md-header__button md-icon" title="Switch to light mode" for="__palette_0" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 18c-.89 0-1.74-.2-2.5-.55C11.56 16.5 13 14.42 13 12s-1.44-4.5-3.5-5.45C10.26 6.2 11.11 6 12 6a6 6 0 0 1 6 6 6 6 0 0 1-6 6m8-9.31V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12z"/></svg>
+      </label>
+    
+  
+</form>
+      
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+          <a href="javascript:void(0)" class="md-search__icon md-icon" title="Share" aria-label="Share" data-clipboard data-clipboard-text="" data-md-component="search-share" tabindex="-1">
+            
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M18 16.08c-.76 0-1.44.3-1.96.77L8.91 12.7c.05-.23.09-.46.09-.7s-.04-.47-.09-.7l7.05-4.11c.54.5 1.25.81 2.04.81a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3c0 .24.04.47.09.7L8.04 9.81C7.5 9.31 6.79 9 6 9a3 3 0 0 0-3 3 3 3 0 0 0 3 3c.79 0 1.5-.31 2.04-.81l7.12 4.15c-.05.21-.08.43-.08.66 0 1.61 1.31 2.91 2.92 2.91s2.92-1.3 2.92-2.91A2.92 2.92 0 0 0 18 16.08"/></svg>
+          </a>
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+        <div class="md-search__suggest" data-md-component="search-suggest"></div>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      
+    
+    
+  </nav>
+  
+    
+      
+<nav class="md-tabs" aria-label="Tabs" data-md-component="tabs">
+  <div class="md-grid">
+    <ul class="md-tabs__list">
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../Python/%E9%9D%A2%E5%90%91%E5%AF%B9%E8%B1%A1%E5%9F%BA%E7%A1%80/" class="md-tabs__link">
+          
+  
+  
+    
+  
+  Python
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+    
+  
+  
+    
+    
+      <li class="md-tabs__item md-tabs__item--active">
+        <a href="../Django%E5%9F%BA%E7%A1%80/" class="md-tabs__link">
+          
+  
+  
+    
+  
+  Django
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../Docker/Docker%E8%AF%A6%E8%A7%A3/" class="md-tabs__link">
+          
+  
+  
+    
+  
+  Docker
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../.." class="md-tabs__link">
+          
+  
+  
+    
+  
+  Java
+
+        </a>
+      </li>
+    
+  
+
+      
+    </ul>
+  </div>
+</nav>
+    
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+  
+
+
+<nav class="md-nav md-nav--primary md-nav--lifted" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../.." title="gzulmc&#39;s 随笔记录" class="md-nav__button md-logo" aria-label="gzulmc's 随笔记录" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    gzulmc's 随笔记录
+  </label>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_1" >
+        
+          
+          <label class="md-nav__link" for="__nav_1" id="__nav_1_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    Python
+    
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_1_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_1">
+            <span class="md-nav__icon md-icon"></span>
+            Python
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../Python/%E9%9D%A2%E5%90%91%E5%AF%B9%E8%B1%A1%E5%9F%BA%E7%A1%80/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    面向对象基础
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../Python/%E9%9D%A2%E5%90%91%E5%AF%B9%E8%B1%A1%E8%BF%9B%E9%98%B6/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    面向对象进阶
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../Python/%E8%BF%9B%E7%A8%8B%E5%92%8C%E7%BA%BF%E7%A8%8B/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    进程和线程
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../Python/%E5%9B%BE%E5%83%8F%E5%92%8C%E6%96%87%E6%A1%A3%E5%A4%84%E7%90%86/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    图像和文档处理
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../Python/%E7%BD%91%E7%BB%9C%E7%BC%96%E7%A8%8B%E5%BA%94%E7%94%A8/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    网络编程应用
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../Python/%E6%96%87%E4%BB%B6%E5%92%8C%E5%BC%82%E5%B8%B8/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    文件和异常
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+    
+    
+    
+      
+        
+        
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2" checked>
+        
+          
+          <label class="md-nav__link" for="__nav_2" id="__nav_2_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    Django
+    
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_2_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_2">
+            <span class="md-nav__icon md-icon"></span>
+            Django
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../Django%E5%9F%BA%E7%A1%80/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Django基础
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    数据模型
+    
+  </span>
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  
+  <span class="md-ellipsis">
+    数据模型
+    
+  </span>
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      深入模型
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="深入模型">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#_2" class="md-nav__link">
+    <span class="md-ellipsis">
+      创建项目和应用
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#mysql" class="md-nav__link">
+    <span class="md-ellipsis">
+      配置关系型数据库MySQL
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#ormcrud" class="md-nav__link">
+    <span class="md-ellipsis">
+      使用ORM完成模型的CRUD操作
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="使用ORM完成模型的CRUD操作">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#_3" class="md-nav__link">
+    <span class="md-ellipsis">
+      新增
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_4" class="md-nav__link">
+    <span class="md-ellipsis">
+      删除
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_5" class="md-nav__link">
+    <span class="md-ellipsis">
+      更新
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_6" class="md-nav__link">
+    <span class="md-ellipsis">
+      查询
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#django" class="md-nav__link">
+    <span class="md-ellipsis">
+      利用Django后台管理模型
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_7" class="md-nav__link">
+    <span class="md-ellipsis">
+      实现学科页和老师页效果
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_8" class="md-nav__link">
+    <span class="md-ellipsis">
+      补充内容
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="补充内容">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#django_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      Django模型最佳实践
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_9" class="md-nav__link">
+    <span class="md-ellipsis">
+      模型定义参考
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="模型定义参考">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#_10" class="md-nav__link">
+    <span class="md-ellipsis">
+      字段
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_11" class="md-nav__link">
+    <span class="md-ellipsis">
+      字段属性
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_12" class="md-nav__link">
+    <span class="md-ellipsis">
+      模型元数据选项
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_13" class="md-nav__link">
+    <span class="md-ellipsis">
+      查询参考
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="查询参考">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#_14" class="md-nav__link">
+    <span class="md-ellipsis">
+      按字段查找可以用的条件
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+      
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3" >
+        
+          
+          <label class="md-nav__link" for="__nav_3" id="__nav_3_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    Docker
+    
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_3">
+            <span class="md-nav__icon md-icon"></span>
+            Docker
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../Docker/Docker%E8%AF%A6%E8%A7%A3/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Docker详解
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4" >
+        
+          
+          <div class="md-nav__link md-nav__container">
+            <a href="../.." class="md-nav__link ">
+              
+  
+  
+  <span class="md-ellipsis">
+    Java
+    
+  </span>
+  
+
+            </a>
+            
+          </div>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_4_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4">
+            <span class="md-nav__icon md-icon"></span>
+            Java
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      深入模型
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="深入模型">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#_2" class="md-nav__link">
+    <span class="md-ellipsis">
+      创建项目和应用
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#mysql" class="md-nav__link">
+    <span class="md-ellipsis">
+      配置关系型数据库MySQL
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#ormcrud" class="md-nav__link">
+    <span class="md-ellipsis">
+      使用ORM完成模型的CRUD操作
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="使用ORM完成模型的CRUD操作">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#_3" class="md-nav__link">
+    <span class="md-ellipsis">
+      新增
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_4" class="md-nav__link">
+    <span class="md-ellipsis">
+      删除
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_5" class="md-nav__link">
+    <span class="md-ellipsis">
+      更新
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_6" class="md-nav__link">
+    <span class="md-ellipsis">
+      查询
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#django" class="md-nav__link">
+    <span class="md-ellipsis">
+      利用Django后台管理模型
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_7" class="md-nav__link">
+    <span class="md-ellipsis">
+      实现学科页和老师页效果
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_8" class="md-nav__link">
+    <span class="md-ellipsis">
+      补充内容
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="补充内容">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#django_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      Django模型最佳实践
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_9" class="md-nav__link">
+    <span class="md-ellipsis">
+      模型定义参考
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="模型定义参考">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#_10" class="md-nav__link">
+    <span class="md-ellipsis">
+      字段
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_11" class="md-nav__link">
+    <span class="md-ellipsis">
+      字段属性
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_12" class="md-nav__link">
+    <span class="md-ellipsis">
+      模型元数据选项
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_13" class="md-nav__link">
+    <span class="md-ellipsis">
+      查询参考
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="查询参考">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#_14" class="md-nav__link">
+    <span class="md-ellipsis">
+      按字段查找可以用的条件
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+
+  <h1>数据模型</h1>
+
+<h2 id="_1">深入模型</h2>
+<p>在上一个章节中，我们提到了Django是基于MVC架构的Web框架，MVC架构追求的是“模型”和“视图”的解耦合。所谓“模型”说得更直白一些就是数据（的表示），所以通常也被称作“数据模型”。在实际的项目中，数据模型通常通过数据库实现持久化操作，而关系型数据库在过去和当下都是持久化的首选方案，下面我们通过完成一个投票项目来讲解和模型相关的知识点。投票项目的首页会展示某在线教育平台所有的学科；点击学科可以查看到该学科的老师及其信息；用户登录后在查看老师的页面为老师投票，可以投赞成票和反对票；未登录的用户可以通过登录页进行登录；尚未注册的用户可以通过注册页输入个人信息进行注册。在这个项目中，我们使用MySQL数据库来实现数据持久化操作。</p>
+<h3 id="_2">创建项目和应用</h3>
+<p>我们首先创建Django项目<code>vote</code>并为其添加虚拟环境和依赖项。接下来，在项目下创建名为<code>polls</code>的应用和保存模板页的文件夹<code>tempaltes</code>，项目文件夹的结构如下所示。</p>
+<p><img alt="" src="res/pycharm-vote-project.png" /></p>
+<p>根据上面描述的项目需求，我们准备了四个静态页面，分别是展示学科的页面<code>subjects.html</code>，显示学科老师的页面<code>teachers.html</code>，登录页面<code>login.html</code>，注册页面<code>register.html</code>，稍后我们会将静态页修改为Django项目所需的模板页。</p>
+<h3 id="mysql">配置关系型数据库MySQL</h3>
+<ol>
+<li>在MySQL中创建数据库，创建用户，授权用户访问该数据库。</li>
+</ol>
+<p><code>SQL
+   create database vote default charset utf8;
+   create user 'hellokitty'@'%' identified by 'Hellokitty.618';
+   grant all privileges on vote.* to 'hellokitty'@'%';
+   flush privileges;</code></p>
+<ol>
+<li>在MySQL中创建保存学科和老师信息的二维表（保存用户信息的表稍后处理）。</li>
+</ol>
+<p>```SQL
+   use vote;</p>
+<p>-- 创建学科表
+   create table <code>tb_subject</code>
+   (
+    <code>no</code> integer auto_increment comment '学科编号',
+       <code>name</code> varchar(50) not null comment '学科名称',
+       <code>intro</code> varchar(1000) not null default '' comment '学科介绍',
+       <code>is_hot</code> boolean not null default 0 comment '是不是热门学科',
+       primary key (<code>no</code>)
+   );
+   -- 创建老师表
+   create table <code>tb_teacher</code>
+   (
+       <code>no</code> integer auto_increment comment '老师编号',
+       <code>name</code> varchar(20) not null comment '老师姓名',
+       <code>sex</code> boolean not null default 1 comment '老师性别',
+       <code>birth</code> date not null comment '出生日期',
+       <code>intro</code> varchar(1000) not null default '' comment '老师介绍',
+       <code>photo</code> varchar(255) not null default '' comment '老师照片',
+       <code>gcount</code> integer not null default 0 comment '好评数',
+       <code>bcount</code> integer not null default 0 comment '差评数',
+       <code>sno</code> integer not null comment '所属学科',
+       primary key (<code>no</code>),
+       foreign key (<code>sno</code>) references <code>tb_subject</code> (<code>no</code>)
+   );
+   ```</p>
+<ol>
+<li>在虚拟环境中安装连接MySQL数据库所需的依赖项。</li>
+</ol>
+<p><code>Bash
+   pip install mysqlclient</code></p>
+<blockquote>
+<p><strong>说明</strong>：如果因为某些原因无法安装<code>mysqlclient</code>三方库，可以使用它的替代品<code>pymysql</code>，<code>pymysql</code>是用纯Python开发的连接MySQL的Python库，安装更容易成功，但是需要在Django项目文件夹的<code>__init__.py</code>中添加如下所示的代码。</p>
+<p>```Python
+import pymysql</p>
+<p>pymysql.install_as_MySQLdb()
+```</p>
+<p>如果使用Django 2.2及以上版本，还会遇到PyMySQL跟Django框架的兼容性问题，兼容性问题会导致项目无法运行，需要按照GitHub上PyMySQL仓库<a href="https://github.com/PyMySQL/PyMySQL/issues/790">Issues</a>中提供的方法进行处理。总体来说，使用<code>pymysql</code>会比较麻烦，强烈建议大家首选安装<code>mysqlclient</code>。</p>
+</blockquote>
+<ol>
+<li>修改项目的settings.py文件，首先将我们创建的应用<code>polls</code>添加已安装的项目（<code>INSTALLED_APPS</code>）中，然后配置MySQL作为持久化方案。</li>
+</ol>
+<p>```Python
+   INSTALLED_APPS = [
+       'django.contrib.admin',
+       'django.contrib.auth',
+       'django.contrib.contenttypes',
+       'django.contrib.sessions',
+       'django.contrib.messages',
+       'django.contrib.staticfiles',
+       'polls',
+   ]</p>
+<p>DATABASES = {
+       'default': {
+           # 数据库引擎配置
+           'ENGINE': 'django.db.backends.mysql',
+           # 数据库的名字
+           'NAME': 'vote',
+           # 数据库服务器的IP地址（本机可以写localhost或127.0.0.1）
+           'HOST': 'localhost',
+           # 启动MySQL服务的端口号
+           'PORT': 3306,
+           # 数据库用户名和口令
+           'USER': 'hellokitty',
+           'PASSWORD': 'Hellokitty.618',
+           # 数据库使用的字符集
+           'CHARSET': 'utf8',
+           # 数据库时间日期的时区设定
+           'TIME_ZONE': 'Asia/Chongqing',
+       }
+   }
+   ```</p>
+<p>在配置ENGINE属性时，常用的可选值包括：</p>
+<ul>
+<li><code>'django.db.backends.sqlite3'</code>：SQLite嵌入式数据库。</li>
+<li><code>'django.db.backends.postgresql'</code>：BSD许可证下发行的开源关系型数据库产品。</li>
+<li><code>'django.db.backends.mysql'</code>：甲骨文公司经济高效的数据库产品。</li>
+<li><code>'django.db.backends.oracle'</code>：甲骨文公司关系型数据库旗舰产品。</li>
+</ul>
+<p>其他的配置可以参考官方文档中<a href="https://docs.djangoproject.com/zh-hans/2.0/ref/databases/#third-party-notes">数据库配置</a>的部分。</p>
+<ol>
+<li>Django框架提供了ORM来解决数据持久化问题，ORM翻译成中文叫“对象关系映射”。因为Python是面向对象的编程语言，我们在Python程序中使用对象模型来保存数据，而关系型数据库使用关系模型，用二维表来保存数据，这两种模型并不匹配。使用ORM是为了实现对象模型到关系模型的<strong>双向转换</strong>，这样就不用在Python代码中书写SQL语句和游标操作，因为这些都会由ORM自动完成。利用Django的ORM，我们可以直接将刚才创建的学科表和老师表变成Django中的模型类。</li>
+</ol>
+<p><code>Bash
+   python manage.py inspectdb &gt; polls/models.py</code></p>
+<p>我们可以对自动生成的模型类稍作调整，代码如下所示。</p>
+<p>```Python
+   from django.db import models</p>
+<p>class Subject(models.Model):
+       no = models.AutoField(primary_key=True, verbose_name='编号')
+       name = models.CharField(max_length=50, verbose_name='名称')
+       intro = models.CharField(max_length=1000, verbose_name='介绍')
+       is_hot = models.BooleanField(verbose_name='是否热门')</p>
+<pre><code>   class Meta:
+       managed = False
+       db_table = 'tb_subject'
+</code></pre>
+<p>class Teacher(models.Model):
+       no = models.AutoField(primary_key=True, verbose_name='编号')
+       name = models.CharField(max_length=20, verbose_name='姓名')
+       sex = models.BooleanField(default=True, verbose_name='性别')
+       birth = models.DateField(verbose_name='出生日期')
+       intro = models.CharField(max_length=1000, verbose_name='个人介绍')
+       photo = models.ImageField(max_length=255, verbose_name='照片')
+       good_count = models.IntegerField(default=0, db_column='gcount', verbose_name='好评数')
+       bad_count = models.IntegerField(default=0, db_column='bcount', verbose_name='差评数')
+       subject = models.ForeignKey(Subject, models.DO_NOTHING, db_column='sno')</p>
+<pre><code>   class Meta:
+       managed = False
+       db_table = 'tb_teacher'
+</code></pre>
+<p>```</p>
+<blockquote>
+<p><strong>说明</strong>：模型类都直接或间接继承自<code>Model</code>类，模型类跟关系型数据库的二维表对应，模型对象跟表中的记录对应，模型对象的属性跟表中的字段对应。如果对上面模型类的属性定义不是特别理解，可以看看本文后面提供的“模型定义参考”部分的内容。</p>
+</blockquote>
+<h3 id="ormcrud">使用ORM完成模型的CRUD操作</h3>
+<p>有了Django框架的ORM，我们可以直接使用面向对象的方式来实现对数据的CRUD（增删改查）操作。我们可以在PyCharm的终端中输入下面的命令进入到Django项目的交互式环境，然后尝试对模型的操作。</p>
+<pre><code class="language-Bash">python manage.py shell
+</code></pre>
+<h4 id="_3">新增</h4>
+<pre><code class="language-Python">from polls.models import Subject
+
+subject1 = Subject(name='Python全栈开发', intro='当下最热门的学科', is_hot=True)
+subject1.save()
+subject2 = Subject(name='全栈软件测试', intro='学习自动化测试的学科', is_hot=False)
+subject2.save()
+subject3 = Subject(name='JavaEE分布式开发', intro='基于Java语言的服务器应用开发', is_hot=True)
+</code></pre>
+<h4 id="_4">删除</h4>
+<pre><code class="language-Python">subject = Subject.objects.get(no=2)
+subject.delete()
+</code></pre>
+<h4 id="_5">更新</h4>
+<pre><code class="language-Shell">subject = Subject.objects.get(no=1)
+subject.name = 'Python全栈+人工智能'
+subject.save()
+</code></pre>
+<h4 id="_6">查询</h4>
+<ol>
+<li>查询所有对象。</li>
+</ol>
+<pre><code class="language-Shell">Subjects.objects.all()
+</code></pre>
+<ol>
+<li>过滤数据。</li>
+</ol>
+<pre><code class="language-Shell"># 查询名称为“Python全栈+人工智能”的学科
+Subject.objects.filter(name='Python全栈+人工智能')
+
+# 查询名称包含“全栈”的学科（模糊查询）
+Subject.objects.filter(name__contains='全栈')
+Subject.objects.filter(name__startswith='全栈')
+Subject.objects.filter(name__endswith='全栈')
+
+# 查询所有热门学科
+Subject.objects.filter(is_hot=True)
+
+# 查询编号大于3小于10的学科
+Subject.objects.filter(no__gt=3).filter(no__lt=10)
+Subject.objects.filter(no__gt=3, no__lt=10)
+
+# 查询编号在3到7之间的学科
+Subject.objects.filter(no__ge=3, no__le=7)
+Subject.objects.filter(no__range=(3, 7))
+</code></pre>
+<ol>
+<li>查询单个对象。</li>
+</ol>
+<pre><code class="language-Shell"># 查询主键为1的学科
+Subject.objects.get(pk=1)
+Subject.objects.get(no=1)
+Subject.objects.filter(no=1).first()
+Subject.objects.filter(no=1).last()
+</code></pre>
+<ol>
+<li>排序。</li>
+</ol>
+<pre><code class="language-Shell"># 查询所有学科按编号升序排列
+Subject.objects.order_by('no')
+# 查询所有部门按部门编号降序排列
+Subject.objects.order_by('-no')
+</code></pre>
+<ol>
+<li>切片（分页查询）。</li>
+</ol>
+<pre><code class="language-Shell"># 按编号从小到大查询前3个学科
+Subject.objects.order_by('no')[:3]
+</code></pre>
+<ol>
+<li>计数。</li>
+</ol>
+<pre><code class="language-Python"># 查询一共有多少个学科
+Subject.objects.count()
+</code></pre>
+<ol>
+<li>高级查询。</li>
+</ol>
+<pre><code class="language-Shell"># 查询编号为1的学科的老师
+Teacher.objects.filter(subject__no=1)
+Subject.objects.get(pk=1).teacher_set.all() 
+
+# 查询学科名称有“全栈”二字的学科的老师
+Teacher.objects.filter(subject__name__contains='全栈') 
+</code></pre>
+<blockquote>
+<p><strong>说明1</strong>：由于老师与学科之间存在多对一外键关联，所以能通过学科反向查询到该学科的老师（从一对多关系中“一”的一方查询“多”的一方），反向查询属性默认的名字是<code>类名小写_set</code>（如上面例子中的<code>teacher_set</code>），当然也可以在创建模型时通过<code>ForeingKey</code>的<code>related_name</code>属性指定反向查询属性的名字。如果不希望执行反向查询可以将<code>related_name</code>属性设置为<code>'+'</code>或者以<code>'+'</code>开头的字符串。</p>
+<p><strong>说明2</strong>：ORM查询多个对象时会返回QuerySet对象，QuerySet使用了惰性查询，即在创建QuerySet对象的过程中不涉及任何数据库活动，等真正用到对象时（对QuerySet求值）才向数据库发送SQL语句并获取对应的结果，这一点在实际开发中需要引起注意！</p>
+<p><strong>说明3</strong>：如果希望更新多条数据，不用先逐一获取模型对象再修改对象属性，可以直接使用QuerySet对象的<code>update()</code>方法一次性更新多条数据。</p>
+</blockquote>
+<h3 id="django">利用Django后台管理模型</h3>
+<p>在创建好模型类之后，可以通过Django框架自带的后台管理应用（<code>admin</code>应用）实现对模型的管理。虽然实际应用中，这个后台可能并不能满足我们的需求，但是在学习Django框架时，我们可以利用<code>admin</code>应用来管理我们的模型，同时也通过它来了解一个项目的后台管理系统需要哪些功能。使用Django自带的<code>admin</code>应用步骤如下所示。</p>
+<ol>
+<li>将<code>admin</code>应用所需的表迁移到数据库中。<code>admin</code>应用本身也需要数据库的支持，而且在<code>admin</code>应用中已经定义好了相关的数据模型类，我们只需要通过模型迁移操作就能自动在数据库中生成所需的二维表。</li>
+</ol>
+<p><code>Bash
+   python manage.py migrate</code></p>
+<ol>
+<li>创建访问<code>admin</code>应用的超级用户账号，这里需要输入用户名、邮箱和口令。</li>
+</ol>
+<p><code>Shell
+   python manage.py createsuperuser</code></p>
+<blockquote>
+<p><strong>说明</strong>：输入口令时没有回显也不能退格，需要一气呵成完成输入。</p>
+</blockquote>
+<ol>
+<li>运行项目，在浏览器中访问<code>http://127.0.0.1:8000/admin</code>，输入刚才创建的超级用户账号和密码进行登录。</li>
+</ol>
+<p><img alt="" src="/Users/Hao/Desktop/Python-100-Days/Day41-55/res/django-admin-login.png" /></p>
+<p>登录后进入管理员操作平台。</p>
+<p><img alt="" src="res/django-admin-apps.png" /></p>
+<p>注意，我们暂时还没能在<code>admin</code>应用中看到之前创建的模型类，为此需要在<code>polls</code>应用的<code>admin.py</code>文件中对需要管理的模型进行注册。</p>
+<ol>
+<li>注册模型类。</li>
+</ol>
+<p>```Python
+   from django.contrib import admin</p>
+<p>from polls.models import Subject, Teacher</p>
+<p>admin.site.register(Subject)
+   admin.site.register(Teacher)
+   ```</p>
+<p>注册模型类后，就可以在后台管理系统中看到它们。</p>
+<p><img alt="" src="./res/django-admin-models.png" /></p>
+<ol>
+<li>对模型进行CRUD操作。</li>
+</ol>
+<p>可以在管理员平台对模型进行C（新增）、R（查看）、U（更新）、D（删除）操作，如下图所示。</p>
+<ul>
+<li>
+<p>添加学科。</p>
+<p><img alt="" src="res/django-admin-add-model.png" /></p>
+</li>
+<li>
+<p>查看所有学科。</p>
+<p><img alt="" src="res/django-admin-view-models.png" /></p>
+</li>
+<li>
+<p>删除和更新学科。</p>
+<p><img alt="" src="res/django-admin-delete-update-model.png" /></p>
+</li>
+<li>
+<p>注册模型管理类。</p>
+</li>
+</ul>
+<p>可能大家已经注意到了，刚才在后台查看部门信息的时候，显示的部门信息并不直观，为此我们再修改<code>admin.py</code>文件，通过注册模型管理类，可以在后台管理系统中更好的管理模型。</p>
+<p>```Python
+   from django.contrib import admin</p>
+<p>from polls.models import Subject, Teacher</p>
+<p>class SubjectModelAdmin(admin.ModelAdmin):
+       list_display = ('no', 'name', 'intro', 'is_hot')
+       search_fields = ('name', )
+       ordering = ('no', )</p>
+<p>class TeacherModelAdmin(admin.ModelAdmin):
+       list_display = ('no', 'name', 'sex', 'birth', 'good_count', 'bad_count', 'subject')
+       search_fields = ('name', )
+       ordering = ('no', )</p>
+<p>admin.site.register(Subject, SubjectModelAdmin)
+   admin.site.register(Teacher, TeacherModelAdmin)
+   ```</p>
+<p><img alt="" src="res/django-admin-view-models-subject.png" /></p>
+<p><img alt="" src="res/django-admin-view-models-teacher.png" /></p>
+<p>为了更好的查看模型，我们为<code>Subject</code>类添加<code>__str__</code>魔法方法，并在该方法中返回学科名字。这样在如上图所示的查看老师的页面上显示老师所属学科时，就不再是<code>Subject object(1)</code>这样晦涩的信息，而是学科的名称。</p>
+<h3 id="_7">实现学科页和老师页效果</h3>
+<ol>
+<li>
+<p>修改<code>polls/views.py</code>文件，编写视图函数实现对学科页和老师页的渲染。</p>
+<p>```Python
+from django.shortcuts import render, redirect</p>
+<p>from polls.models import Subject, Teacher</p>
+<p>def show_subjects(request):
+    subjects = Subject.objects.all().order_by('no')
+    return render(request, 'subjects.html', {'subjects': subjects})</p>
+<p>def show_teachers(request):
+    try:
+        sno = int(request.GET.get('sno'))
+        teachers = []
+        if sno:
+            subject = Subject.objects.only('name').get(no=sno)
+            teachers = Teacher.objects.filter(subject=subject).order_by('no')
+        return render(request, 'teachers.html', {
+            'subject': subject,
+            'teachers': teachers
+        })
+    except (ValueError, Subject.DoesNotExist):
+        return redirect('/')
+   ```</p>
+</li>
+<li>
+<p>修改<code>templates/subjects.html</code>和<code>templates/teachers.html</code>模板页。</p>
+<p><code>subjects.html</code></p>
+<p><code>HTML
+&lt;!DOCTYPE html&gt;
+&lt;html lang="en"&gt;
+&lt;head&gt;
+    &lt;meta charset="UTF-8"&gt;
+    &lt;title&gt;学科信息&lt;/title&gt;
+    &lt;style&gt;
+        #container {
+            width: 80%;
+            margin: 10px auto;
+        }
+        .user {
+            float: right;
+            margin-right: 10px;
+        }
+        .user&gt;a {
+            margin-right: 10px;
+        }
+        #main&gt;dl&gt;dt {
+            font-size: 1.5em;
+            font-weight: bold;
+        }
+        #main&gt;dl&gt;dd {
+            font-size: 1.2em;
+        }
+        a {
+            text-decoration: none;
+            color: darkcyan;
+        }
+    &lt;/style&gt;
+&lt;/head&gt;
+&lt;body&gt;
+    &lt;div id="container"&gt;
+        &lt;div class="user"&gt;
+            &lt;a href="login.html"&gt;用户登录&lt;/a&gt;
+            &lt;a href="register.html"&gt;快速注册&lt;/a&gt;
+        &lt;/div&gt;
+        &lt;h1&gt;扣丁学堂所有学科&lt;/h1&gt;
+        &lt;hr&gt;
+        &lt;div id="main"&gt;
+            {% for subject in subjects %}
+            &lt;dl&gt;
+                &lt;dt&gt;
+                    &lt;a href="/teachers/?sno={{ subject.no }}"&gt;{{ subject.name }}&lt;/a&gt;
+                    {% if subject.is_hot %}
+                    &lt;img src="/static/images/hot-icon-small.png"&gt;
+                    {% endif %}
+                &lt;/dt&gt;
+                &lt;dd&gt;{{ subject.intro }}&lt;/dd&gt;
+            &lt;/dl&gt;
+            {% endfor %}
+        &lt;/div&gt;
+    &lt;/div&gt;
+&lt;/body&gt;
+&lt;/html&gt;</code></p>
+<p><code>teachers.html</code></p>
+<p><code>HTML
+&lt;!DOCTYPE html&gt;
+&lt;html lang="en"&gt;
+&lt;head&gt;
+    &lt;meta charset="UTF-8"&gt;
+    &lt;title&gt;老师信息&lt;/title&gt;
+    &lt;style&gt;
+        #container {
+            width: 80%;
+            margin: 10px auto;
+        }
+        .teacher {
+            width: 100%;
+            margin: 0 auto;
+            padding: 10px 0;
+            border-bottom: 1px dashed gray;
+            overflow: auto;
+        }
+        .teacher&gt;div {
+            float: left;
+        }
+        .photo {
+            height: 140px;
+            border-radius: 75px;
+            overflow: hidden;
+            margin-left: 20px;
+        }
+        .info {
+            width: 75%;
+            margin-left: 30px;
+        }
+        .info div {
+            clear: both;
+            margin: 5px 10px;
+        }
+        .info span {
+            margin-right: 25px;
+        }
+        .info a {
+            text-decoration: none;
+            color: darkcyan;
+        }
+    &lt;/style&gt;
+&lt;/head&gt;
+&lt;body&gt;
+    &lt;div id="container"&gt;
+        &lt;h1&gt;{{ subject.name }}学科的老师信息&lt;/h1&gt;
+        &lt;hr&gt;
+        {% if not teachers %}
+            &lt;h2&gt;暂无该学科老师信息&lt;/h2&gt;
+        {% endif %}
+        {% for teacher in teachers %}
+        &lt;div class="teacher"&gt;
+            &lt;div class="photo"&gt;
+                &lt;img src="/static/images/{{ teacher.photo }}" height="140" alt=""&gt;
+            &lt;/div&gt;
+            &lt;div class="info"&gt;
+                &lt;div&gt;
+                    &lt;span&gt;&lt;strong&gt;姓名：{{ teacher.name }}&lt;/strong&gt;&lt;/span&gt;
+                    &lt;span&gt;性别：{{ teacher.sex | yesno:'男,女' }}&lt;/span&gt;
+                    &lt;span&gt;出生日期：{{ teacher.birth | date:'Y年n月j日'}}&lt;/span&gt;
+                &lt;/div&gt;
+                &lt;div class="intro"&gt;{{ teacher.intro }}&lt;/div&gt;
+                &lt;div class="comment"&gt;
+                    &lt;a href=""&gt;好评&lt;/a&gt;&amp;nbsp;(&lt;strong&gt;{{ teacher.good_count }}&lt;/strong&gt;)
+                    &amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;
+                    &lt;a href=""&gt;差评&lt;/a&gt;&amp;nbsp;&lt;strong&gt;{{ teacher.bad_count }}&lt;/strong&gt;)
+                &lt;/div&gt;
+            &lt;/div&gt;
+        &lt;/div&gt;
+        {% endfor %}
+        &lt;a href="/"&gt;返回首页&lt;/a&gt;
+    &lt;/div&gt;
+&lt;/body&gt;
+&lt;/html&gt;</code></p>
+</li>
+<li>
+<p>修改<code>vote/urls.py</code>文件，实现映射URL。</p>
+<p>```Python
+from django.contrib import admin
+from django.urls import path</p>
+<p>from polls.views import show_subjects, show_teachers</p>
+<p>urlpatterns = [
+    path('admin/', admin.site.urls),
+    path('', show_subjects),
+    path('teachers/', show_teachers),
+]
+```</p>
+</li>
+</ol>
+<p>到此为止，页面上需要的图片（静态资源）还没有能够正常展示，我们在下一章节中为大家介绍如何处理模板页上的需要的静态资源。</p>
+<h3 id="_8">补充内容</h3>
+<h4 id="django_1">Django模型最佳实践</h4>
+<ol>
+<li>正确的为模型和关系字段命名。</li>
+<li>设置适当的<code>related_name</code>属性。</li>
+<li>用<code>OneToOneField</code>代替<code>ForeignKeyField(unique=True)</code>。</li>
+<li>通过“迁移操作”（migrate）来添加模型。</li>
+<li>用NoSQL来应对需要降低范式级别的场景。</li>
+<li>如果布尔类型可以为空要使用<code>NullBooleanField</code>。</li>
+<li>在模型中放置业务逻辑。</li>
+<li>用<code>&lt;ModelName&gt;.DoesNotExists</code>取代<code>ObjectDoesNotExists</code>。</li>
+<li>在数据库中不要出现无效数据。</li>
+<li>不要对<code>QuerySet</code>调用<code>len()</code>函数。</li>
+<li>将<code>QuerySet</code>的<code>exists()</code>方法的返回值用于<code>if</code>条件。</li>
+<li>用<code>DecimalField</code>来存储货币相关数据而不是<code>FloatField</code>。</li>
+<li>定义<code>__str__</code>方法。</li>
+<li>不要将数据文件放在同一个目录中。</li>
+</ol>
+<blockquote>
+<p><strong>说明</strong>：以上内容来自于STEELKIWI网站的<a href="https://steelkiwi.com/blog/best-practices-working-django-models-python/"><em>Best Practice working with Django models in Python</em></a>，有兴趣的小伙伴可以阅读原文。</p>
+</blockquote>
+<h4 id="_9">模型定义参考</h4>
+<h5 id="_10">字段</h5>
+<p>对字段名称的限制</p>
+<ul>
+<li>字段名不能是Python的保留字，否则会导致语法错误</li>
+<li>字段名不能有多个连续下划线，否则影响ORM查询操作</li>
+</ul>
+<p>Django模型字段类</p>
+<table>
+<thead>
+<tr>
+<th>字段类</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>AutoField</code></td>
+<td>自增ID字段</td>
+</tr>
+<tr>
+<td><code>BigIntegerField</code></td>
+<td>64位有符号整数</td>
+</tr>
+<tr>
+<td><code>BinaryField</code></td>
+<td>存储二进制数据的字段，对应Python的<code>bytes</code>类型</td>
+</tr>
+<tr>
+<td><code>BooleanField</code></td>
+<td>存储<code>True</code>或<code>False</code></td>
+</tr>
+<tr>
+<td><code>CharField</code></td>
+<td>长度较小的字符串</td>
+</tr>
+<tr>
+<td><code>DateField</code></td>
+<td>存储日期，有<code>auto_now</code>和<code>auto_now_add</code>属性</td>
+</tr>
+<tr>
+<td><code>DateTimeField</code></td>
+<td>存储日期和日期，两个附加属性同上</td>
+</tr>
+<tr>
+<td><code>DecimalField</code></td>
+<td>存储固定精度小数，有<code>max_digits</code>（有效位数）和<code>decimal_places</code>（小数点后面）两个必要的参数</td>
+</tr>
+<tr>
+<td><code>DurationField</code></td>
+<td>存储时间跨度</td>
+</tr>
+<tr>
+<td><code>EmailField</code></td>
+<td>与<code>CharField</code>相同，可以用<code>EmailValidator</code>验证</td>
+</tr>
+<tr>
+<td><code>FileField</code></td>
+<td>文件上传字段</td>
+</tr>
+<tr>
+<td><code>FloatField</code></td>
+<td>存储浮点数</td>
+</tr>
+<tr>
+<td><code>ImageField</code></td>
+<td>其他同<code>FileFiled</code>，要验证上传的是不是有效图像</td>
+</tr>
+<tr>
+<td><code>IntegerField</code></td>
+<td>存储32位有符号整数。</td>
+</tr>
+<tr>
+<td><code>GenericIPAddressField</code></td>
+<td>存储IPv4或IPv6地址</td>
+</tr>
+<tr>
+<td><code>NullBooleanField</code></td>
+<td>存储<code>True</code>、<code>False</code>或<code>null</code>值</td>
+</tr>
+<tr>
+<td><code>PositiveIntegerField</code></td>
+<td>存储无符号整数（只能存储正数）</td>
+</tr>
+<tr>
+<td><code>SlugField</code></td>
+<td>存储slug（简短标注）</td>
+</tr>
+<tr>
+<td><code>SmallIntegerField</code></td>
+<td>存储16位有符号整数</td>
+</tr>
+<tr>
+<td><code>TextField</code></td>
+<td>存储数据量较大的文本</td>
+</tr>
+<tr>
+<td><code>TimeField</code></td>
+<td>存储时间</td>
+</tr>
+<tr>
+<td><code>URLField</code></td>
+<td>存储URL的<code>CharField</code></td>
+</tr>
+<tr>
+<td><code>UUIDField</code></td>
+<td>存储全局唯一标识符</td>
+</tr>
+</tbody>
+</table>
+<h5 id="_11">字段属性</h5>
+<p>通用字段属性</p>
+<table>
+<thead>
+<tr>
+<th>选项</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>null</code></td>
+<td>数据库中对应的字段是否允许为<code>NULL</code>，默认为<code>False</code></td>
+</tr>
+<tr>
+<td><code>blank</code></td>
+<td>后台模型管理验证数据时，是否允许为<code>NULL</code>，默认为<code>False</code></td>
+</tr>
+<tr>
+<td><code>choices</code></td>
+<td>设定字段的选项，各元组中的第一个值是设置在模型上的值，第二值是人类可读的值</td>
+</tr>
+<tr>
+<td><code>db_column</code></td>
+<td>字段对应到数据库表中的列名，未指定时直接使用字段的名称</td>
+</tr>
+<tr>
+<td><code>db_index</code></td>
+<td>设置为<code>True</code>时将在该字段创建索引</td>
+</tr>
+<tr>
+<td><code>db_tablespace</code></td>
+<td>为有索引的字段设置使用的表空间，默认为<code>DEFAULT_INDEX_TABLESPACE</code></td>
+</tr>
+<tr>
+<td><code>default</code></td>
+<td>字段的默认值</td>
+</tr>
+<tr>
+<td><code>editable</code></td>
+<td>字段在后台模型管理或<code>ModelForm</code>中是否显示，默认为<code>True</code></td>
+</tr>
+<tr>
+<td><code>error_messages</code></td>
+<td>设定字段抛出异常时的默认消息的字典，其中的键包括<code>null</code>、<code>blank</code>、<code>invalid</code>、<code>invalid_choice</code>、<code>unique</code>和<code>unique_for_date</code></td>
+</tr>
+<tr>
+<td><code>help_text</code></td>
+<td>表单小组件旁边显示的额外的帮助文本。</td>
+</tr>
+<tr>
+<td><code>primary_key</code></td>
+<td>将字段指定为模型的主键，未指定时会自动添加<code>AutoField</code>用于主键，只读。</td>
+</tr>
+<tr>
+<td><code>unique</code></td>
+<td>设置为<code>True</code>时，表中字段的值必须是唯一的</td>
+</tr>
+<tr>
+<td><code>verbose_name</code></td>
+<td>字段在后台模型管理显示的名称，未指定时使用字段的名称</td>
+</tr>
+</tbody>
+</table>
+<p><code>ForeignKey</code>属性</p>
+<ol>
+<li><code>limit_choices_to</code>：值是一个Q对象或返回一个Q对象，用于限制后台显示哪些对象。</li>
+<li><code>related_name</code>：用于获取关联对象的关联管理器对象（反向查询），如果不允许反向，该属性应该被设置为<code>'+'</code>，或者以<code>'+'</code>结尾。</li>
+<li><code>to_field</code>：指定关联的字段，默认关联对象的主键字段。</li>
+<li><code>db_constraint</code>：是否为外键创建约束，默认值为<code>True</code>。</li>
+<li><code>on_delete</code>：外键关联的对象被删除时对应的动作，可取的值包括<code>django.db.models</code>中定义的：</li>
+<li><code>CASCADE</code>：级联删除。</li>
+<li><code>PROTECT</code>：抛出<code>ProtectedError</code>异常，阻止删除引用的对象。</li>
+<li><code>SET_NULL</code>：把外键设置为<code>null</code>，当<code>null</code>属性被设置为<code>True</code>时才能这么做。</li>
+<li><code>SET_DEFAULT</code>：把外键设置为默认值，提供了默认值才能这么做。</li>
+</ol>
+<p><code>ManyToManyField</code>属性</p>
+<ol>
+<li><code>symmetrical</code>：是否建立对称的多对多关系。</li>
+<li><code>through</code>：指定维持多对多关系的中间表的Django模型。</li>
+<li><code>throughfields</code>：定义了中间模型时可以指定建立多对多关系的字段。</li>
+<li><code>db_table</code>：指定维持多对多关系的中间表的表名。</li>
+</ol>
+<h5 id="_12">模型元数据选项</h5>
+<table>
+<thead>
+<tr>
+<th>选项</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>abstract</code></td>
+<td>设置为True时模型是抽象父类</td>
+</tr>
+<tr>
+<td><code>app_label</code></td>
+<td>如果定义模型的应用不在INSTALLED_APPS中可以用该属性指定</td>
+</tr>
+<tr>
+<td><code>db_table</code></td>
+<td>模型使用的数据表名称</td>
+</tr>
+<tr>
+<td><code>db_tablespace</code></td>
+<td>模型使用的数据表空间</td>
+</tr>
+<tr>
+<td><code>default_related_name</code></td>
+<td>关联对象回指这个模型时默认使用的名称，默认为<model_name>_set</td>
+</tr>
+<tr>
+<td><code>get_latest_by</code></td>
+<td>模型中可排序字段的名称。</td>
+</tr>
+<tr>
+<td><code>managed</code></td>
+<td>设置为True时，Django在迁移中创建数据表并在执行flush管理命令时把表移除</td>
+</tr>
+<tr>
+<td><code>order_with_respect_to</code></td>
+<td>标记对象为可排序的</td>
+</tr>
+<tr>
+<td><code>ordering</code></td>
+<td>对象的默认排序</td>
+</tr>
+<tr>
+<td><code>permissions</code></td>
+<td>创建对象时写入权限表的额外权限</td>
+</tr>
+<tr>
+<td><code>default_permissions</code></td>
+<td>默认为<code>('add', 'change', 'delete')</code></td>
+</tr>
+<tr>
+<td><code>unique_together</code></td>
+<td>设定组合在一起时必须独一无二的字段名</td>
+</tr>
+<tr>
+<td><code>index_together</code></td>
+<td>设定一起建立索引的多个字段名</td>
+</tr>
+<tr>
+<td><code>verbose_name</code></td>
+<td>为对象设定人类可读的名称</td>
+</tr>
+<tr>
+<td><code>verbose_name_plural</code></td>
+<td>设定对象的复数名称</td>
+</tr>
+</tbody>
+</table>
+<h4 id="_13">查询参考</h4>
+<h5 id="_14">按字段查找可以用的条件</h5>
+<ol>
+<li><code>exact</code> / <code>iexact</code>：精确匹配/忽略大小写的精确匹配查询</li>
+<li><code>contains</code> / <code>icontains</code> / <code>startswith</code> / <code>istartswith</code> / <code>endswith</code> / <code>iendswith</code>：基于<code>like</code>的模糊查询</li>
+<li><code>in</code> ：集合运算</li>
+<li><code>gt</code> / <code>gte</code> / <code>lt</code> / <code>lte</code>：大于/大于等于/小于/小于等于关系运算</li>
+<li><code>range</code>：指定范围查询（SQL中的<code>between…and…</code>）</li>
+<li><code>year</code> / <code>month</code> / <code>day</code> / <code>week_day</code> / <code>hour</code> / <code>minute</code> / <code>second</code>：查询时间日期</li>
+<li><code>isnull</code>：查询空值（True）或非空值（False）</li>
+<li><code>search</code>：基于全文索引的全文检索（一般很少使用）</li>
+<li><code>regex</code> / <code>iregex</code>：基于正则表达式的模糊匹配查询</li>
+</ol>
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+  <script>var tabs=__md_get("__tabs");if(Array.isArray(tabs))e:for(var set of document.querySelectorAll(".tabbed-set")){var labels=set.querySelector(".tabbed-labels");for(var tab of tabs)for(var label of labels.getElementsByTagName("label"))if(label.innerText.trim()===tab){var input=document.getElementById(label.htmlFor);input.checked=!0;continue e}}</script>
+
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+          <button type="button" class="md-top md-icon" data-md-component="top" hidden>
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8z"/></svg>
+  Back to top
+</button>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+    
+      
+      <nav class="md-footer__inner md-grid" aria-label="Footer" >
+        
+          
+          <a href="../Django%E5%9F%BA%E7%A1%80/" class="md-footer__link md-footer__link--prev" aria-label="Previous: Django基础">
+            <div class="md-footer__button md-icon">
+              
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+            </div>
+            <div class="md-footer__title">
+              <span class="md-footer__direction">
+                Previous
+              </span>
+              <div class="md-ellipsis">
+                Django基础
+              </div>
+            </div>
+          </a>
+        
+        
+          
+          <a href="../../Docker/Docker%E8%AF%A6%E8%A7%A3/" class="md-footer__link md-footer__link--next" aria-label="Next: Docker详解">
+            <div class="md-footer__title">
+              <span class="md-footer__direction">
+                Next
+              </span>
+              <div class="md-ellipsis">
+                Docker详解
+              </div>
+            </div>
+            <div class="md-footer__button md-icon">
+              
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M4 11v2h12l-5.5 5.5 1.42 1.42L19.84 12l-7.92-7.92L10.5 5.5 16 11z"/></svg>
+            </div>
+          </a>
+        
+      </nav>
+    
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+      <div class="md-progress" data-md-component="progress" role="progressbar"></div>
+    
+    
+    
+      
+      <script id="__config" type="application/json">{"base": "../..", "features": ["announce.dismiss", "content.action.edit", "content.action.view", "content.code.annotate", "content.code.copy", "content.code.select", "content.tabs.link", "content.tooltips", "navigation.footer", "navigation.indexes", "navigation.instant.prefetch", "navigation.instant.progress", "navigation.path", "navigation.sections", "navigation.tabs", "navigation.tabs.sticky", "navigation.top", "navigation.tracking", "search.highlight", "search.share", "search.suggest", "toc.follow"], "search": "../../assets/javascripts/workers/search.d50fe291.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+    
+    
+      <script src="../../assets/javascripts/bundle.13a4f30d.min.js"></script>
+      
+    
+  </body>
+</html>

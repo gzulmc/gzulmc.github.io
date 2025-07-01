@@ -1,0 +1,1804 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+      
+      
+      
+      
+      
+      <link rel="icon" href="../../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.6.14">
+    
+    
+      
+        <title>WSL2, Ubuntu, and Docker Integration - gzulmc's 随笔记录</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../assets/stylesheets/main.342714a4.min.css">
+      
+        
+        <link rel="stylesheet" href="../../assets/stylesheets/palette.06af60db.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+    <script>__md_scope=new URL("../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+    
+  </head>
+  
+  
+    
+    
+      
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#wsl2-ubuntu-and-docker-integration" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow md-header--lifted" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href="../.." title="gzulmc&#39;s 随笔记录" class="md-header__button md-logo" aria-label="gzulmc's 随笔记录" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            gzulmc's 随笔记录
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              WSL2, Ubuntu, and Docker Integration
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+        <form class="md-header__option" data-md-component="palette">
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo"  aria-label="Switch to dark mode"  type="radio" name="__palette" id="__palette_0">
+    
+      <label class="md-header__button md-icon" title="Switch to dark mode" for="__palette_1" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a4 4 0 0 0-4 4 4 4 0 0 0 4 4 4 4 0 0 0 4-4 4 4 0 0 0-4-4m0 10a6 6 0 0 1-6-6 6 6 0 0 1 6-6 6 6 0 0 1 6 6 6 6 0 0 1-6 6m8-9.31V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12z"/></svg>
+      </label>
+    
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="slate" data-md-color-primary="indigo" data-md-color-accent="indigo"  aria-label="Switch to light mode"  type="radio" name="__palette" id="__palette_1">
+    
+      <label class="md-header__button md-icon" title="Switch to light mode" for="__palette_0" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 18c-.89 0-1.74-.2-2.5-.55C11.56 16.5 13 14.42 13 12s-1.44-4.5-3.5-5.45C10.26 6.2 11.11 6 12 6a6 6 0 0 1 6 6 6 6 0 0 1-6 6m8-9.31V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12z"/></svg>
+      </label>
+    
+  
+</form>
+      
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+          <a href="javascript:void(0)" class="md-search__icon md-icon" title="Share" aria-label="Share" data-clipboard data-clipboard-text="" data-md-component="search-share" tabindex="-1">
+            
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M18 16.08c-.76 0-1.44.3-1.96.77L8.91 12.7c.05-.23.09-.46.09-.7s-.04-.47-.09-.7l7.05-4.11c.54.5 1.25.81 2.04.81a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3c0 .24.04.47.09.7L8.04 9.81C7.5 9.31 6.79 9 6 9a3 3 0 0 0-3 3 3 3 0 0 0 3 3c.79 0 1.5-.31 2.04-.81l7.12 4.15c-.05.21-.08.43-.08.66 0 1.61 1.31 2.91 2.92 2.91s2.92-1.3 2.92-2.91A2.92 2.92 0 0 0 18 16.08"/></svg>
+          </a>
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+        <div class="md-search__suggest" data-md-component="search-suggest"></div>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      
+    
+    
+  </nav>
+  
+    
+      
+<nav class="md-tabs" aria-label="Tabs" data-md-component="tabs">
+  <div class="md-grid">
+    <ul class="md-tabs__list">
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../Python/%E9%9D%A2%E5%90%91%E5%AF%B9%E8%B1%A1%E5%9F%BA%E7%A1%80/" class="md-tabs__link">
+          
+  
+  
+    
+  
+  Python
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../Django/Django%E5%9F%BA%E7%A1%80/" class="md-tabs__link">
+          
+  
+  
+    
+  
+  Django
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../Docker/Docker%E8%AF%A6%E8%A7%A3/" class="md-tabs__link">
+          
+  
+  
+    
+  
+  Docker
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../.." class="md-tabs__link">
+          
+  
+  
+    
+  
+  Java
+
+        </a>
+      </li>
+    
+  
+
+      
+    </ul>
+  </div>
+</nav>
+    
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+  
+
+
+<nav class="md-nav md-nav--primary md-nav--lifted" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../.." title="gzulmc&#39;s 随笔记录" class="md-nav__button md-logo" aria-label="gzulmc's 随笔记录" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    gzulmc's 随笔记录
+  </label>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_1" >
+        
+          
+          <label class="md-nav__link" for="__nav_1" id="__nav_1_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    Python
+    
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_1_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_1">
+            <span class="md-nav__icon md-icon"></span>
+            Python
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../Python/%E9%9D%A2%E5%90%91%E5%AF%B9%E8%B1%A1%E5%9F%BA%E7%A1%80/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    面向对象基础
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../Python/%E9%9D%A2%E5%90%91%E5%AF%B9%E8%B1%A1%E8%BF%9B%E9%98%B6/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    面向对象进阶
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../Python/%E8%BF%9B%E7%A8%8B%E5%92%8C%E7%BA%BF%E7%A8%8B/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    进程和线程
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../Python/%E5%9B%BE%E5%83%8F%E5%92%8C%E6%96%87%E6%A1%A3%E5%A4%84%E7%90%86/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    图像和文档处理
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../Python/%E7%BD%91%E7%BB%9C%E7%BC%96%E7%A8%8B%E5%BA%94%E7%94%A8/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    网络编程应用
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../Python/%E6%96%87%E4%BB%B6%E5%92%8C%E5%BC%82%E5%B8%B8/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    文件和异常
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2" >
+        
+          
+          <label class="md-nav__link" for="__nav_2" id="__nav_2_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    Django
+    
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_2_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2">
+            <span class="md-nav__icon md-icon"></span>
+            Django
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../Django/Django%E5%9F%BA%E7%A1%80/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Django基础
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../Django/%E6%95%B0%E6%8D%AE%E6%A8%A1%E5%9E%8B/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    数据模型
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+      
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3" >
+        
+          
+          <label class="md-nav__link" for="__nav_3" id="__nav_3_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    Docker
+    
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_3">
+            <span class="md-nav__icon md-icon"></span>
+            Docker
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../Docker/Docker%E8%AF%A6%E8%A7%A3/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Docker详解
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4" >
+        
+          
+          <div class="md-nav__link md-nav__container">
+            <a href="../.." class="md-nav__link ">
+              
+  
+  
+  <span class="md-ellipsis">
+    Java
+    
+  </span>
+  
+
+            </a>
+            
+          </div>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_4_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4">
+            <span class="md-nav__icon md-icon"></span>
+            Java
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#prompt" class="md-nav__link">
+    <span class="md-ellipsis">
+      Prompt:
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#response" class="md-nav__link">
+    <span class="md-ellipsis">
+      Response:
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      三者关系详解
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="三者关系详解">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#1-wsl2-windows-subsystem-for-linux-2" class="md-nav__link">
+    <span class="md-ellipsis">
+      1. WSL2 (Windows Subsystem for Linux 2)
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#2-ubuntu-distribution" class="md-nav__link">
+    <span class="md-ellipsis">
+      2. Ubuntu Distribution
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#3-docker-desktop" class="md-nav__link">
+    <span class="md-ellipsis">
+      3. Docker Desktop
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_2" class="md-nav__link">
+    <span class="md-ellipsis">
+      操作方式
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="操作方式">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#ubuntu" class="md-nav__link">
+    <span class="md-ellipsis">
+      访问Ubuntu系统：
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#docker" class="md-nav__link">
+    <span class="md-ellipsis">
+      Docker操作：
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_3" class="md-nav__link">
+    <span class="md-ellipsis">
+      文件系统互通：
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_4" class="md-nav__link">
+    <span class="md-ellipsis">
+      关键理解点
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_5" class="md-nav__link">
+    <span class="md-ellipsis">
+      实际使用建议
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#prompt_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      Prompt:
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#response_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      Response:
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_6" class="md-nav__link">
+    <span class="md-ellipsis">
+      正确的理解
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="正确的理解">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#1-ubuntu-docker-engine" class="md-nav__link">
+    <span class="md-ellipsis">
+      1. Ubuntu 和 Docker Engine 的关系
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#2" class="md-nav__link">
+    <span class="md-ellipsis">
+      2. 实际架构
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#3-ubuntudocker" class="md-nav__link">
+    <span class="md-ellipsis">
+      3. 为什么你可以在Ubuntu中使用Docker
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#4-docker-cliubuntu" class="md-nav__link">
+    <span class="md-ellipsis">
+      4. 你不能"通过Docker CLI使用Ubuntu系统"
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_7" class="md-nav__link">
+    <span class="md-ellipsis">
+      实际演示
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_8" class="md-nav__link">
+    <span class="md-ellipsis">
+      关键要点
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#prompt_2" class="md-nav__link">
+    <span class="md-ellipsis">
+      Prompt:
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#response_2" class="md-nav__link">
+    <span class="md-ellipsis">
+      Response:
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_9" class="md-nav__link">
+    <span class="md-ellipsis">
+      关键纠正
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="关键纠正">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#1" class="md-nav__link">
+    <span class="md-ellipsis">
+      1. 初始状态
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#2-docker-cli" class="md-nav__link">
+    <span class="md-ellipsis">
+      2. Docker CLI的来源
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#3" class="md-nav__link">
+    <span class="md-ellipsis">
+      3. 验证一下
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#4" class="md-nav__link">
+    <span class="md-ellipsis">
+      4. 正确的架构理解
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#5" class="md-nav__link">
+    <span class="md-ellipsis">
+      5. 通信机制
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#6-docker-desktop" class="md-nav__link">
+    <span class="md-ellipsis">
+      6. 如果没有Docker Desktop
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#prompt_3" class="md-nav__link">
+    <span class="md-ellipsis">
+      Prompt:
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#response_3" class="md-nav__link">
+    <span class="md-ellipsis">
+      Response:
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_10" class="md-nav__link">
+    <span class="md-ellipsis">
+      分情况讨论
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="分情况讨论">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#1-docker-desktop" class="md-nav__link">
+    <span class="md-ellipsis">
+      1. 如果Docker Desktop已经安装并运行
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#2-centos-wsl2docker-cli" class="md-nav__link">
+    <span class="md-ellipsis">
+      2. 在CentOS WSL2中安装Docker CLI
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#3_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      3. 验证连接
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#4_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      4. 可能遇到的问题
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#5_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      5. 更简单的替代方案
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#6" class="md-nav__link">
+    <span class="md-ellipsis">
+      6. 检查当前状态
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_11" class="md-nav__link">
+    <span class="md-ellipsis">
+      总结
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#prompt_4" class="md-nav__link">
+    <span class="md-ellipsis">
+      Prompt:
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#response_4" class="md-nav__link">
+    <span class="md-ellipsis">
+      Response:
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_12" class="md-nav__link">
+    <span class="md-ellipsis">
+      确认你的理解
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="确认你的理解">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#1-dockerdocker-desktop" class="md-nav__link">
+    <span class="md-ellipsis">
+      1. 所有Docker操作都在docker-desktop实例中执行
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#2-docker-desktop-docker" class="md-nav__link">
+    <span class="md-ellipsis">
+      2. Docker Desktop停止 = 所有Docker功能失效
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_13" class="md-nav__link">
+    <span class="md-ellipsis">
+      实际验证
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_14" class="md-nav__link">
+    <span class="md-ellipsis">
+      架构总结
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_15" class="md-nav__link">
+    <span class="md-ellipsis">
+      重要含义
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+
+<h1 id="wsl2-ubuntu-and-docker-integration">WSL2, Ubuntu, and Docker Integration</h1>
+<p><strong>Created:</strong> 6/27/2025 11:16<br />
+<strong>Updated:</strong> 6/27/2025 14:32<br />
+<strong>Exported:</strong> 6/27/2025 14:41  </p>
+<h2 id="prompt">Prompt:</h2>
+<p>我在我的windows中安装了wsl2，并且在wsl2中安装了一个Ubuntu系统。现在我又下载了docker desktop 并且成功安装，我想问 wsl2和Ubuntu，docker desktop这三者是怎么协同的？现在是不是类似我在docker desktop集成了这个Ubuntu系统，我可以想操作docker一样操作这个系统？能不能画个图帮我详细讲讲他们的关系，并告知我可以如何操作他们</p>
+<h2 id="response">Response:</h2>
+<p>让我为你详细解释WSL2、Ubuntu和Docker Desktop之间的关系，并画个图来说明它们是如何协同工作的。</p>
+<p>WSL2、Ubuntu和Docker Desktop架构关系图</p>
+<pre><code class="language-svg">&lt;svg viewBox=&quot;0 0 800 600&quot; xmlns=&quot;http://www.w3.org/2000/svg&quot;&gt;
+  &lt;!-- Background --&gt;
+  &lt;rect width=&quot;800&quot; height=&quot;600&quot; fill=&quot;#f8f9fa&quot;/&gt;
+
+  &lt;!-- Windows Host --&gt;
+  &lt;rect x=&quot;50&quot; y=&quot;50&quot; width=&quot;700&quot; height=&quot;500&quot; fill=&quot;#e3f2fd&quot; stroke=&quot;#1976d2&quot; stroke-width=&quot;2&quot; rx=&quot;10&quot;/&gt;
+  &lt;text x=&quot;70&quot; y=&quot;80&quot; font-family=&quot;Arial, sans-serif&quot; font-size=&quot;18&quot; font-weight=&quot;bold&quot; fill=&quot;#1976d2&quot;&gt;Windows 11/10 Host&lt;/text&gt;
+
+  &lt;!-- WSL2 Layer --&gt;
+  &lt;rect x=&quot;80&quot; y=&quot;100&quot; width=&quot;640&quot; height=&quot;180&quot; fill=&quot;#fff3e0&quot; stroke=&quot;#f57c00&quot; stroke-width=&quot;2&quot; rx=&quot;8&quot;/&gt;
+  &lt;text x=&quot;100&quot; y=&quot;130&quot; font-family=&quot;Arial, sans-serif&quot; font-size=&quot;16&quot; font-weight=&quot;bold&quot; fill=&quot;#f57c00&quot;&gt;WSL2 (Windows Subsystem for Linux 2)&lt;/text&gt;
+  &lt;text x=&quot;100&quot; y=&quot;150&quot; font-family=&quot;Arial, sans-serif&quot; font-size=&quot;12&quot; fill=&quot;#666&quot;&gt;轻量级虚拟化层，提供完整的Linux内核&lt;/text&gt;
+
+  &lt;!-- Ubuntu Distribution --&gt;
+  &lt;rect x=&quot;120&quot; y=&quot;170&quot; width=&quot;250&quot; height=&quot;80&quot; fill=&quot;#fff&quot; stroke=&quot;#e95420&quot; stroke-width=&quot;2&quot; rx=&quot;5&quot;/&gt;
+  &lt;text x=&quot;140&quot; y=&quot;195&quot; font-family=&quot;Arial, sans-serif&quot; font-size=&quot;14&quot; font-weight=&quot;bold&quot; fill=&quot;#e95420&quot;&gt;Ubuntu Distribution&lt;/text&gt;
+  &lt;text x=&quot;140&quot; y=&quot;215&quot; font-family=&quot;Arial, sans-serif&quot; font-size=&quot;11&quot; fill=&quot;#666&quot;&gt;• 完整的Ubuntu文件系统&lt;/text&gt;
+  &lt;text x=&quot;140&quot; y=&quot;230&quot; font-family=&quot;Arial, sans-serif&quot; font-size=&quot;11&quot; fill=&quot;#666&quot;&gt;• 包管理器 (apt)&lt;/text&gt;
+  &lt;text x=&quot;140&quot; y=&quot;245&quot; font-family=&quot;Arial, sans-serif&quot; font-size=&quot;11&quot; fill=&quot;#666&quot;&gt;• Shell环境 (bash, zsh等)&lt;/text&gt;
+
+  &lt;!-- Docker Desktop --&gt;
+  &lt;rect x=&quot;80&quot; y=&quot;300&quot; width=&quot;640&quot; height=&quot;220&quot; fill=&quot;#e8f5e8&quot; stroke=&quot;#2196f3&quot; stroke-width=&quot;2&quot; rx=&quot;8&quot;/&gt;
+  &lt;text x=&quot;100&quot; y=&quot;330&quot; font-family=&quot;Arial, sans-serif&quot; font-size=&quot;16&quot; font-weight=&quot;bold&quot; fill=&quot;#2196f3&quot;&gt;Docker Desktop&lt;/text&gt;
+  &lt;text x=&quot;100&quot; y=&quot;350&quot; font-family=&quot;Arial, sans-serif&quot; font-size=&quot;12&quot; fill=&quot;#666&quot;&gt;集成了Docker Engine、Docker CLI和图形界面&lt;/text&gt;
+
+  &lt;!-- Docker Engine in WSL2 --&gt;
+  &lt;rect x=&quot;120&quot; y=&quot;370&quot; width=&quot;280&quot; height=&quot;120&quot; fill=&quot;#fff&quot; stroke=&quot;#0db7ed&quot; stroke-width=&quot;2&quot; rx=&quot;5&quot;/&gt;
+  &lt;text x=&quot;140&quot; y=&quot;395&quot; font-family=&quot;Arial, sans-serif&quot; font-size=&quot;14&quot; font-weight=&quot;bold&quot; fill=&quot;#0db7ed&quot;&gt;Docker Engine (运行在WSL2)&lt;/text&gt;
+  &lt;text x=&quot;140&quot; y=&quot;415&quot; font-family=&quot;Arial, sans-serif&quot; font-size=&quot;11&quot; fill=&quot;#666&quot;&gt;• Docker Daemon&lt;/text&gt;
+  &lt;text x=&quot;140&quot; y=&quot;430&quot; font-family=&quot;Arial, sans-serif&quot; font-size=&quot;11&quot; fill=&quot;#666&quot;&gt;• 容器运行时&lt;/text&gt;
+  &lt;text x=&quot;140&quot; y=&quot;445&quot; font-family=&quot;Arial, sans-serif&quot; font-size=&quot;11&quot; fill=&quot;#666&quot;&gt;• 镜像管理&lt;/text&gt;
+  &lt;text x=&quot;140&quot; y=&quot;460&quot; font-family=&quot;Arial, sans-serif&quot; font-size=&quot;11&quot; fill=&quot;#666&quot;&gt;• 网络和存储&lt;/text&gt;
+  &lt;text x=&quot;140&quot; y=&quot;475&quot; font-family=&quot;Arial, sans-serif&quot; font-size=&quot;11&quot; fill=&quot;#666&quot;&gt;• 与Ubuntu共享内核&lt;/text&gt;
+
+  &lt;!-- Docker Desktop GUI --&gt;
+  &lt;rect x=&quot;420&quot; y=&quot;370&quot; width=&quot;280&quot; height=&quot;120&quot; fill=&quot;#fff&quot; stroke=&quot;#326ce5&quot; stroke-width=&quot;2&quot; rx=&quot;5&quot;/&gt;
+  &lt;text x=&quot;440&quot; y=&quot;395&quot; font-family=&quot;Arial, sans-serif&quot; font-size=&quot;14&quot; font-weight=&quot;bold&quot; fill=&quot;#326ce5&quot;&gt;Docker Desktop GUI&lt;/text&gt;
+  &lt;text x=&quot;440&quot; y=&quot;415&quot; font-family=&quot;Arial, sans-serif&quot; font-size=&quot;11&quot; fill=&quot;#666&quot;&gt;• 图形化管理界面&lt;/text&gt;
+  &lt;text x=&quot;440&quot; y=&quot;430&quot; font-family=&quot;Arial, sans-serif&quot; font-size=&quot;11&quot; fill=&quot;#666&quot;&gt;• 容器/镜像可视化&lt;/text&gt;
+  &lt;text x=&quot;440&quot; y=&quot;445&quot; font-family=&quot;Arial, sans-serif&quot; font-size=&quot;11&quot; fill=&quot;#666&quot;&gt;• 日志查看&lt;/text&gt;
+  &lt;text x=&quot;440&quot; y=&quot;460&quot; font-family=&quot;Arial, sans-serif&quot; font-size=&quot;11&quot; fill=&quot;#666&quot;&gt;• 设置配置&lt;/text&gt;
+  &lt;text x=&quot;440&quot; y=&quot;475&quot; font-family=&quot;Arial, sans-serif&quot; font-size=&quot;11&quot; fill=&quot;#666&quot;&gt;• Docker Hub集成&lt;/text&gt;
+
+  &lt;!-- Arrows and connections --&gt;
+  &lt;!-- WSL2 to Ubuntu --&gt;
+  &lt;path d=&quot;M 360 200 Q 380 160 400 200&quot; stroke=&quot;#f57c00&quot; stroke-width=&quot;2&quot; fill=&quot;none&quot; marker-end=&quot;url(#arrowhead1)&quot;/&gt;
+  &lt;text x=&quot;365&quot; y=&quot;175&quot; font-family=&quot;Arial, sans-serif&quot; font-size=&quot;10&quot; fill=&quot;#f57c00&quot;&gt;宿主&lt;/text&gt;
+
+  &lt;!-- Docker Desktop to Docker Engine --&gt;
+  &lt;path d=&quot;M 400 420 L 420 420&quot; stroke=&quot;#2196f3&quot; stroke-width=&quot;2&quot; fill=&quot;none&quot; marker-end=&quot;url(#arrowhead2)&quot;/&gt;
+  &lt;text x=&quot;405&quot; y=&quot;435&quot; font-family=&quot;Arial, sans-serif&quot; font-size=&quot;10&quot; fill=&quot;#2196f3&quot;&gt;控制&lt;/text&gt;
+
+  &lt;!-- WSL2 to Docker Engine --&gt;
+  &lt;path d=&quot;M 350 280 Q 300 320 260 370&quot; stroke=&quot;#f57c00&quot; stroke-width=&quot;2&quot; fill=&quot;none&quot; marker-end=&quot;url(#arrowhead1)&quot;/&gt;
+  &lt;text x=&quot;280&quot; y=&quot;325&quot; font-family=&quot;Arial, sans-serif&quot; font-size=&quot;10&quot; fill=&quot;#f57c00&quot;&gt;运行环境&lt;/text&gt;
+
+  &lt;!-- Arrow markers --&gt;
+  &lt;defs&gt;
+    &lt;marker id=&quot;arrowhead1&quot; markerWidth=&quot;10&quot; markerHeight=&quot;7&quot; refX=&quot;10&quot; refY=&quot;3.5&quot; orient=&quot;auto&quot;&gt;
+      &lt;polygon points=&quot;0 0, 10 3.5, 0 7&quot; fill=&quot;#f57c00&quot;/&gt;
+    &lt;/marker&gt;
+    &lt;marker id=&quot;arrowhead2&quot; markerWidth=&quot;10&quot; markerHeight=&quot;7&quot; refX=&quot;10&quot; refY=&quot;3.5&quot; orient=&quot;auto&quot;&gt;
+      &lt;polygon points=&quot;0 0, 10 3.5, 0 7&quot; fill=&quot;#2196f3&quot;/&gt;
+    &lt;/marker&gt;
+  &lt;/defs&gt;
+
+  &lt;!-- Integration note --&gt;
+  &lt;rect x=&quot;450&quot; y=&quot;170&quot; width=&quot;250&quot; height=&quot;80&quot; fill=&quot;#f3e5f5&quot; stroke=&quot;#9c27b0&quot; stroke-width=&quot;1&quot; rx=&quot;5&quot;/&gt;
+  &lt;text x=&quot;470&quot; y=&quot;190&quot; font-family=&quot;Arial, sans-serif&quot; font-size=&quot;12&quot; font-weight=&quot;bold&quot; fill=&quot;#9c27b0&quot;&gt;集成特性&lt;/text&gt;
+  &lt;text x=&quot;470&quot; y=&quot;210&quot; font-family=&quot;Arial, sans-serif&quot; font-size=&quot;10&quot; fill=&quot;#666&quot;&gt;• 文件系统互通&lt;/text&gt;
+  &lt;text x=&quot;470&quot; y=&quot;225&quot; font-family=&quot;Arial, sans-serif&quot; font-size=&quot;10&quot; fill=&quot;#666&quot;&gt;• 网络共享&lt;/text&gt;
+  &lt;text x=&quot;470&quot; y=&quot;240&quot; font-family=&quot;Arial, sans-serif&quot; font-size=&quot;10&quot; fill=&quot;#666&quot;&gt;• Docker CLI在Ubuntu中可用&lt;/text&gt;
+&lt;/svg&gt;
+</code></pre>
+<p>现在让我详细解释这三者的关系和如何操作它们：</p>
+<h2 id="_1">三者关系详解</h2>
+<h3 id="1-wsl2-windows-subsystem-for-linux-2">1. <strong>WSL2 (Windows Subsystem for Linux 2)</strong></h3>
+<ul>
+<li>WSL2是微软提供的轻量级虚拟化层，在Windows上运行完整的Linux内核</li>
+<li>它提供了接近原生Linux的性能和完整的系统调用兼容性</li>
+<li>作为Ubuntu和Docker Engine的运行环境</li>
+</ul>
+<h3 id="2-ubuntu-distribution">2. <strong>Ubuntu Distribution</strong></h3>
+<ul>
+<li>Ubuntu是运行在WSL2上的Linux发行版</li>
+<li>拥有完整的文件系统、包管理器和Shell环境</li>
+<li>可以像原生Linux系统一样使用</li>
+</ul>
+<h3 id="3-docker-desktop">3. <strong>Docker Desktop</strong></h3>
+<ul>
+<li>Docker Desktop将Docker Engine部署在WSL2中运行</li>
+<li>提供Windows图形界面来管理Docker</li>
+<li>Docker Engine实际上与Ubuntu共享同一个WSL2内核</li>
+</ul>
+<h2 id="_2">操作方式</h2>
+<h3 id="ubuntu">访问Ubuntu系统：</h3>
+<pre><code class="language-bash"># 方式1：通过Windows终端
+wsl -d Ubuntu
+
+# 方式2：直接启动Ubuntu应用
+# 从开始菜单启动Ubuntu应用
+
+# 方式3：在当前目录打开Ubuntu
+wsl
+</code></pre>
+<h3 id="docker">Docker操作：</h3>
+<pre><code class="language-bash"># 在Ubuntu中直接使用Docker命令
+docker --version
+docker ps
+docker images
+
+# 在Windows PowerShell中也可以使用
+docker --version
+</code></pre>
+<h3 id="_3">文件系统互通：</h3>
+<pre><code class="language-bash"># 在Ubuntu中访问Windows文件
+cd /mnt/c/Users/你的用户名/
+
+# 在Windows中访问Ubuntu文件
+\\wsl$\Ubuntu\home\你的用户名\
+</code></pre>
+<h2 id="_4">关键理解点</h2>
+<ol>
+<li><strong>不是传统虚拟机</strong>：WSL2不是完整的虚拟机，而是轻量级虚拟化，性能更好</li>
+<li><strong>内核共享</strong>：Docker Engine和Ubuntu共享同一个Linux内核</li>
+<li><strong>双向控制</strong>：你可以在Ubuntu中用命令行操作Docker，也可以用Docker Desktop图形界面</li>
+<li><strong>资源共享</strong>：网络、文件系统在Windows、Ubuntu和Docker容器间可以互通</li>
+</ol>
+<h2 id="_5">实际使用建议</h2>
+<ol>
+<li><strong>开发环境</strong>：在Ubuntu中安装开发工具，用Docker运行服务</li>
+<li><strong>文件管理</strong>：推荐在Ubuntu的家目录下工作，避免Windows/Linux路径转换问题</li>
+<li><strong>性能优化</strong>：将代码放在WSL2文件系统中，而不是Windows文件系统，性能更好</li>
+</ol>
+<p>这样的架构让你既能享受Linux开发环境的便利，又能使用Windows的图形界面和应用程序，同时Docker无缝集成其中。</p>
+<h2 id="prompt_1">Prompt:</h2>
+<p>意思是Ubuntu和docker engine 是在wsl这个虚拟环境下的两个独立的系统，只是他们都寄生在wsl这个Linux内核中？只是因为共享wsl的Linux内核，所以我可以在Ubuntu系统中使用docker就像在一个独立的Ubuntu系统安装了docker一样？通过docker cli 也可以使用这个Ubuntu系统就想在docker中安装了一个Ubuntu镜像一样是吗？</p>
+<h2 id="response_1">Response:</h2>
+<p>你的理解有一些偏差，让我帮你澄清一下这个架构：</p>
+<p>WSL2、Ubuntu和Docker Desktop架构关系图</p>
+<pre><code class="language-svg">&lt;svg viewBox=&quot;0 0 800 600&quot; xmlns=&quot;http://www.w3.org/2000/svg&quot;&gt;
+  &lt;!-- Background --&gt;
+  &lt;rect width=&quot;800&quot; height=&quot;600&quot; fill=&quot;#f8f9fa&quot;/&gt;
+
+  &lt;!-- Windows Host --&gt;
+  &lt;rect x=&quot;50&quot; y=&quot;50&quot; width=&quot;700&quot; height=&quot;500&quot; fill=&quot;#e3f2fd&quot; stroke=&quot;#1976d2&quot; stroke-width=&quot;2&quot; rx=&quot;10&quot;/&gt;
+  &lt;text x=&quot;70&quot; y=&quot;80&quot; font-family=&quot;Arial, sans-serif&quot; font-size=&quot;18&quot; font-weight=&quot;bold&quot; fill=&quot;#1976d2&quot;&gt;Windows 11/10 Host&lt;/text&gt;
+
+  &lt;!-- WSL2 Layer --&gt;
+  &lt;rect x=&quot;80&quot; y=&quot;100&quot; width=&quot;640&quot; height=&quot;180&quot; fill=&quot;#fff3e0&quot; stroke=&quot;#f57c00&quot; stroke-width=&quot;2&quot; rx=&quot;8&quot;/&gt;
+  &lt;text x=&quot;100&quot; y=&quot;130&quot; font-family=&quot;Arial, sans-serif&quot; font-size=&quot;16&quot; font-weight=&quot;bold&quot; fill=&quot;#f57c00&quot;&gt;WSL2 (Windows Subsystem for Linux 2)&lt;/text&gt;
+  &lt;text x=&quot;100&quot; y=&quot;150&quot; font-family=&quot;Arial, sans-serif&quot; font-size=&quot;12&quot; fill=&quot;#666&quot;&gt;轻量级虚拟化层，提供完整的Linux内核&lt;/text&gt;
+
+  &lt;!-- Ubuntu Distribution --&gt;
+  &lt;rect x=&quot;120&quot; y=&quot;170&quot; width=&quot;250&quot; height=&quot;80&quot; fill=&quot;#fff&quot; stroke=&quot;#e95420&quot; stroke-width=&quot;2&quot; rx=&quot;5&quot;/&gt;
+  &lt;text x=&quot;140&quot; y=&quot;195&quot; font-family=&quot;Arial, sans-serif&quot; font-size=&quot;14&quot; font-weight=&quot;bold&quot; fill=&quot;#e95420&quot;&gt;Ubuntu Distribution&lt;/text&gt;
+  &lt;text x=&quot;140&quot; y=&quot;215&quot; font-family=&quot;Arial, sans-serif&quot; font-size=&quot;11&quot; fill=&quot;#666&quot;&gt;• 完整的Ubuntu文件系统&lt;/text&gt;
+  &lt;text x=&quot;140&quot; y=&quot;230&quot; font-family=&quot;Arial, sans-serif&quot; font-size=&quot;11&quot; fill=&quot;#666&quot;&gt;• 包管理器 (apt)&lt;/text&gt;
+  &lt;text x=&quot;140&quot; y=&quot;245&quot; font-family=&quot;Arial, sans-serif&quot; font-size=&quot;11&quot; fill=&quot;#666&quot;&gt;• Shell环境 (bash, zsh等)&lt;/text&gt;
+
+  &lt;!-- Docker Desktop --&gt;
+  &lt;rect x=&quot;80&quot; y=&quot;300&quot; width=&quot;640&quot; height=&quot;220&quot; fill=&quot;#e8f5e8&quot; stroke=&quot;#2196f3&quot; stroke-width=&quot;2&quot; rx=&quot;8&quot;/&gt;
+  &lt;text x=&quot;100&quot; y=&quot;330&quot; font-family=&quot;Arial, sans-serif&quot; font-size=&quot;16&quot; font-weight=&quot;bold&quot; fill=&quot;#2196f3&quot;&gt;Docker Desktop&lt;/text&gt;
+  &lt;text x=&quot;100&quot; y=&quot;350&quot; font-family=&quot;Arial, sans-serif&quot; font-size=&quot;12&quot; fill=&quot;#666&quot;&gt;集成了Docker Engine、Docker CLI和图形界面&lt;/text&gt;
+
+  &lt;!-- Docker Engine in WSL2 --&gt;
+  &lt;rect x=&quot;120&quot; y=&quot;370&quot; width=&quot;280&quot; height=&quot;120&quot; fill=&quot;#fff&quot; stroke=&quot;#0db7ed&quot; stroke-width=&quot;2&quot; rx=&quot;5&quot;/&gt;
+  &lt;text x=&quot;140&quot; y=&quot;395&quot; font-family=&quot;Arial, sans-serif&quot; font-size=&quot;14&quot; font-weight=&quot;bold&quot; fill=&quot;#0db7ed&quot;&gt;Docker Engine&lt;/text&gt;
+  &lt;text x=&quot;140&quot; y=&quot;410&quot; font-family=&quot;Arial, sans-serif&quot; font-size=&quot;11&quot; fill=&quot;#666&quot;&gt;• Docker Daemon (服务进程)&lt;/text&gt;
+  &lt;text x=&quot;140&quot; y=&quot;425&quot; font-family=&quot;Arial, sans-serif&quot; font-size=&quot;11&quot; fill=&quot;#666&quot;&gt;• 容器运行时&lt;/text&gt;
+  &lt;text x=&quot;140&quot; y=&quot;440&quot; font-family=&quot;Arial, sans-serif&quot; font-size=&quot;11&quot; fill=&quot;#666&quot;&gt;• 镜像管理&lt;/text&gt;
+  &lt;text x=&quot;140&quot; y=&quot;455&quot; font-family=&quot;Arial, sans-serif&quot; font-size=&quot;11&quot; fill=&quot;#666&quot;&gt;• 运行在独立的WSL2发行版中&lt;/text&gt;
+  &lt;text x=&quot;140&quot; y=&quot;470&quot; font-family=&quot;Arial, sans-serif&quot; font-size=&quot;11&quot; fill=&quot;#666&quot;&gt;• 通过socket与客户端通信&lt;/text&gt;
+
+  &lt;!-- Docker Desktop GUI --&gt;
+  &lt;rect x=&quot;420&quot; y=&quot;370&quot; width=&quot;280&quot; height=&quot;120&quot; fill=&quot;#fff&quot; stroke=&quot;#326ce5&quot; stroke-width=&quot;2&quot; rx=&quot;5&quot;/&gt;
+  &lt;text x=&quot;440&quot; y=&quot;395&quot; font-family=&quot;Arial, sans-serif&quot; font-size=&quot;14&quot; font-weight=&quot;bold&quot; fill=&quot;#326ce5&quot;&gt;Docker Desktop GUI&lt;/text&gt;
+  &lt;text x=&quot;440&quot; y=&quot;415&quot; font-family=&quot;Arial, sans-serif&quot; font-size=&quot;11&quot; fill=&quot;#666&quot;&gt;• 图形化管理界面&lt;/text&gt;
+  &lt;text x=&quot;440&quot; y=&quot;430&quot; font-family=&quot;Arial, sans-serif&quot; font-size=&quot;11&quot; fill=&quot;#666&quot;&gt;• 容器/镜像可视化&lt;/text&gt;
+  &lt;text x=&quot;440&quot; y=&quot;445&quot; font-family=&quot;Arial, sans-serif&quot; font-size=&quot;11&quot; fill=&quot;#666&quot;&gt;• 日志查看&lt;/text&gt;
+  &lt;text x=&quot;440&quot; y=&quot;460&quot; font-family=&quot;Arial, sans-serif&quot; font-size=&quot;11&quot; fill=&quot;#666&quot;&gt;• 设置配置&lt;/text&gt;
+  &lt;text x=&quot;440&quot; y=&quot;475&quot; font-family=&quot;Arial, sans-serif&quot; font-size=&quot;11&quot; fill=&quot;#666&quot;&gt;• Docker Hub集成&lt;/text&gt;
+
+  &lt;!-- Arrows and connections --&gt;
+  &lt;!-- WSL2 to Ubuntu --&gt;
+  &lt;path d=&quot;M 360 200 Q 380 160 400 200&quot; stroke=&quot;#f57c00&quot; stroke-width=&quot;2&quot; fill=&quot;none&quot; marker-end=&quot;url(#arrowhead1)&quot;/&gt;
+  &lt;text x=&quot;365&quot; y=&quot;175&quot; font-family=&quot;Arial, sans-serif&quot; font-size=&quot;10&quot; fill=&quot;#f57c00&quot;&gt;宿主&lt;/text&gt;
+
+  &lt;!-- Docker Desktop to Docker Engine --&gt;
+  &lt;path d=&quot;M 400 420 L 420 420&quot; stroke=&quot;#2196f3&quot; stroke-width=&quot;2&quot; fill=&quot;none&quot; marker-end=&quot;url(#arrowhead2)&quot;/&gt;
+  &lt;text x=&quot;405&quot; y=&quot;435&quot; font-family=&quot;Arial, sans-serif&quot; font-size=&quot;10&quot; fill=&quot;#2196f3&quot;&gt;控制&lt;/text&gt;
+
+  &lt;!-- WSL2 to Docker Engine --&gt;
+  &lt;path d=&quot;M 350 280 Q 300 320 260 370&quot; stroke=&quot;#f57c00&quot; stroke-width=&quot;2&quot; fill=&quot;none&quot; marker-end=&quot;url(#arrowhead1)&quot;/&gt;
+  &lt;text x=&quot;280&quot; y=&quot;325&quot; font-family=&quot;Arial, sans-serif&quot; font-size=&quot;10&quot; fill=&quot;#f57c00&quot;&gt;运行环境&lt;/text&gt;
+
+  &lt;!-- Arrow markers --&gt;
+  &lt;defs&gt;
+    &lt;marker id=&quot;arrowhead1&quot; markerWidth=&quot;10&quot; markerHeight=&quot;7&quot; refX=&quot;10&quot; refY=&quot;3.5&quot; orient=&quot;auto&quot;&gt;
+      &lt;polygon points=&quot;0 0, 10 3.5, 0 7&quot; fill=&quot;#f57c00&quot;/&gt;
+    &lt;/marker&gt;
+    &lt;marker id=&quot;arrowhead2&quot; markerWidth=&quot;10&quot; markerHeight=&quot;7&quot; refX=&quot;10&quot; refY=&quot;3.5&quot; orient=&quot;auto&quot;&gt;
+      &lt;polygon points=&quot;0 0, 10 3.5, 0 7&quot; fill=&quot;#2196f3&quot;/&gt;
+    &lt;/marker&gt;
+  &lt;/defs&gt;
+
+  &lt;!-- Integration note --&gt;
+  &lt;rect x=&quot;450&quot; y=&quot;170&quot; width=&quot;250&quot; height=&quot;80&quot; fill=&quot;#f3e5f5&quot; stroke=&quot;#9c27b0&quot; stroke-width=&quot;1&quot; rx=&quot;5&quot;/&gt;
+  &lt;text x=&quot;470&quot; y=&quot;190&quot; font-family=&quot;Arial, sans-serif&quot; font-size=&quot;12&quot; font-weight=&quot;bold&quot; fill=&quot;#9c27b0&quot;&gt;集成特性&lt;/text&gt;
+  &lt;text x=&quot;470&quot; y=&quot;210&quot; font-family=&quot;Arial, sans-serif&quot; font-size=&quot;10&quot; fill=&quot;#666&quot;&gt;• 文件系统互通&lt;/text&gt;
+  &lt;text x=&quot;470&quot; y=&quot;225&quot; font-family=&quot;Arial, sans-serif&quot; font-size=&quot;10&quot; fill=&quot;#666&quot;&gt;• 网络共享&lt;/text&gt;
+  &lt;text x=&quot;470&quot; y=&quot;240&quot; font-family=&quot;Arial, sans-serif&quot; font-size=&quot;10&quot; fill=&quot;#666&quot;&gt;• Docker CLI在Ubuntu中可用&lt;/text&gt;
+&lt;/svg&gt;
+</code></pre>
+<p>让我用更准确的方式解释这个架构关系：</p>
+<h2 id="_6">正确的理解</h2>
+<h3 id="1-ubuntu-docker-engine">1. <strong>Ubuntu 和 Docker Engine 的关系</strong></h3>
+<ul>
+<li><strong>Ubuntu</strong>：是一个完整的WSL2发行版，有自己的文件系统、用户空间</li>
+<li><strong>Docker Engine</strong>：通常运行在Docker Desktop创建的<strong>独立的WSL2发行版</strong>中（通常叫<code>docker-desktop</code>或<code>docker-desktop-data</code>）</li>
+<li>它们是<strong>两个独立的WSL2发行版</strong>，不是在同一个系统中</li>
+</ul>
+<h3 id="2">2. <strong>实际架构</strong></h3>
+<pre><code>Windows Host
+├── WSL2 内核 (共享)
+├── Ubuntu (WSL2发行版1)
+│   ├── 完整的Ubuntu用户空间
+│   ├── Docker CLI客户端
+│   └── 通过socket连接到Docker Engine
+└── docker-desktop (WSL2发行版2)
+    └── Docker Engine (daemon)
+</code></pre>
+<h3 id="3-ubuntudocker">3. <strong>为什么你可以在Ubuntu中使用Docker</strong></h3>
+<pre><code class="language-bash"># 查看所有WSL发行版
+wsl -l -v
+
+# 你会看到类似这样的输出：
+# NAME                   STATE           VERSION
+# * Ubuntu                 Running         2
+#   docker-desktop         Running         2
+#   docker-desktop-data    Running         2
+</code></pre>
+<p>Docker CLI在Ubuntu中工作是因为：
+- Ubuntu中安装了Docker CLI客户端
+- 客户端通过Unix socket或TCP连接到运行在<code>docker-desktop</code>发行版中的Docker Engine
+- 这就像网络中的客户端-服务器模式</p>
+<h3 id="4-docker-cliubuntu">4. <strong>你不能"通过Docker CLI使用Ubuntu系统"</strong></h3>
+<p>这个理解是错误的。正确的是：
+- <strong>你在Ubuntu中使用Docker CLI</strong> → 控制Docker Engine创建/管理容器
+- <strong>Docker容器是独立的</strong> → 它们基于镜像创建，与Ubuntu系统是分离的</p>
+<h2 id="_7">实际演示</h2>
+<p>让我们看看实际的情况：</p>
+<pre><code class="language-bash"># 在Ubuntu中
+docker run -it ubuntu:latest /bin/bash
+# 这会创建一个新的Ubuntu容器，它与你的WSL2 Ubuntu发行版是完全独立的
+
+# 查看进程树会发现：
+# Windows Host
+#   └── WSL2 Ubuntu: 你的shell
+#   └── WSL2 docker-desktop: Docker Engine + Ubuntu容器
+</code></pre>
+<h2 id="_8">关键要点</h2>
+<ol>
+<li><strong>独立性</strong>：Ubuntu发行版和Docker Engine运行在不同的WSL2实例中</li>
+<li><strong>通信方式</strong>：通过socket通信，不是直接的系统调用</li>
+<li><strong>容器隔离</strong>：Docker容器与Ubuntu发行版是完全隔离的环境</li>
+<li><strong>共享内核</strong>：所有WSL2发行版共享同一个Linux内核，但用户空间是独立的</li>
+</ol>
+<p>所以更准确的说法是：Ubuntu和Docker Engine是两个独立的WSL2发行版，通过网络协议进行通信，而不是"寄生"关系。Docker容器也不是"在Ubuntu中运行"，而是在Docker Engine的WSL2环境中运行。</p>
+<h2 id="prompt_2">Prompt:</h2>
+<p>你的意思是，Ubuntu和我安装的docker desk 是两个独立的wsl2实例，只是在安装Ubuntu这个实例时，Ubuntu自带docker cli 所以可以通过这个 docker cli作为一个客户端通过网络与docker desktop这个实例的docker引擎通信然后操作docker？</p>
+<h2 id="response_2">Response:</h2>
+<p>不完全正确！让我纠正一个重要的细节：</p>
+<h2 id="_9">关键纠正</h2>
+<p><strong>Ubuntu WSL2发行版默认是不自带Docker CLI的！</strong></p>
+<p>实际情况是这样的：</p>
+<h3 id="1">1. <strong>初始状态</strong></h3>
+<ul>
+<li>安装Ubuntu WSL2时，里面没有Docker CLI</li>
+<li>安装Docker Desktop时，它会创建自己的WSL2发行版来运行Docker Engine</li>
+</ul>
+<h3 id="2-docker-cli">2. <strong>Docker CLI的来源</strong></h3>
+<p>当你安装Docker Desktop后，它会：
+- 自动将Docker CLI添加到所有现有的WSL2发行版中（包括Ubuntu）
+- 或者你需要手动在Ubuntu中安装Docker CLI</p>
+<h3 id="3">3. <strong>验证一下</strong></h3>
+<p>你可以检查一下：</p>
+<pre><code class="language-bash"># 在Ubuntu中检查Docker CLI是如何安装的
+which docker
+# 可能显示: /usr/bin/docker 或 /mnt/c/Program Files/Docker/Docker/resources/bin/docker
+
+# 查看Docker CLI版本
+docker version
+# 会显示客户端和服务端信息
+
+# 查看WSL发行版
+wsl -l -v
+# 你会看到Ubuntu和docker-desktop等发行版
+</code></pre>
+<h3 id="4">4. <strong>正确的架构理解</strong></h3>
+<pre><code>Windows Host
+├── WSL2 Linux内核 (共享)
+├── Ubuntu (WSL2发行版)
+│   ├── Ubuntu操作系统
+│   ├── Docker CLI (由Docker Desktop安装或手动安装)
+│   └── 通过socket/网络连接Docker Engine
+└── docker-desktop (WSL2发行版)
+    ├── 最小化Linux系统
+    └── Docker Engine (daemon)
+</code></pre>
+<h3 id="5">5. <strong>通信机制</strong></h3>
+<ul>
+<li>Ubuntu中的Docker CLI作为<strong>客户端</strong></li>
+<li>docker-desktop中的Docker Engine作为<strong>服务端</strong></li>
+<li>它们通过Unix socket或TCP进行通信</li>
+<li>Docker Desktop配置了这个连接，所以你在Ubuntu中运行<code>docker</code>命令时，实际是在与docker-desktop中的引擎通信</li>
+</ul>
+<h3 id="6-docker-desktop">6. <strong>如果没有Docker Desktop</strong></h3>
+<p>如果你卸载Docker Desktop，Ubuntu中的Docker CLI就无法工作了，因为：
+- Docker CLI客户端还在
+- 但Docker Engine服务端没有了
+- 这时你会看到类似"Cannot connect to the Docker daemon"的错误</p>
+<p>所以你的理解基本正确，只是需要明确：<strong>Docker CLI不是Ubuntu自带的，而是Docker Desktop安装时添加的，或者需要手动安装的</strong>。</p>
+<h2 id="prompt_3">Prompt:</h2>
+<p>如果我现在在安装一个wsl2 的示例比如centos系统，那么就需要我自己手动安装docker cli了是吗？</p>
+<h2 id="response_3">Response:</h2>
+<p>基本正确，但有一些细节需要注意：</p>
+<h2 id="_10">分情况讨论</h2>
+<h3 id="1-docker-desktop">1. <strong>如果Docker Desktop已经安装并运行</strong></h3>
+<p>Docker Desktop在某些情况下会自动将Docker CLI添加到新的WSL2发行版中，但这<strong>不是绝对的</strong>。更安全的做法是手动确认和安装。</p>
+<h3 id="2-centos-wsl2docker-cli">2. <strong>在CentOS WSL2中安装Docker CLI</strong></h3>
+<pre><code class="language-bash"># 进入CentOS WSL2
+wsl -d CentOS
+
+# 方法1: 使用CentOS的包管理器安装
+sudo yum install -y yum-utils
+sudo yum-config-manager --add-repo https://download.docker.com/linux/centos/docker-ce.repo
+sudo yum install docker-ce-cli
+
+# 方法2: 下载静态二进制文件（推荐，因为只需要CLI）
+curl -fsSL https://download.docker.com/linux/static/stable/x86_64/docker-20.10.21.tgz -o docker.tgz
+tar xzvf docker.tgz
+sudo cp docker/docker /usr/local/bin/
+sudo chmod +x /usr/local/bin/docker
+</code></pre>
+<h3 id="3_1">3. <strong>验证连接</strong></h3>
+<pre><code class="language-bash"># 测试Docker CLI是否能连接到Docker Desktop的引擎
+docker version
+docker ps
+
+# 如果出现连接错误，可能需要配置Docker context
+docker context ls
+docker context use default
+</code></pre>
+<h3 id="4_1">4. <strong>可能遇到的问题</strong></h3>
+<p><strong>问题1：权限问题</strong></p>
+<pre><code class="language-bash"># 如果遇到权限问题，需要将用户添加到docker组
+sudo usermod -aG docker $USER
+# 然后重新登录WSL
+</code></pre>
+<p><strong>问题2：连接问题</strong></p>
+<pre><code class="language-bash"># 检查Docker Desktop是否在WSL2模式运行
+# Docker Desktop设置 -&gt; General -&gt; Use the WSL 2 based engine
+</code></pre>
+<h3 id="5_1">5. <strong>更简单的替代方案</strong></h3>
+<p>如果你只是想要一个能使用Docker的Linux环境，也可以：</p>
+<pre><code class="language-bash"># 让Docker Desktop集成这个新的WSL2发行版
+# 在Docker Desktop设置中:
+# Settings -&gt; Resources -&gt; WSL Integration
+# 启用对CentOS发行版的集成
+</code></pre>
+<p>启用后，Docker Desktop会自动在CentOS中提供Docker CLI和必要的配置。</p>
+<h3 id="6">6. <strong>检查当前状态</strong></h3>
+<pre><code class="language-bash"># 查看所有WSL发行版
+wsl -l -v
+
+# 检查Docker Desktop集成了哪些发行版
+# 在Docker Desktop -&gt; Settings -&gt; Resources -&gt; WSL Integration中查看
+</code></pre>
+<h2 id="_11">总结</h2>
+<p>是的，新安装的WSL2发行版（如CentOS）通常需要手动安装Docker CLI，但你有两个选择：
+1. <strong>手动安装Docker CLI</strong>（更灵活）
+2. <strong>在Docker Desktop中启用WSL集成</strong>（更简单）</p>
+<p>推荐使用第二种方法，因为Docker Desktop会处理所有的配置细节。</p>
+<h2 id="prompt_4">Prompt:</h2>
+<p>那现在的意思是，我在其他的wsl2实例中运行的docker 命令操作，比如下载容器 运行容器其实都是在docker desktop这个wsl2实例中运行的？如果我把docker desktop停止运行那么其他的命令也会失效？</p>
+<h2 id="response_4">Response:</h2>
+<p><strong>完全正确！</strong> 你的理解非常准确。</p>
+<h2 id="_12">确认你的理解</h2>
+<h3 id="1-dockerdocker-desktop">1. <strong>所有Docker操作都在docker-desktop实例中执行</strong></h3>
+<ul>
+<li>无论你在Ubuntu、CentOS还是其他WSL2发行版中运行docker命令</li>
+<li>实际的容器创建、镜像下载、网络管理等都发生在<code>docker-desktop</code> WSL2实例中</li>
+<li>其他WSL2发行版只是作为"遥控器"（Docker CLI客户端）</li>
+</ul>
+<h3 id="2-docker-desktop-docker">2. <strong>Docker Desktop停止 = 所有Docker功能失效</strong></h3>
+<p>是的，如果你：
+- 关闭Docker Desktop应用
+- 或者停止docker-desktop WSL2实例</p>
+<p>那么所有WSL2发行版中的docker命令都会失效。</p>
+<h2 id="_13">实际验证</h2>
+<p>你可以做这个实验：</p>
+<pre><code class="language-bash"># 步骤1: 在Ubuntu中运行一个容器
+docker run -d nginx
+docker ps  # 看到nginx容器在运行
+
+# 步骤2: 关闭Docker Desktop
+# 通过系统托盘关闭Docker Desktop
+
+# 步骤3: 再次尝试docker命令
+docker ps
+# 错误: Cannot connect to the Docker daemon at unix:///var/run/docker.sock
+
+# 步骤4: 检查WSL2实例状态
+wsl -l -v
+# 你会发现docker-desktop实例状态变为Stopped
+</code></pre>
+<h2 id="_14">架构总结</h2>
+<pre><code>你的操作流程:
+Ubuntu WSL2 中: docker run nginx
+      ↓ (通过socket通信)
+docker-desktop WSL2: Docker Engine接收命令
+      ↓
+docker-desktop WSL2: 下载nginx镜像、创建容器、运行容器
+      ↓
+Ubuntu WSL2 中: 收到成功响应
+</code></pre>
+<p><strong>实际的容器运行位置</strong>：
+- 容器进程运行在<code>docker-desktop</code> WSL2实例中
+- 容器文件系统存储在<code>docker-desktop-data</code> WSL2实例中
+- 你在Ubuntu中只是通过客户端查看和控制这些容器</p>
+<h2 id="_15">重要含义</h2>
+<ol>
+<li>
+<p><strong>数据持久性</strong>：容器和镜像数据都存在docker-desktop实例中，与你使用哪个WSL2发行版无关</p>
+</li>
+<li>
+<p><strong>性能影响</strong>：容器性能取决于docker-desktop实例的资源配置，不是Ubuntu等发行版</p>
+</li>
+<li>
+<p><strong>网络和存储</strong>：容器的网络和存储都通过docker-desktop实例管理</p>
+</li>
+<li>
+<p><strong>依赖关系</strong>：所有WSL2发行版的Docker功能都完全依赖Docker Desktop</p>
+</li>
+</ol>
+<p>所以你的理解是100%正确的：<strong>其他WSL2实例只是Docker客户端，真正的Docker环境完全在docker-desktop实例中运行</strong>。</p>
+<hr />
+<p>Powered by <a href="https://www.claudexporter.com">Claude Exporter</a></p>
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+  <script>var tabs=__md_get("__tabs");if(Array.isArray(tabs))e:for(var set of document.querySelectorAll(".tabbed-set")){var labels=set.querySelector(".tabbed-labels");for(var tab of tabs)for(var label of labels.getElementsByTagName("label"))if(label.innerText.trim()===tab){var input=document.getElementById(label.htmlFor);input.checked=!0;continue e}}</script>
+
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+          <button type="button" class="md-top md-icon" data-md-component="top" hidden>
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8z"/></svg>
+  Back to top
+</button>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+    
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+      <div class="md-progress" data-md-component="progress" role="progressbar"></div>
+    
+    
+    
+      
+      <script id="__config" type="application/json">{"base": "../..", "features": ["announce.dismiss", "content.action.edit", "content.action.view", "content.code.annotate", "content.code.copy", "content.code.select", "content.tabs.link", "content.tooltips", "navigation.footer", "navigation.indexes", "navigation.instant.prefetch", "navigation.instant.progress", "navigation.path", "navigation.sections", "navigation.tabs", "navigation.tabs.sticky", "navigation.top", "navigation.tracking", "search.highlight", "search.share", "search.suggest", "toc.follow"], "search": "../../assets/javascripts/workers/search.d50fe291.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+    
+    
+      <script src="../../assets/javascripts/bundle.13a4f30d.min.js"></script>
+      
+    
+  </body>
+</html>
