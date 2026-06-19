@@ -1,5 +1,8 @@
 {
   "theme": "system",
   "accentColor": "#653acb",
-  "cssTheme": "Minimal"
+  "cssTheme": "Minimal",
+  "enabledCssSnippets": [
+    "inlineAdmonitionsPluginReadOnly"
+  ]
 }
