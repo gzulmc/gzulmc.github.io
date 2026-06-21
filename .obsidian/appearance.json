@@ -1,8 +1,9 @@
 {
-  "theme": "system",
+  "theme": "obsidian",
   "accentColor": "#653acb",
   "cssTheme": "Minimal",
   "enabledCssSnippets": [
     "inlineAdmonitionsPluginReadOnly"
-  ]
+  ],
+  "baseFontSize": 18
 }
