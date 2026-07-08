@@ -1,0 +1,2118 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+      
+      
+      
+      
+      
+        
+      
+      
+      <link rel="icon" href="../../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.6">
+    
+    
+      
+        <title>1、带我学习 anthropic ... - gzulmc's 随笔记录</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../assets/stylesheets/main.484c7ddc.min.css">
+      
+        
+        <link rel="stylesheet" href="../../assets/stylesheets/palette.ab4e12ef.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+    <script>__md_scope=new URL("../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+  </head>
+  
+  
+    
+    
+      
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#1-anthropic" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow md-header--lifted" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href="../.." title="gzulmc&#39;s 随笔记录" class="md-header__button md-logo" aria-label="gzulmc's 随笔记录" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            gzulmc's 随笔记录
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              1、带我学习 anthropic ...
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+        <form class="md-header__option" data-md-component="palette">
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo"  aria-label="Switch to dark mode"  type="radio" name="__palette" id="__palette_0">
+    
+      <label class="md-header__button md-icon" title="Switch to dark mode" for="__palette_1" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a4 4 0 0 0-4 4 4 4 0 0 0 4 4 4 4 0 0 0 4-4 4 4 0 0 0-4-4m0 10a6 6 0 0 1-6-6 6 6 0 0 1 6-6 6 6 0 0 1 6 6 6 6 0 0 1-6 6m8-9.31V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12z"/></svg>
+      </label>
+    
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="slate" data-md-color-primary="indigo" data-md-color-accent="indigo"  aria-label="Switch to light mode"  type="radio" name="__palette" id="__palette_1">
+    
+      <label class="md-header__button md-icon" title="Switch to light mode" for="__palette_0" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 18c-.89 0-1.74-.2-2.5-.55C11.56 16.5 13 14.42 13 12s-1.44-4.5-3.5-5.45C10.26 6.2 11.11 6 12 6a6 6 0 0 1 6 6 6 6 0 0 1-6 6m8-9.31V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12z"/></svg>
+      </label>
+    
+  
+</form>
+      
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+          <a href="javascript:void(0)" class="md-search__icon md-icon" title="Share" aria-label="Share" data-clipboard data-clipboard-text="" data-md-component="search-share" tabindex="-1">
+            
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M18 16.08c-.76 0-1.44.3-1.96.77L8.91 12.7c.05-.23.09-.46.09-.7s-.04-.47-.09-.7l7.05-4.11c.54.5 1.25.81 2.04.81a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3c0 .24.04.47.09.7L8.04 9.81C7.5 9.31 6.79 9 6 9a3 3 0 0 0-3 3 3 3 0 0 0 3 3c.79 0 1.5-.31 2.04-.81l7.12 4.15c-.05.21-.08.43-.08.66 0 1.61 1.31 2.91 2.92 2.91s2.92-1.3 2.92-2.91A2.92 2.92 0 0 0 18 16.08"/></svg>
+          </a>
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+        <div class="md-search__suggest" data-md-component="search-suggest"></div>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      
+    
+    
+  </nav>
+  
+    
+      
+<nav class="md-tabs" aria-label="Tabs" data-md-component="tabs">
+  <div class="md-grid">
+    <ul class="md-tabs__list">
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../Python/%E9%9D%A2%E5%90%91%E5%AF%B9%E8%B1%A1%E5%9F%BA%E7%A1%80/" class="md-tabs__link">
+          
+  
+  
+    
+  
+  Python
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../Django/Django%E5%9F%BA%E7%A1%80/" class="md-tabs__link">
+          
+  
+  
+    
+  
+  Django
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../Docker/Docker%E8%AF%A6%E8%A7%A3/" class="md-tabs__link">
+          
+  
+  
+    
+  
+  Docker
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../.." class="md-tabs__link">
+          
+  
+  
+    
+  
+  Java
+
+        </a>
+      </li>
+    
+  
+
+      
+    </ul>
+  </div>
+</nav>
+    
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+  
+
+
+<nav class="md-nav md-nav--primary md-nav--lifted" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../.." title="gzulmc&#39;s 随笔记录" class="md-nav__button md-logo" aria-label="gzulmc's 随笔记录" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    gzulmc's 随笔记录
+  </label>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_1" >
+        
+          
+          <label class="md-nav__link" for="__nav_1" id="__nav_1_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Python
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_1_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_1">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Python
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../Python/%E9%9D%A2%E5%90%91%E5%AF%B9%E8%B1%A1%E5%9F%BA%E7%A1%80/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    面向对象基础
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../Python/%E9%9D%A2%E5%90%91%E5%AF%B9%E8%B1%A1%E8%BF%9B%E9%98%B6/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    面向对象进阶
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../Python/%E8%BF%9B%E7%A8%8B%E5%92%8C%E7%BA%BF%E7%A8%8B/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    进程和线程
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../Python/%E5%9B%BE%E5%83%8F%E5%92%8C%E6%96%87%E6%A1%A3%E5%A4%84%E7%90%86/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    图像和文档处理
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../Python/%E7%BD%91%E7%BB%9C%E7%BC%96%E7%A8%8B%E5%BA%94%E7%94%A8/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    网络编程应用
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../Python/%E6%96%87%E4%BB%B6%E5%92%8C%E5%BC%82%E5%B8%B8/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    文件和异常
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2" >
+        
+          
+          <label class="md-nav__link" for="__nav_2" id="__nav_2_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Django
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_2_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Django
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../Django/Django%E5%9F%BA%E7%A1%80/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Django基础
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../Django/%E6%95%B0%E6%8D%AE%E6%A8%A1%E5%9E%8B/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    数据模型
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+      
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3" >
+        
+          
+          <label class="md-nav__link" for="__nav_3" id="__nav_3_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Docker
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_3">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Docker
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../Docker/Docker%E8%AF%A6%E8%A7%A3/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Docker详解
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4" >
+        
+          
+          <div class="md-nav__link md-nav__container">
+            <a href="../.." class="md-nav__link ">
+              
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Java
+  
+
+    
+  </span>
+  
+  
+
+            </a>
+            
+          </div>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_4_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Java
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              
+                
+
+
+
+
+              
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+
+<h1 id="1-anthropic">1、带我学习 anthropic ...</h1>
+<p><strong>问题详情：</strong></p>
+<p>带我学习 anthropic MCP ,理清 用户提问-&gt;Claude Code CLI -&gt;</p>
+<hr />
+<p>你这个问题本质是在拆 <strong>“Claude Code + MCP + 工具调用” 的完整链路数据流</strong>。我帮你把它从工程视角理清楚，并补全你省略的那一段。</p>
+<hr />
+<h1 id="1">1. 你要的核心链路（完整版本）</h1>
+<p>你现在的链路是：</p>
+<blockquote>
+<p>用户提问 → Claude Code CLI → ???</p>
+</blockquote>
+<p>正确的完整链路应该是：</p>
+<blockquote>
+<p>用户提问
+ → Claude Code CLI（Host）
+ → Claude 模型（LLM 推理）
+ → Tool Router（工具路由层）
+ → MCP Client（协议客户端）
+ → MCP Server（外部工具/系统）
+ → 返回结果
+ → 再回到 LLM 做下一轮推理
+ → CLI 输出</p>
+</blockquote>
+<hr />
+<h1 id="2-mcp-claude-code">2. MCP 在 Claude Code 架构里的位置</h1>
+<p>先明确 MCP 不是“模型能力”，而是：</p>
+<blockquote>
+<p><strong>工具标准化通信协议（Tooling Layer）</strong></p>
+</blockquote>
+<p>它解决的是：</p>
+<ul>
+<li>Claude Code 不需要为 GitHub / DB / Jira 写 N 个 SDK</li>
+<li>只需要一个 MCP Client</li>
+<li>对接 N 个 MCP Server</li>
+</ul>
+<hr />
+<h1 id="3-claude-code-cli">3. Claude Code CLI 实际做的事情</h1>
+<p>CLI 本质是一个 <strong>Agent Runtime（运行时容器）</strong>：</p>
+<p>它负责：</p>
+<h3 id="1_1">① 输入封装</h3>
+<p>把你的输入变成：</p>
+<pre><code class="language-json">{
+  &quot;messages&quot;: [
+    {&quot;role&quot;: &quot;user&quot;, &quot;content&quot;: &quot;你的问题&quot;}
+  ],
+  &quot;tools&quot;: [...MCP tools + built-in tools...],
+  &quot;system&quot;: &quot;Claude Code system prompt&quot;
+}
+</code></pre>
+<hr />
+<h3 id="2-claude">② 发给 Claude 模型</h3>
+<p>模型会返回两种结果之一：</p>
+<h4 id="a">A. 直接回答</h4>
+<pre><code class="language-json">{
+  &quot;type&quot;: &quot;text&quot;,
+  &quot;content&quot;: &quot;最终回答&quot;
+}
+</code></pre>
+<h4 id="b-tool-call">B. tool call（关键）</h4>
+<pre><code class="language-json">{
+  &quot;type&quot;: &quot;tool_use&quot;,
+  &quot;name&quot;: &quot;mcp__github__search_issue&quot;,
+  &quot;input&quot;: {
+    &quot;query&quot;: &quot;bug login&quot;
+  }
+}
+</code></pre>
+<hr />
+<h1 id="4-mcp">4. MCP 是怎么被触发的（关键）</h1>
+<p>当 Claude 需要外部信息时：</p>
+<h3 id="step-1">Step 1：模型选择工具</h3>
+<p>例如：</p>
+<blockquote>
+<p>“去查 GitHub issue”</p>
+</blockquote>
+<p>模型不会直接调用 API，而是：</p>
+<p>👉 输出 tool_call</p>
+<hr />
+<h3 id="step-2claude-code-cli-tool_call">Step 2：Claude Code CLI 拦截 tool_call</h3>
+<p>CLI 看到：</p>
+<pre><code>tool_use: mcp__github__search_issue
+</code></pre>
+<hr />
+<h3 id="step-3-mcp-client">Step 3：进入 MCP Client 层</h3>
+<p>CLI 会做：</p>
+<pre><code>MCP Client → 找到 github server
+</code></pre>
+<hr />
+<h3 id="step-4-mcp-mcp-server">Step 4：通过 MCP 协议请求 MCP Server</h3>
+<p>发送类似：</p>
+<pre><code class="language-json">{
+  &quot;tool&quot;: &quot;search_issue&quot;,
+  &quot;args&quot;: {
+    &quot;query&quot;: &quot;bug login&quot;
+  }
+}
+</code></pre>
+<hr />
+<h3 id="step-5mcp-server">Step 5：MCP Server 执行真实动作</h3>
+<p>比如：</p>
+<ul>
+<li>调 GitHub API</li>
+<li>查数据库</li>
+<li>查 Jira</li>
+<li>读本地文件</li>
+</ul>
+<hr />
+<h3 id="step-6">Step 6：返回结构化结果</h3>
+<pre><code class="language-json">{
+  &quot;issues&quot;: [
+    {&quot;id&quot;: 123, &quot;title&quot;: &quot;login crash&quot;}
+  ]
+}
+</code></pre>
+<hr />
+<h3 id="step-7-claude">Step 7：返回给 Claude 模型</h3>
+<p>CLI 把结果塞回 LLM：</p>
+<pre><code class="language-json">{
+  &quot;role&quot;: &quot;tool&quot;,
+  &quot;name&quot;: &quot;mcp__github__search_issue&quot;,
+  &quot;content&quot;: {...}
+}
+</code></pre>
+<hr />
+<h3 id="step-8llm">Step 8：LLM 再推理</h3>
+<p>模型会继续：</p>
+<blockquote>
+<p>“我已经查到了 issue 123，所以应该这样修……”</p>
+</blockquote>
+<hr />
+<h1 id="5-mcp">5. 一句话总结 MCP 的作用</h1>
+<p>MCP 在 Claude Code 中的本质是：</p>
+<blockquote>
+<p><strong>把“工具调用”从模型能力，变成可插拔的外部服务系统</strong></p>
+</blockquote>
+<hr />
+<h1 id="6-claude-code-mcp">6. Claude Code + MCP 的整体架构图（抽象）</h1>
+<pre><code>User
+ ↓
+Claude Code CLI (Agent Runtime)
+ ↓
+Claude Model (LLM reasoning)
+ ↓
+Tool Router
+ ↓
+MCP Client
+ ↓
+MCP Servers (GitHub / DB / Slack / FS / API)
+ ↓
+External Systems
+</code></pre>
+<hr />
+<h1 id="7">7. 关键认知（很多人卡在这里）</h1>
+<h2 id="_1">❌ 错误理解</h2>
+<p>“MCP 是 Claude 自己的一部分能力”</p>
+<h2 id="_2">✅ 正确理解</h2>
+<p>“MCP 是 Claude Code 给模型外挂的标准工具接口”</p>
+<hr />
+<h1 id="8">8. 再往深一层（你后面一定会用到）</h1>
+<p>MCP 本质解决三个工程问题：</p>
+<h3 id="1-tool-nm">① Tool N×M 问题</h3>
+<p>不用每个模型对接每个工具</p>
+<hr />
+<h3 id="2-schema">② Schema 标准化</h3>
+<p>所有工具统一成：</p>
+<ul>
+<li>input JSON schema</li>
+<li>output JSON schema</li>
+</ul>
+<hr />
+<h3 id="3">③ 动态能力扩展</h3>
+<p>Claude Code 不需要升级模型：</p>
+<p>👉 只要加 MCP server 就能扩能力</p>
+<hr />
+<h1 id="9">9. 如果你想继续深入（建议路线）</h1>
+<p>下一步我可以帮你把这三块彻底讲透：</p>
+<h3 id="a-claude-code-tool-loop-while-loop">A. Claude Code 的 tool loop（核心 while-loop）</h3>
+<h3 id="b-mcp-server-python-ts">B. MCP Server 如何自己写（Python / TS）</h3>
+<h3 id="c-function-calling-vs-mcp-vs-openai-tools">C. function calling vs MCP vs OpenAI tools 的差异</h3>
+<h3 id="d-mcp-langchain-tool">D. 为什么 MCP 比 LangChain tool 更“底层”</h3>
+<hr />
+<p>如果你愿意，我们可以下一步直接画：</p>
+<blockquote>
+<p><strong>“Claude Code 内部 tool loop + MCP 调度状态机”</strong></p>
+</blockquote>
+<p>这个会让你彻底看懂 agent 是怎么“活起来”的。</p>
+<hr />
+<h1 id="2-user">2、这里出现的几个角色, user...</h1>
+<p><strong>问题详情：</strong></p>
+<p>这里出现的几个角色, user,Claude Code CLI, model,</p>
+<hr />
+<p>你这个是在拆 <strong>Claude Code / MCP 的执行分层角色模型</strong>，很好，这一步如果搞清楚，后面 tool loop、agent、MCP 都是顺的。</p>
+<p>我帮你把这 3 个（其实是 4 个核心层）讲清楚：</p>
+<hr />
+<h1 id="1_2">1. 四个核心角色（完整视角）</h1>
+<p>你提到：</p>
+<blockquote>
+<p>user, Claude Code CLI, model</p>
+</blockquote>
+<p>但实际工程里是 <strong>4 层结构</strong>：</p>
+<pre><code>User
+↓
+Claude Code CLI（Agent Runtime / Orchestrator）
+↓
+Claude Model（LLM 推理引擎）
+↓
+MCP Tools / External Systems
+</code></pre>
+<hr />
+<h1 id="2">2. 每个角色到底在干什么（非常关键）</h1>
+<h2 id="1-user">① User（用户）</h2>
+<p>你可以理解为：</p>
+<blockquote>
+<p>输入“意图”的来源</p>
+</blockquote>
+<p>特点：</p>
+<ul>
+<li>只负责说话</li>
+<li>不知道工具存在</li>
+<li>不知道 MCP</li>
+<li>不参与执行流程</li>
+</ul>
+<p>例如：</p>
+<pre><code>“帮我查 GitHub 登录 bug”
+</code></pre>
+<p>👉 这只是“意图信号”</p>
+<hr />
+<h2 id="2-claude-code-cli-agent-runtime">② Claude Code CLI（核心调度器 / Agent Runtime）</h2>
+<p>这是最关键的一层。</p>
+<p>它不是模型，它是：</p>
+<blockquote>
+<p><strong>“控制模型执行流程的程序”</strong></p>
+</blockquote>
+<p>它做 5 件事：</p>
+<h3 id="1-prompt">1）构造 prompt</h3>
+<p>把 user input 包装成：</p>
+<ul>
+<li>system prompt</li>
+<li>tool schema</li>
+<li>conversation history</li>
+</ul>
+<hr />
+<h3 id="2-model">2）调用 model</h3>
+<pre><code>CLI → LLM API
+</code></pre>
+<hr />
+<h3 id="3-model">3）解析 model 输出</h3>
+<p>判断：</p>
+<ul>
+<li>是普通文本？</li>
+<li>还是 tool call？</li>
+</ul>
+<hr />
+<h3 id="4-tool-callmcp">4）执行 tool call（MCP 在这里被触发）</h3>
+<pre><code>model → tool_use → CLI intercept → MCP client
+</code></pre>
+<hr />
+<h3 id="5agent-loop">5）循环执行（Agent Loop）</h3>
+<pre><code>思考 → 调工具 → 再思考 → 再调工具
+</code></pre>
+<p>👉 这是 agent 的本质</p>
+<hr />
+<p>📌 一句话：</p>
+<blockquote>
+<p>CLI = “大脑外的执行器 + 调度器”</p>
+</blockquote>
+<hr />
+<h2 id="3-claude-modelllm">③ Claude Model（LLM）</h2>
+<p>这是：</p>
+<blockquote>
+<p><strong>纯推理引擎（stateless reasoning engine）</strong></p>
+</blockquote>
+<p>它只做一件事：</p>
+<h3 id="token">👉 生成下一步 token</h3>
+<p>包括：</p>
+<ul>
+<li>回答</li>
+<li>思考</li>
+<li>tool call</li>
+</ul>
+<hr />
+<p>但注意：</p>
+<h3 id="_3">❌ 它不执行任何工具</h3>
+<h3 id="_4">❌ 它不访问网络</h3>
+<h3 id="mcp">❌ 它不知道 MCP 是什么实现</h3>
+<p>它只“建议”：</p>
+<pre><code class="language-json">{
+  &quot;tool_use&quot;: &quot;search_github&quot;
+}
+</code></pre>
+<hr />
+<p>📌 一句话：</p>
+<blockquote>
+<p>Model = “决策器（决定做什么）”</p>
+</blockquote>
+<hr />
+<h2 id="4-mcp-tools">④ MCP / Tools（执行系统）</h2>
+<p>这一层是：</p>
+<blockquote>
+<p><strong>真正干活的外部系统</strong></p>
+</blockquote>
+<p>比如：</p>
+<ul>
+<li>GitHub API</li>
+<li>DB 查询</li>
+<li>文件系统</li>
+<li>Slack</li>
+<li>HTTP 服务</li>
+</ul>
+<hr />
+<p>它只做：</p>
+<pre><code>input → execution → output
+</code></pre>
+<p>不参与推理。</p>
+<hr />
+<h1 id="3_1">3. 关键数据流（最重要）</h1>
+<p>完整流程是：</p>
+<pre><code>(1) User 提问
+    ↓
+(2) CLI 包装 prompt
+    ↓
+(3) Model 推理
+    ↓
+    ├── A: 直接输出答案 → CLI → User
+    └── B: tool call
+             ↓
+        CLI 解析 tool
+             ↓
+        MCP Client 调 server
+             ↓
+        MCP Server 执行
+             ↓
+        返回结果给 CLI
+             ↓
+        CLI 再喂回 Model
+             ↓
+        Model 再推理
+             ↓
+        输出最终答案
+</code></pre>
+<hr />
+<h1 id="4">4. 一个关键理解（很多人卡住）</h1>
+<h2 id="model-cli">❗ Model 和 CLI 的区别</h2>
+<table>
+<thead>
+<tr>
+<th>层⁠级</th>
+<th>是⁠什⁠么</th>
+<th>是⁠否⁠会⁠执⁠行⁠工⁠具</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Model</td>
+<td>推⁠理⁠器</td>
+<td>❌ 不⁠会</td>
+</tr>
+<tr>
+<td>CLI</td>
+<td>执⁠行⁠器</td>
+<td>✅ 会</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h1 id="5-mcp_1">5. MCP 在这个结构里的真实定位</h1>
+<p>很多人误解 MCP 是“模型能力”，其实不是。</p>
+<p>它实际是：</p>
+<blockquote>
+<p><strong>CLI ↔ 外部系统 的标准协议层</strong></p>
+</blockquote>
+<p>可以理解为：</p>
+<pre><code>Claude Code CLI
+   ↓
+MCP Client
+   ↓
+MCP Server（工具实现）
+</code></pre>
+<hr />
+<h1 id="6">6. 如果换成一个更直观类比</h1>
+<p>可以这样理解：</p>
+<h2 id="model">🧠 Model = 大脑</h2>
+<h2 id="cli">🦾 CLI = 手脚 + 操作系统</h2>
+<h2 id="mcp-usb-api">🌍 MCP = 插件接口（USB / API标准）</h2>
+<h2 id="user">👤 User = 发任务的人</h2>
+<hr />
+<h1 id="7_1">7. 一句话总结整个结构</h1>
+<blockquote>
+<p>Claude Code CLI 才是“Agent”，Model 只是“思考引擎”，MCP 是“外部能力接口”。</p>
+</blockquote>
+<hr />
+<h1 id="8_1">8. 如果你下一步想深入（建议）</h1>
+<p>你现在已经到“理解架构层”了，下一步可以学这三个关键点：</p>
+<h3 id="1-agent-loopwhile">① Agent Loop（while循环怎么设计）</h3>
+<h3 id="2-tool-schema-prompt">② tool schema 是怎么被注入 prompt 的</h3>
+<h3 id="3-mcp-server-json-rpc">③ MCP server 的协议细节（JSON-RPC）</h3>
+<p>我可以帮你直接画一张：</p>
+<blockquote>
+<p><strong>“Claude Code agent loop + MCP 状态机图（工程级）”</strong></p>
+</blockquote>
+<p>这个看完你基本就能自己写一个 mini Claude Code。</p>
+<hr />
+<h1 id="3-user">3、这里出现的几个角色, user...</h1>
+<p><strong>问题详情：</strong></p>
+<p>这里出现的几个角色, user , Claude Code CLI, model, mcp server, mcp client, Tool Router, 他们的定位和作用是什么? MCP 协议 是 mcp server 和 mcp client的沟通协议,  mcp server 相当于一个工具tool ? 我知道直接和model交换信息的是Claude Code CLI他们只进行 Claude api 接口规范的调用. 那相当于Claude Code CLI 也是mcp client的身份? Claude Code CLI要通过Claude API调用model,还要与mcp server沟通调用 mcp server的工具服务? 拿到mcp server 返回的数据后在包装数据与Claude交互?</p>
+<hr />
+<p>你这段理解已经很接近正确架构了，但里面有几个<strong>关键层级边界需要“校准”</strong>，否则后面会越学越乱。我给你按<strong>工业级架构视角</strong>重新梳理一遍。</p>
+<hr />
+<h1 id="1_3">1. 先给结论（非常重要）</h1>
+<p>你最后那段推理里，核心结论是：</p>
+<blockquote>
+<p>✔ Claude Code CLI 同时承担 LLM 调用 + MCP Client 调用
+ ✔ MCP Server = 工具执行端
+ ✔ MCP Client = 调用 MCP Server 的协议端
+ ✔ Tool Router = 决定“用不用工具 / 用哪个工具”</p>
+</blockquote>
+<p>是的，但要补一个关键点：</p>
+<blockquote>
+<p>⚠️ MCP Client <strong>不是一个独立系统，而是 CLI 内部的一个模块</strong></p>
+</blockquote>
+<hr />
+<h1 id="2_1">2. 六个角色的“准确分层”</h1>
+<p>我给你按<strong>职责分层（非常关键）</strong>：</p>
+<pre><code>┌──────────────────────────────┐
+│  User                        │
+└─────────────┬────────────────┘
+              ↓
+┌──────────────────────────────┐
+│ Claude Code CLI (Agent Runtime) │
+│  - prompt 构造                │
+│  - 调 LLM API                │
+│  - tool loop                 │
+│  - MCP Client（内置）        │
+│  - Tool Router               │
+└─────────────┬────────────────┘
+              ↓
+┌──────────────────────────────┐
+│ Claude Model (LLM)           │
+│  - 纯推理                    │
+│  - 决策 tool_call            │
+└─────────────┬────────────────┘
+              ↓
+┌──────────────────────────────┐
+│ MCP Client（CLI内部模块）     │
+└─────────────┬────────────────┘
+              ↓
+┌──────────────────────────────┐
+│ MCP Server（工具执行器）      │
+│  - GitHub / DB / FS / API    │
+└──────────────────────────────┘
+</code></pre>
+<hr />
+<h1 id="3_2">3. 每个角色的精确定义</h1>
+<h2 id="1-user_1">① User（用户）</h2>
+<h3 id="_5">定位：</h3>
+<blockquote>
+<p>任务输入者（Intent Source）</p>
+</blockquote>
+<h3 id="_6">职责：</h3>
+<ul>
+<li>只负责提出问题</li>
+<li>不知道 tool / MCP / model 内部结构</li>
+</ul>
+<hr />
+<h2 id="2-claude-code-cli">② Claude Code CLI（最核心）</h2>
+<p>这是整个系统的：</p>
+<blockquote>
+<p><strong>Agent Runtime（智能体运行时）</strong></p>
+</blockquote>
+<p>它不是“调用模型的壳”，而是一个完整 orchestrator。</p>
+<h3 id="4_1">它做 4 件核心事情：</h3>
+<hr />
+<h3 id="1-claude-apillm">✔ 1. 调用 Claude API（LLM）</h3>
+<pre><code>CLI → Claude Model API
+</code></pre>
+<hr />
+<h3 id="2-memory-context">✔ 2. 管理对话状态（memory / context）</h3>
+<ul>
+<li>history</li>
+<li>system prompt</li>
+<li>tool schema</li>
+</ul>
+<hr />
+<h3 id="3-tool-router">✔ 3. Tool Router（工具决策分发）</h3>
+<p>作用：</p>
+<blockquote>
+<p>判断 model 输出的是不是 tool call</p>
+</blockquote>
+<p>例如：</p>
+<pre><code class="language-json">tool_use: mcp__github__search
+</code></pre>
+<p>然后决定：</p>
+<ul>
+<li>走 MCP？</li>
+<li>走本地工具？</li>
+<li>直接忽略？</li>
+</ul>
+<hr />
+<h3 id="4-mcp-client">✔ 4. MCP Client（内置模块）</h3>
+<p>⚠️ 重点来了：</p>
+<blockquote>
+<p>MCP Client <strong>不是独立进程，是 CLI 内部 SDK</strong></p>
+</blockquote>
+<p>它做：</p>
+<ul>
+<li>连接 MCP server</li>
+<li>JSON-RPC 通信</li>
+<li>tool schema 调用</li>
+<li>返回结果解析</li>
+</ul>
+<hr />
+<p>📌 一句话：</p>
+<blockquote>
+<p>CLI = “总控制器 + MCP客户端 + LLM调用器”</p>
+</blockquote>
+<hr />
+<h2 id="3-claude-modelllm_1">③ Claude Model（LLM）</h2>
+<h3 id="_7">定位：</h3>
+<blockquote>
+<p>纯推理引擎（stateless reasoning engine）</p>
+</blockquote>
+<h3 id="_8">它只做：</h3>
+<ul>
+<li>生成 token</li>
+<li>决策 tool_call</li>
+<li>不执行任何工具</li>
+</ul>
+<hr />
+<h3 id="_9">它不会做：</h3>
+<p>❌ 不调用 MCP
+ ❌ 不访问网络
+ ❌ 不执行 API</p>
+<hr />
+<p>📌 一句话：</p>
+<blockquote>
+<p>Model = “只负责思考，不负责执行”</p>
+</blockquote>
+<hr />
+<h2 id="4-tool-router">④ Tool Router（工具路由器）</h2>
+<p>这个很多人会忽略。</p>
+<h3 id="_10">定位：</h3>
+<blockquote>
+<p>tool_call 的“调度判断层”</p>
+</blockquote>
+<h3 id="_11">它的作用：</h3>
+<p>当 model 输出：</p>
+<pre><code class="language-json">tool_use: mcp__github__search
+</code></pre>
+<p>Tool Router 判断：</p>
+<ul>
+<li>这是 MCP tool → 去 MCP Client</li>
+<li>这是本地 tool → 本地执行</li>
+<li>这是非法 tool → reject</li>
+</ul>
+<hr />
+<p>📌 一句话：</p>
+<blockquote>
+<p>Tool Router = “工具调度分发器”</p>
+</blockquote>
+<hr />
+<h2 id="5-mcp-client">⑤ MCP Client</h2>
+<h3 id="_12">定位：</h3>
+<blockquote>
+<p>MCP 协议通信客户端（CLI内部）</p>
+</blockquote>
+<h3 id="_13">它负责：</h3>
+<ul>
+<li>连接 MCP server</li>
+<li>发送 request</li>
+<li>接收 response</li>
+</ul>
+<hr />
+<h3 id="mcp_1">MCP 本质是：</h3>
+<blockquote>
+<p>JSON-RPC 风格的 tool invocation protocol</p>
+</blockquote>
+<p>示例：</p>
+<pre><code class="language-json">{
+  &quot;method&quot;: &quot;search_issue&quot;,
+  &quot;params&quot;: {
+    &quot;query&quot;: &quot;login bug&quot;
+  }
+}
+</code></pre>
+<hr />
+<p>📌 一句话：</p>
+<blockquote>
+<p>MCP Client = “工具调用的网络层”</p>
+</blockquote>
+<hr />
+<h2 id="6-mcp-server">⑥ MCP Server</h2>
+<h3 id="_14">定位：</h3>
+<blockquote>
+<p>工具执行器（Tool Runtime）</p>
+</blockquote>
+<p>你可以直接理解为：</p>
+<blockquote>
+<p><strong>一个标准化 tool service</strong></p>
+</blockquote>
+<hr />
+<h3 id="_15">它可以是：</h3>
+<ul>
+<li>GitHub search server</li>
+<li>DB query server</li>
+<li>file system server</li>
+<li>HTTP API wrapper</li>
+</ul>
+<hr />
+<h3 id="_16">它做的事情：</h3>
+<pre><code>input → logic → external system → output
+</code></pre>
+<hr />
+<p>📌 一句话：</p>
+<blockquote>
+<p>MCP Server = “真正干活的工具”</p>
+</blockquote>
+<hr />
+<h1 id="4_2">4. 你问的关键问题逐条校准</h1>
+<hr />
+<h2 id="1mcp-server-tool">❓1：MCP server 相当于 tool 吗？</h2>
+<p>✔ 正确，但要精确一点：</p>
+<blockquote>
+<p>MCP Server = Tool 的“运行容器 + 标准接口实现”</p>
+</blockquote>
+<p>不是单纯 function，而是：</p>
+<ul>
+<li>tool + protocol + runtime</li>
+</ul>
+<hr />
+<h2 id="2claude-code-cli-mcp-client">❓2：Claude Code CLI 是 MCP client 吗？</h2>
+<p>✔ 是，但要修正理解：</p>
+<blockquote>
+<p>CLI ≠ MCP Client
+ CLI = 包含 MCP Client 的 Agent Runtime</p>
+</blockquote>
+<hr />
+<h2 id="3cli-llm-mcp">❓3：CLI 是否同时做 LLM + MCP？</h2>
+<p>✔ 是的，这是关键点：</p>
+<h3 id="cli_1">CLI 同时做两件事：</h3>
+<h3 id="1-llm">① LLM 调用</h3>
+<pre><code>CLI → Claude API
+</code></pre>
+<h3 id="2-mcp">② MCP 调用</h3>
+<pre><code>CLI → MCP Client → MCP Server
+</code></pre>
+<hr />
+<h2 id="4mcp">❓4：MCP 返回数据后怎么回到模型？</h2>
+<p>✔ 你的理解是正确的，但流程要精确：</p>
+<pre><code>MCP Server → CLI → Tool Result
+                    ↓
+             再封装为 message
+                    ↓
+             再喂回 LLM
+</code></pre>
+<p>例如：</p>
+<pre><code class="language-json">{
+  &quot;role&quot;: &quot;tool&quot;,
+  &quot;name&quot;: &quot;mcp__github__search&quot;,
+  &quot;content&quot;: { ... }
+}
+</code></pre>
+<hr />
+<h2 id="5cli">❓5：CLI 是不是“中间桥梁”？</h2>
+<p>✔ 是，但更准确是：</p>
+<blockquote>
+<p>CLI = Agent Controller（控制整个 loop）</p>
+</blockquote>
+<p>不是桥，是“控制系统”。</p>
+<hr />
+<h1 id="5">5. 最终正确模型（工业级抽象）</h1>
+<pre><code>User
+  ↓
+Claude Code CLI (Agent Runtime)
+  ├── LLM API caller
+  ├── Tool Router
+  ├── MCP Client
+  ↓
+Claude Model
+  ↓
+(tool_call)
+  ↓
+MCP Client
+  ↓
+MCP Server
+  ↓
+External Systems
+</code></pre>
+<hr />
+<h1 id="6_1">6. 一句话帮你彻底定性</h1>
+<blockquote>
+<p>Claude Code CLI 是 Agent，大模型只是“思考器”，MCP 是“工具协议层”，MCP Server 是“工具执行端”。</p>
+</blockquote>
+<hr />
+<h1 id="7_2">7. 如果你想继续深入（建议下一步）</h1>
+<p>我可以带你进入真正核心的部分：</p>
+<h3 id="mcp-json-rpc">✔ MCP 协议长什么样（JSON-RPC细节）</h3>
+<h3 id="tool-loopwhile">✔ tool loop（while循环执行机制）</h3>
+<h3 id="claude-code-langchain">✔ Claude Code 为什么比 LangChain 更“工程化”</h3>
+<h3 id="mcp-server10">✔ 如何自己写一个 MCP server（10分钟做一个）</h3>
+<p>只要你下一步选一个，我可以直接带你写一个 mini Claude Code 级别的 agent。</p>
+<hr />
+<h1 id="4-tool-route">4、所以这个 Tool Route...</h1>
+<p><strong>问题详情：</strong></p>
+<p>所以这个 Tool Router 其实也是CLI内部的一个模块? CLI是调用 工具function tool 还是 MCP server 也是model 返回给 CLI的数据中是否包含 类似 tool_call 这样的属性字段 来告诉 CLI 是否调用工具以及怎么调用工具(包括传什么参数以及具体的参数值) ? CLI 的Tool Router 调用 工具得到数据后在 包装成 messages 通过 Claude API 调用model 将工具执行的结果和对话的上下文内容 发送给 model?</p>
+<hr />
+<p>你的理解已经非常接近“工业实现真实形态”了，我帮你把每一个关键点做<strong>精确校正 + 结构化拆解</strong>，避免你后面把 MCP / tool calling 混在一起。</p>
+<hr />
+<h1 id="1-tool-router-cli">1. Tool Router 是不是 CLI 内部模块？</h1>
+<p>✔ 是的，<strong>100% 是 CLI 内部模块</strong></p>
+<p>但要精确一点：</p>
+<blockquote>
+<p>Tool Router = CLI 内部的 “tool dispatch layer（工具分发层）”</p>
+</blockquote>
+<p>它负责：</p>
+<ul>
+<li>解析 model 输出</li>
+<li>判断 tool 类型（本地 / MCP / 内置）</li>
+<li>选择执行路径</li>
+</ul>
+<p>它不是模型的一部分，也不是 MCP 的一部分。</p>
+<hr />
+<h1 id="2-model_1">2. Model 返回的到底是什么？</h1>
+<p>你这个问题是核心。</p>
+<h2 id="model-tool_call">✔ 正确答案：Model 返回的是“结构化 tool_call”</h2>
+<p>例如：</p>
+<pre><code class="language-json">{
+  &quot;type&quot;: &quot;tool_use&quot;,
+  &quot;name&quot;: &quot;mcp__github__search_issue&quot;,
+  &quot;input&quot;: {
+    &quot;query&quot;: &quot;login bug&quot;
+  }
+}
+</code></pre>
+<hr />
+<h2 id="_17">📌 关键点</h2>
+<h3 id="1-model-mcp">✔ 1. model 不知道 MCP</h3>
+<p>model 只知道：</p>
+<blockquote>
+<p>“我要调用一个 tool”</p>
+</blockquote>
+<p>它不知道：</p>
+<ul>
+<li>MCP 是什么</li>
+<li>server 在哪</li>
+<li>怎么发 HTTP / RPC</li>
+</ul>
+<hr />
+<h3 id="2-tool_call">✔ 2. tool_call 是“协议级输出”</h3>
+<p>这个结构是：</p>
+<blockquote>
+<p>Claude API / OpenAI tools / function calling 的统一范式</p>
+</blockquote>
+<hr />
+<h3 id="3-mcp-tool">✔ 3. MCP tool 名字只是“命名空间”</h3>
+<p>比如：</p>
+<pre><code>mcp__github__search_issue
+</code></pre>
+<p>含义：</p>
+<ul>
+<li>mcp → tool 来源（MCP系统）</li>
+<li>github → server name</li>
+<li>search_issue → function</li>
+</ul>
+<hr />
+<h1 id="3-cli-tool_call">3. CLI 收到 tool_call 后做什么？</h1>
+<p>你说得基本对，但我帮你整理成<strong>标准执行流程</strong>：</p>
+<hr />
+<h2 id="step-1cli-model">Step 1：CLI 接收 model 输出</h2>
+<pre><code>LLM → tool_use message → CLI
+</code></pre>
+<hr />
+<h2 id="step-2tool-router">Step 2：Tool Router 判断</h2>
+<pre><code>tool name → 解析 → 判断执行路径
+</code></pre>
+<p>可能分三类：</p>
+<table>
+<thead>
+<tr>
+<th>类⁠型</th>
+<th>去⁠哪⁠执⁠行</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>内⁠置⁠工⁠具</td>
+<td>CLI本⁠地</td>
+</tr>
+<tr>
+<td>MCP工⁠具</td>
+<td>MCP Client</td>
+</tr>
+<tr>
+<td>普⁠通⁠函⁠数</td>
+<td>直⁠接⁠调⁠用SDK</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2 id="step-3-mcp-tool-mcp-client">Step 3：如果是 MCP tool → 进入 MCP Client</h2>
+<pre><code>Tool Router → MCP Client
+</code></pre>
+<hr />
+<h2 id="step-4mcp-client-mcp-server">Step 4：MCP Client 调 MCP Server</h2>
+<pre><code>CLI → MCP Client → MCP Server
+</code></pre>
+<hr />
+<h2 id="step-5server">Step 5：Server 执行真实动作</h2>
+<p>例如：</p>
+<ul>
+<li>GitHub API</li>
+<li>DB query</li>
+<li>file system</li>
+</ul>
+<hr />
+<h2 id="step-6-cli">Step 6：返回结果给 CLI</h2>
+<pre><code class="language-json">{
+  &quot;issues&quot;: [
+    { &quot;id&quot;: 123, &quot;title&quot;: &quot;login crash&quot; }
+  ]
+}
+</code></pre>
+<hr />
+<h1 id="4-cli-model">4. 关键问题：CLI 会不会“再调用 model”？</h1>
+<p>✔ 会，而且这是 agent 的核心机制</p>
+<hr />
+<h2 id="_18">完整循环是：</h2>
+<pre><code>User
+ ↓
+LLM（思考）
+ ↓
+tool_call
+ ↓
+CLI 执行 MCP tool
+ ↓
+tool result
+ ↓
+CLI 再调用 LLM
+ ↓
+LLM 继续推理
+ ↓
+最终 answer
+</code></pre>
+<hr />
+<h1 id="5-tool-result-model">5. tool result 是怎么回到 model 的？</h1>
+<p>✔ 这里是你问的关键点：</p>
+<blockquote>
+<p>CLI 会把 tool result 包装成 message，再发给 Claude API</p>
+</blockquote>
+<hr />
+<h2 id="_19">结构如下：</h2>
+<pre><code class="language-json">[
+  { &quot;role&quot;: &quot;user&quot;, &quot;content&quot;: &quot;查 GitHub bug&quot; },
+
+  {
+    &quot;role&quot;: &quot;assistant&quot;,
+    &quot;content&quot;: null,
+    &quot;tool_use&quot;: {
+      &quot;name&quot;: &quot;mcp__github__search_issue&quot;,
+      &quot;input&quot;: { &quot;query&quot;: &quot;login bug&quot; }
+    }
+  },
+
+  {
+    &quot;role&quot;: &quot;tool&quot;,
+    &quot;name&quot;: &quot;mcp__github__search_issue&quot;,
+    &quot;content&quot;: {
+      &quot;issues&quot;: [ ... ]
+    }
+  }
+]
+</code></pre>
+<hr />
+<h2 id="cli-model">然后 CLI 再发给 model：</h2>
+<pre><code>CLI → Claude API → 新一轮推理
+</code></pre>
+<hr />
+<h1 id="6-mcp-tool-cli">6. MCP / Tool / CLI 三者关系（最重要总结）</h1>
+<h2 id="mcp_2">✔ MCP 是什么？</h2>
+<blockquote>
+<p>工具调用协议（JSON-RPC 风格）</p>
+</blockquote>
+<hr />
+<h2 id="mcp-server">✔ MCP Server 是什么？</h2>
+<blockquote>
+<p>工具执行器（tool runtime）</p>
+</blockquote>
+<hr />
+<h2 id="mcp-client">✔ MCP Client 是什么？</h2>
+<blockquote>
+<p>协议客户端（CLI内部模块）</p>
+</blockquote>
+<hr />
+<h2 id="tool-router">✔ Tool Router 是什么？</h2>
+<blockquote>
+<p>tool 分发器（决定调用哪个执行系统）</p>
+</blockquote>
+<hr />
+<h2 id="cli_2">✔ CLI 是什么？</h2>
+<blockquote>
+<p>Agent runtime（控制整个循环）</p>
+</blockquote>
+<hr />
+<h1 id="7_3">7. 你现在的理解，逐句校准</h1>
+<hr />
+<h2 id="tool-router-cli">❓“Tool Router 是 CLI 模块吗？”</h2>
+<p>✔ 是</p>
+<hr />
+<h2 id="model-tool_call-cli">❓“model 返回 tool_call 告诉 CLI 调工具？”</h2>
+<p>✔ 完全正确</p>
+<hr />
+<h2 id="tool_call">❓“tool_call 包含参数？”</h2>
+<p>✔ 是的（input JSON）</p>
+<hr />
+<h2 id="cli-mcp-server-model">❓“CLI 调 MCP server 后再包装给 model？”</h2>
+<p>✔ 是的，这是 agent loop 的核心</p>
+<hr />
+<h1 id="8_2">8. 一句话帮你彻底定型</h1>
+<blockquote>
+<p>Model 负责“决定做什么”，CLI 负责“执行什么”，MCP 负责“怎么做”，Tool Router 负责“走哪条路”。</p>
+</blockquote>
+<hr />
+<h1 id="9_1">9. 如果你下一步要深入（建议）</h1>
+<p>你已经到“架构理解层”了，下一步可以进入更底层：</p>
+<h3 id="mcp-json-rpc_1">✔ MCP 协议 JSON-RPC 细节</h3>
+<h3 id="tool-schema-prompt">✔ tool schema 是如何注入 prompt 的</h3>
+<h3 id="agent-loop-while-true">✔ agent loop 为什么必须是 while true</h3>
+<h3 id="claude-code-vs-langchain-agent">✔ Claude Code vs LangChain agent 的本质区别</h3>
+<p>或者我可以直接带你：</p>
+<blockquote>
+<p>🔥 “手写一个最小 Claude Code + MCP agent（Python版）”</p>
+</blockquote>
+<p>这个会让你彻底打通。</p>
+<hr />
+<h1 id="5function">5、既然有了本地的function...</h1>
+<p><strong>问题详情：</strong></p>
+<p>既然有了本地的function tool 为什么还要MCP呢? 直接调用本地的function tool不也是一样的吗?</p>
+<hr />
+<p>这个问题已经进入<strong>MCP存在的真正工程动机层</strong>了，也是很多人从“会用 tool calling”到“理解 MCP”的分水岭。</p>
+<p>我直接给你一个结论 + 再拆原因。</p>
+<hr />
+<h1 id="1_4">1. 先给结论（非常重要）</h1>
+<blockquote>
+<p>✔ MCP 不是为了“替代 function tool”
+ ✔ MCP 是为了解决“function tool 在工程扩展性上的瓶颈”</p>
+</blockquote>
+<p>换句话说：</p>
+<blockquote>
+<p>function tool = 单体内置能力
+ MCP = 外部工具生态系统标准</p>
+</blockquote>
+<hr />
+<h1 id="2-function-tool-vs-mcp-tool">2. 本地 function tool vs MCP tool（本质区别）</h1>
+<h2 id="function-tool">✔ 本地 function tool（传统方式）</h2>
+<pre><code>Model → CLI → function call → 本地代码执行
+</code></pre>
+<p>特点：</p>
+<ul>
+<li>tool 是“写死在程序里的”</li>
+<li>需要重新部署 CLI 才能加工具</li>
+<li>工具和应用强耦合</li>
+</ul>
+<hr />
+<h3 id="_20">举例：</h3>
+<pre><code class="language-python">def search_github(query):
+    return requests.get(...)
+</code></pre>
+<p>👉 你必须：</p>
+<ul>
+<li>改 CLI 代码</li>
+<li>重新发布版本</li>
+<li>才能新增 tool</li>
+</ul>
+<hr />
+<h2 id="mcp_3">✔ MCP（现代方式）</h2>
+<pre><code>Model → CLI → MCP Client → MCP Server → Tool
+</code></pre>
+<p>特点：</p>
+<ul>
+<li>tool 在外部进程</li>
+<li>tool 可动态注册</li>
+<li>tool 可独立部署</li>
+<li>tool 可远程访问</li>
+</ul>
+<hr />
+<h1 id="3-function-tool">3. 为什么“本地 function tool 不够用”？</h1>
+<p>这是 MCP 的核心存在理由。</p>
+<hr />
+<h2 id="1_5">❌ 问题1：扩展性差（最关键）</h2>
+<h3 id="function-tool_1">function tool：</h3>
+<pre><code>加一个工具 = 改 CLI 代码 + 发布新版本
+</code></pre>
+<h3 id="mcp_4">MCP：</h3>
+<pre><code>加一个工具 = 启一个 MCP server
+</code></pre>
+<p>✔ 不用改 CLI</p>
+<hr />
+<h2 id="2_2">❌ 问题2：工具生态无法独立演进</h2>
+<p>function tool：</p>
+<ul>
+<li>tool 和 agent 是绑定的</li>
+</ul>
+<p>MCP：</p>
+<ul>
+<li>tool 可以独立进化（团队独立开发）</li>
+</ul>
+<hr />
+<h2 id="3_3">❌ 问题3：工具无法跨系统复用</h2>
+<p>function tool：</p>
+<ul>
+<li>只能给这个 CLI 用</li>
+</ul>
+<p>MCP：</p>
+<ul>
+<li>可以被：</li>
+<li>Claude Code</li>
+<li>Cursor</li>
+<li>自己的 agent</li>
+<li>多个 AI 系统</li>
+</ul>
+<hr />
+<h2 id="4_3">❌ 问题4：权限 / 安全隔离差</h2>
+<p>function tool：</p>
+<ul>
+<li>tool 在 CLI 进程内</li>
+<li>容易污染 runtime</li>
+</ul>
+<p>MCP：</p>
+<ul>
+<li>tool 在独立进程 / 服务</li>
+<li>可以 sandbox</li>
+</ul>
+<hr />
+<h1 id="4-mcp_1">4. MCP 的真正定位（非常关键）</h1>
+<p>MCP 不是“替代 function tool”，而是：</p>
+<blockquote>
+<p>✔ function tool 的“分布式版本 + 标准协议层”</p>
+</blockquote>
+<hr />
+<h1 id="5_1">5. 用一句工程类比你就懂了</h1>
+<h2 id="function-tool_2">function tool：</h2>
+<blockquote>
+<p>≈ 本地函数调用（monolith）</p>
+</blockquote>
+<pre><code>app.py 里面写所有功能
+</code></pre>
+<hr />
+<h2 id="mcp_5">MCP：</h2>
+<blockquote>
+<p>≈ 微服务 + RPC 标准协议</p>
+</blockquote>
+<pre><code>tool = 独立 service
+agent = client
+</code></pre>
+<hr />
+<h1 id="6-function-tool">6. 为什么不能“直接 function tool 就够了”？</h1>
+<p>我们用一个真实 AI Agent 场景：</p>
+<hr />
+<h2 id="claude-code">场景：Claude Code 要支持这些工具</h2>
+<ul>
+<li>GitHub</li>
+<li>PostgreSQL</li>
+<li>Redis</li>
+<li>Slack</li>
+<li>Notion</li>
+<li>本地文件系统</li>
+<li>Jenkins</li>
+<li>Jira</li>
+</ul>
+<hr />
+<h2 id="function-tool_3">❌ function tool 方案</h2>
+<p>你要写：</p>
+<pre><code>20 个 SDK + 20 个 tool function
+全部塞进 CLI
+</code></pre>
+<p>问题：</p>
+<ul>
+<li>CLI 变成巨型 monolith</li>
+<li>更新一个 tool = 发版本</li>
+<li>不同团队无法独立开发</li>
+</ul>
+<hr />
+<h2 id="mcp_6">✔ MCP 方案</h2>
+<p>你变成：</p>
+<pre><code>GitHub MCP server
+DB MCP server
+Slack MCP server
+...
+</code></pre>
+<p>CLI 只做：</p>
+<blockquote>
+<p>“统一调用协议”</p>
+</blockquote>
+<hr />
+<h1 id="7-mcp">7. MCP 的真正价值（核心总结）</h1>
+<h2 id="1-decoupling">✔ 1. 解耦（decoupling）</h2>
+<ul>
+<li>CLI ≠ tool 实现</li>
+</ul>
+<hr />
+<h2 id="2-plugin-system">✔ 2. 插件化（plugin system）</h2>
+<ul>
+<li>tool 可随时接入/移除</li>
+</ul>
+<hr />
+<h2 id="3-distributed-tools">✔ 3. 分布式（distributed tools）</h2>
+<ul>
+<li>tool 可以在远程服务器</li>
+</ul>
+<hr />
+<h2 id="4-ecosystem">✔ 4. 生态化（ecosystem）</h2>
+<ul>
+<li>不同公司可以写 MCP server</li>
+</ul>
+<hr />
+<h1 id="8_3">8. 你之前理解中的关键误区修正</h1>
+<p>你说：</p>
+<blockquote>
+<p>“有本地 function tool 为什么还要 MCP？”</p>
+</blockquote>
+<h3 id="_21">❌ 误区：</h3>
+<p>把 MCP 当成“tool 的另一种实现方式”</p>
+<hr />
+<h3 id="_22">✔ 正确理解：</h3>
+<blockquote>
+<p>MCP 是“tool 的标准化外部化协议”</p>
+</blockquote>
+<hr />
+<h1 id="9_2">9. 最终一张结构图帮你定型</h1>
+<pre><code>          ┌──────────────┐
+          │   Model      │
+          └─────┬────────┘
+                tool_call
+                    ↓
+        ┌────────────────────┐
+        │ Claude Code CLI    │
+        │  - Tool Router     │
+        │  - MCP Client      │
+        │  - Function tools  │
+        └───────┬────────────┘
+                ↓
+     ┌──────────────┬──────────────┐
+     ↓                              ↓
+Function Tool              MCP Client → MCP Server
+(local)                    (external tools)
+</code></pre>
+<hr />
+<h1 id="10">10. 一句话终极总结</h1>
+<blockquote>
+<p>function tool 是“内置能力”，MCP 是“外置工具生态系统标准”，两者不是替代关系，而是规模化后的结构升级。</p>
+</blockquote>
+<hr />
+<p>如果你下一步想继续深入，我建议你直接看这两个最关键问题（会彻底打通 MCP）：</p>
+<ol>
+<li>MCP 为什么用 JSON-RPC，而不是 HTTP function call？</li>
+<li>MCP server 的生命周期 / 注册机制到底是怎么工作的？</li>
+</ol>
+<p>这两个才是 MCP 的“工程核心”。</p>
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+  <script>var tabs=__md_get("__tabs");if(Array.isArray(tabs))e:for(var set of document.querySelectorAll(".tabbed-set")){var labels=set.querySelector(".tabbed-labels");for(var tab of tabs)for(var label of labels.getElementsByTagName("label"))if(label.innerText.trim()===tab){var input=document.getElementById(label.htmlFor);input.checked=!0;continue e}}</script>
+
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+          <button type="button" class="md-top md-icon" data-md-component="top" hidden>
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8z"/></svg>
+  Back to top
+</button>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+    
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+      <div class="md-progress" data-md-component="progress" role="progressbar"></div>
+    
+    
+    
+      
+      
+      <script id="__config" type="application/json">{"annotate": null, "base": "../..", "features": ["announce.dismiss", "content.action.edit", "content.action.view", "content.code.annotate", "content.code.copy", "content.code.select", "content.tabs.link", "content.tooltips", "navigation.footer", "navigation.indexes", "navigation.instant.prefetch", "navigation.instant.progress", "navigation.path", "navigation.sections", "navigation.tabs", "navigation.tabs.sticky", "navigation.top", "navigation.tracking", "search.highlight", "search.share", "search.suggest", "toc.follow"], "search": "../../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+    
+    
+      <script src="../../assets/javascripts/bundle.79ae519e.min.js"></script>
+      
+    
+  </body>
+</html>

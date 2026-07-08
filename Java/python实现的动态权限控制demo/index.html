@@ -1,0 +1,3198 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+      
+      
+      
+      
+      
+        
+      
+      
+      <link rel="icon" href="../../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.6">
+    
+    
+      
+        <title>RBAC Authentication System with MySQL and Redis - gzulmc's 随笔记录</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../assets/stylesheets/main.484c7ddc.min.css">
+      
+        
+        <link rel="stylesheet" href="../../assets/stylesheets/palette.ab4e12ef.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+    <script>__md_scope=new URL("../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+  </head>
+  
+  
+    
+    
+      
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#rbac-authentication-system-with-mysql-and-redis" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow md-header--lifted" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href="../.." title="gzulmc&#39;s 随笔记录" class="md-header__button md-logo" aria-label="gzulmc's 随笔记录" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            gzulmc's 随笔记录
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              RBAC Authentication System with MySQL and Redis
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+        <form class="md-header__option" data-md-component="palette">
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo"  aria-label="Switch to dark mode"  type="radio" name="__palette" id="__palette_0">
+    
+      <label class="md-header__button md-icon" title="Switch to dark mode" for="__palette_1" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a4 4 0 0 0-4 4 4 4 0 0 0 4 4 4 4 0 0 0 4-4 4 4 0 0 0-4-4m0 10a6 6 0 0 1-6-6 6 6 0 0 1 6-6 6 6 0 0 1 6 6 6 6 0 0 1-6 6m8-9.31V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12z"/></svg>
+      </label>
+    
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="slate" data-md-color-primary="indigo" data-md-color-accent="indigo"  aria-label="Switch to light mode"  type="radio" name="__palette" id="__palette_1">
+    
+      <label class="md-header__button md-icon" title="Switch to light mode" for="__palette_0" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 18c-.89 0-1.74-.2-2.5-.55C11.56 16.5 13 14.42 13 12s-1.44-4.5-3.5-5.45C10.26 6.2 11.11 6 12 6a6 6 0 0 1 6 6 6 6 0 0 1-6 6m8-9.31V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12z"/></svg>
+      </label>
+    
+  
+</form>
+      
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+          <a href="javascript:void(0)" class="md-search__icon md-icon" title="Share" aria-label="Share" data-clipboard data-clipboard-text="" data-md-component="search-share" tabindex="-1">
+            
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M18 16.08c-.76 0-1.44.3-1.96.77L8.91 12.7c.05-.23.09-.46.09-.7s-.04-.47-.09-.7l7.05-4.11c.54.5 1.25.81 2.04.81a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3c0 .24.04.47.09.7L8.04 9.81C7.5 9.31 6.79 9 6 9a3 3 0 0 0-3 3 3 3 0 0 0 3 3c.79 0 1.5-.31 2.04-.81l7.12 4.15c-.05.21-.08.43-.08.66 0 1.61 1.31 2.91 2.92 2.91s2.92-1.3 2.92-2.91A2.92 2.92 0 0 0 18 16.08"/></svg>
+          </a>
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+        <div class="md-search__suggest" data-md-component="search-suggest"></div>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      
+    
+    
+  </nav>
+  
+    
+      
+<nav class="md-tabs" aria-label="Tabs" data-md-component="tabs">
+  <div class="md-grid">
+    <ul class="md-tabs__list">
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../Python/%E9%9D%A2%E5%90%91%E5%AF%B9%E8%B1%A1%E5%9F%BA%E7%A1%80/" class="md-tabs__link">
+          
+  
+  
+    
+  
+  Python
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../Django/Django%E5%9F%BA%E7%A1%80/" class="md-tabs__link">
+          
+  
+  
+    
+  
+  Django
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../Docker/Docker%E8%AF%A6%E8%A7%A3/" class="md-tabs__link">
+          
+  
+  
+    
+  
+  Docker
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../.." class="md-tabs__link">
+          
+  
+  
+    
+  
+  Java
+
+        </a>
+      </li>
+    
+  
+
+      
+    </ul>
+  </div>
+</nav>
+    
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+  
+
+
+<nav class="md-nav md-nav--primary md-nav--lifted" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../.." title="gzulmc&#39;s 随笔记录" class="md-nav__button md-logo" aria-label="gzulmc's 随笔记录" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    gzulmc's 随笔记录
+  </label>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_1" >
+        
+          
+          <label class="md-nav__link" for="__nav_1" id="__nav_1_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Python
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_1_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_1">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Python
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../Python/%E9%9D%A2%E5%90%91%E5%AF%B9%E8%B1%A1%E5%9F%BA%E7%A1%80/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    面向对象基础
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../Python/%E9%9D%A2%E5%90%91%E5%AF%B9%E8%B1%A1%E8%BF%9B%E9%98%B6/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    面向对象进阶
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../Python/%E8%BF%9B%E7%A8%8B%E5%92%8C%E7%BA%BF%E7%A8%8B/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    进程和线程
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../Python/%E5%9B%BE%E5%83%8F%E5%92%8C%E6%96%87%E6%A1%A3%E5%A4%84%E7%90%86/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    图像和文档处理
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../Python/%E7%BD%91%E7%BB%9C%E7%BC%96%E7%A8%8B%E5%BA%94%E7%94%A8/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    网络编程应用
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../Python/%E6%96%87%E4%BB%B6%E5%92%8C%E5%BC%82%E5%B8%B8/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    文件和异常
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2" >
+        
+          
+          <label class="md-nav__link" for="__nav_2" id="__nav_2_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Django
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_2_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Django
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../Django/Django%E5%9F%BA%E7%A1%80/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Django基础
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../Django/%E6%95%B0%E6%8D%AE%E6%A8%A1%E5%9E%8B/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    数据模型
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+      
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3" >
+        
+          
+          <label class="md-nav__link" for="__nav_3" id="__nav_3_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Docker
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_3">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Docker
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../Docker/Docker%E8%AF%A6%E8%A7%A3/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Docker详解
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4" >
+        
+          
+          <div class="md-nav__link md-nav__container">
+            <a href="../.." class="md-nav__link ">
+              
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Java
+  
+
+    
+  </span>
+  
+  
+
+            </a>
+            
+          </div>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_4_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Java
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#prompt" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Prompt:
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#response" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Response:
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#prompt_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Prompt:
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#response_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Response:
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        安装步骤
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="安装步骤">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#1" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1. 数据库配置
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="1. 数据库配置">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#mysql" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        MySQL配置
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#redis" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Redis配置
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#2" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2. 应用配置
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#3" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3. 运行应用
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_2" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        数据库表结构
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="数据库表结构">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#users" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        users (用户表)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#roles" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        roles (角色表)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#permissions" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        permissions (权限表)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#user_roles" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        user_roles (用户角色关联表)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#role_permissions" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        role_permissions (角色权限关联表)
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#api" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        API文档
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="API文档">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#_3" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        认证相关
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="认证相关">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#_4" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        用户注册
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_5" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        用户登录
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_6" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        获取用户资料
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_7" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        用户登出
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_8" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        权限管理
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="权限管理">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#_9" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        创建权限
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_10" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        创建角色
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_11" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        为角色分配权限
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_12" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        为用户分配角色
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_13" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        受保护资源示例
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="受保护资源示例">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#userread" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        获取用户列表 (需要 user:read 权限)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#usercreate" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        创建用户 (需要 user:create 权限)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#userdelete" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        删除用户 (需要 user:delete 权限)
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_14" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        测试
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="测试">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#_15" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        运行测试脚本
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_16" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        手动测试
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_17" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        默认账户
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_18" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        权限系统说明
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="权限系统说明">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#_19" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        权限格式
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_20" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        权限检查流程
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_21" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        缓存机制
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_22" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        扩展开发
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="扩展开发">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#_23" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        添加新的权限控制
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_24" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        自定义权限装饰器
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_25" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        安全建议
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_26" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        故障排除
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="故障排除">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#_27" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        常见问题
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_28" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        日志配置
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_29" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        生产部署
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="生产部署">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#gunicorn" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        使用Gunicorn部署
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#docker" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        使用Docker部署
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#nginx" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        使用Nginx反向代理
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_30" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        总结
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_31" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        🔑 默认账户
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#api_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        🛠️ 主要API
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_32" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        🔒 权限格式
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              
+                
+
+
+
+
+              
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+
+<h1 id="rbac-authentication-system-with-mysql-and-redis">RBAC Authentication System with MySQL and Redis</h1>
+<p><strong>Created:</strong> 2025/7/15 5:29<br />
+<strong>Updated:</strong> 2025/7/15 5:32<br />
+<strong>Exported:</strong> 2025/7/15 5:32<br />
+<strong>Link:</strong> <a href="https://claude.ai/chat/e91f31f0-7654-40ef-b71b-3fe7272d8316">https://claude.ai/chat/e91f31f0-7654-40ef-b71b-3fe7272d8316</a>  </p>
+<h2 id="prompt">Prompt:</h2>
+<p>基于RBAC模型和mysql数据库和redis，实现一个基于token的动态认证和权限访问控制，动态从数据库加载权限信息。编写一个完整可运行的demo不需要前端代码,只需要后端代码</p>
+<h2 id="response">Response:</h2>
+<p>我来为您创建一个基于RBAC模型的完整认证和权限访问控制系统。这个系统将包括用户认证、权限检查、动态权限加载等功能。</p>
+<p><strong>RBAC认证权限系统</strong></p>
+<pre><code class="language-python">import json
+import hashlib
+import secrets
+from datetime import datetime, timedelta
+from functools import wraps
+from typing import Dict, List, Optional, Set
+
+import pymysql
+import redis
+from flask import Flask, request, jsonify, g
+from werkzeug.security import generate_password_hash, check_password_hash
+
+# 配置
+class Config:
+    # MySQL配置
+    MYSQL_HOST = 'localhost'
+    MYSQL_PORT = 3306
+    MYSQL_USER = 'root'
+    MYSQL_PASSWORD = 'password'
+    MYSQL_DB = 'rbac_system'
+
+    # Redis配置
+    REDIS_HOST = 'localhost'
+    REDIS_PORT = 6379
+    REDIS_DB = 0
+
+    # JWT配置
+    SECRET_KEY = 'your-secret-key-here'
+    TOKEN_EXPIRE_HOURS = 24
+
+# 数据库连接管理
+class DatabaseManager:
+    def __init__(self):
+        self.mysql_config = {
+            'host': Config.MYSQL_HOST,
+            'port': Config.MYSQL_PORT,
+            'user': Config.MYSQL_USER,
+            'password': Config.MYSQL_PASSWORD,
+            'database': Config.MYSQL_DB,
+            'charset': 'utf8mb4',
+            'autocommit': True
+        }
+        self.redis_client = redis.Redis(
+            host=Config.REDIS_HOST,
+            port=Config.REDIS_PORT,
+            db=Config.REDIS_DB,
+            decode_responses=True
+        )
+
+    def get_mysql_connection(self):
+        return pymysql.connect(**self.mysql_config)
+
+    def get_redis_client(self):
+        return self.redis_client
+
+# 初始化数据库
+def init_database():
+    &quot;&quot;&quot;初始化数据库表结构&quot;&quot;&quot;
+    db = DatabaseManager()
+    conn = db.get_mysql_connection()
+    cursor = conn.cursor()
+
+    # 创建数据库
+    cursor.execute(f&quot;CREATE DATABASE IF NOT EXISTS {Config.MYSQL_DB}&quot;)
+    cursor.execute(f&quot;USE {Config.MYSQL_DB}&quot;)
+
+    # 用户表
+    cursor.execute('''
+        CREATE TABLE IF NOT EXISTS users (
+            id INT AUTO_INCREMENT PRIMARY KEY,
+            username VARCHAR(50) UNIQUE NOT NULL,
+            password_hash VARCHAR(255) NOT NULL,
+            email VARCHAR(100),
+            status TINYINT DEFAULT 1 COMMENT '1-激活, 0-禁用',
+            created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+            updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+        )
+    ''')
+
+    # 角色表
+    cursor.execute('''
+        CREATE TABLE IF NOT EXISTS roles (
+            id INT AUTO_INCREMENT PRIMARY KEY,
+            name VARCHAR(50) UNIQUE NOT NULL,
+            description TEXT,
+            status TINYINT DEFAULT 1 COMMENT '1-激活, 0-禁用',
+            created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+            updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+        )
+    ''')
+
+    # 权限表
+    cursor.execute('''
+        CREATE TABLE IF NOT EXISTS permissions (
+            id INT AUTO_INCREMENT PRIMARY KEY,
+            name VARCHAR(50) UNIQUE NOT NULL,
+            resource VARCHAR(100) NOT NULL COMMENT '资源名称',
+            action VARCHAR(50) NOT NULL COMMENT '操作类型',
+            description TEXT,
+            status TINYINT DEFAULT 1 COMMENT '1-激活, 0-禁用',
+            created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+            updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+        )
+    ''')
+
+    # 用户角色关联表
+    cursor.execute('''
+        CREATE TABLE IF NOT EXISTS user_roles (
+            id INT AUTO_INCREMENT PRIMARY KEY,
+            user_id INT NOT NULL,
+            role_id INT NOT NULL,
+            created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+            FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE,
+            FOREIGN KEY (role_id) REFERENCES roles(id) ON DELETE CASCADE,
+            UNIQUE KEY unique_user_role (user_id, role_id)
+        )
+    ''')
+
+    # 角色权限关联表
+    cursor.execute('''
+        CREATE TABLE IF NOT EXISTS role_permissions (
+            id INT AUTO_INCREMENT PRIMARY KEY,
+            role_id INT NOT NULL,
+            permission_id INT NOT NULL,
+            created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+            FOREIGN KEY (role_id) REFERENCES roles(id) ON DELETE CASCADE,
+            FOREIGN KEY (permission_id) REFERENCES permissions(id) ON DELETE CASCADE,
+            UNIQUE KEY unique_role_permission (role_id, permission_id)
+        )
+    ''')
+
+    conn.close()
+    print(&quot;数据库表创建成功！&quot;)
+
+# Token管理器
+class TokenManager:
+    def __init__(self, db_manager: DatabaseManager):
+        self.db_manager = db_manager
+        self.redis_client = db_manager.get_redis_client()
+
+    def generate_token(self, user_id: int) -&gt; str:
+        &quot;&quot;&quot;生成token&quot;&quot;&quot;
+        token = secrets.token_urlsafe(32)
+
+        # 存储到Redis，设置过期时间
+        token_data = {
+            'user_id': user_id,
+            'created_at': datetime.now().isoformat(),
+            'expires_at': (datetime.now() + timedelta(hours=Config.TOKEN_EXPIRE_HOURS)).isoformat()
+        }
+
+        self.redis_client.setex(
+            f&quot;token:{token}&quot;,
+            Config.TOKEN_EXPIRE_HOURS * 3600,
+            json.dumps(token_data)
+        )
+
+        return token
+
+    def verify_token(self, token: str) -&gt; Optional[Dict]:
+        &quot;&quot;&quot;验证token&quot;&quot;&quot;
+        token_data = self.redis_client.get(f&quot;token:{token}&quot;)
+        if not token_data:
+            return None
+
+        try:
+            data = json.loads(token_data)
+            expires_at = datetime.fromisoformat(data['expires_at'])
+
+            if datetime.now() &gt; expires_at:
+                self.redis_client.delete(f&quot;token:{token}&quot;)
+                return None
+
+            return data
+        except:
+            return None
+
+    def revoke_token(self, token: str):
+        &quot;&quot;&quot;撤销token&quot;&quot;&quot;
+        self.redis_client.delete(f&quot;token:{token}&quot;)
+
+# 权限管理器
+class PermissionManager:
+    def __init__(self, db_manager: DatabaseManager):
+        self.db_manager = db_manager
+        self.redis_client = db_manager.get_redis_client()
+
+    def get_user_permissions(self, user_id: int) -&gt; Set[str]:
+        &quot;&quot;&quot;获取用户权限&quot;&quot;&quot;
+        cache_key = f&quot;user_permissions:{user_id}&quot;
+
+        # 先从Redis缓存获取
+        cached_permissions = self.redis_client.get(cache_key)
+        if cached_permissions:
+            return set(json.loads(cached_permissions))
+
+        # 从数据库查询
+        conn = self.db_manager.get_mysql_connection()
+        cursor = conn.cursor()
+
+        query = '''
+            SELECT DISTINCT p.name, p.resource, p.action
+            FROM permissions p
+            JOIN role_permissions rp ON p.id = rp.permission_id
+            JOIN roles r ON rp.role_id = r.id
+            JOIN user_roles ur ON r.id = ur.role_id
+            WHERE ur.user_id = %s AND p.status = 1 AND r.status = 1
+        '''
+
+        cursor.execute(query, (user_id,))
+        results = cursor.fetchall()
+        conn.close()
+
+        permissions = set()
+        for result in results:
+            # 格式: resource:action
+            permission = f&quot;{result[1]}:{result[2]}&quot;
+            permissions.add(permission)
+
+        # 缓存到Redis，5分钟过期
+        self.redis_client.setex(cache_key, 300, json.dumps(list(permissions)))
+
+        return permissions
+
+    def check_permission(self, user_id: int, resource: str, action: str) -&gt; bool:
+        &quot;&quot;&quot;检查用户是否有指定权限&quot;&quot;&quot;
+        permissions = self.get_user_permissions(user_id)
+        required_permission = f&quot;{resource}:{action}&quot;
+        return required_permission in permissions
+
+    def clear_user_permissions_cache(self, user_id: int):
+        &quot;&quot;&quot;清除用户权限缓存&quot;&quot;&quot;
+        cache_key = f&quot;user_permissions:{user_id}&quot;
+        self.redis_client.delete(cache_key)
+
+# 用户管理器
+class UserManager:
+    def __init__(self, db_manager: DatabaseManager):
+        self.db_manager = db_manager
+
+    def create_user(self, username: str, password: str, email: str = None) -&gt; Dict:
+        &quot;&quot;&quot;创建用户&quot;&quot;&quot;
+        conn = self.db_manager.get_mysql_connection()
+        cursor = conn.cursor()
+
+        try:
+            password_hash = generate_password_hash(password)
+
+            cursor.execute('''
+                INSERT INTO users (username, password_hash, email)
+                VALUES (%s, %s, %s)
+            ''', (username, password_hash, email))
+
+            user_id = cursor.lastrowid
+            conn.close()
+
+            return {
+                'id': user_id,
+                'username': username,
+                'email': email,
+                'status': 1
+            }
+        except pymysql.IntegrityError:
+            conn.close()
+            raise ValueError(&quot;用户名已存在&quot;)
+
+    def authenticate(self, username: str, password: str) -&gt; Optional[Dict]:
+        &quot;&quot;&quot;用户认证&quot;&quot;&quot;
+        conn = self.db_manager.get_mysql_connection()
+        cursor = conn.cursor()
+
+        cursor.execute('''
+            SELECT id, username, password_hash, email, status
+            FROM users
+            WHERE username = %s
+        ''', (username,))
+
+        result = cursor.fetchone()
+        conn.close()
+
+        if not result:
+            return None
+
+        user_id, username, password_hash, email, status = result
+
+        if status == 0:
+            return None
+
+        if check_password_hash(password_hash, password):
+            return {
+                'id': user_id,
+                'username': username,
+                'email': email,
+                'status': status
+            }
+
+        return None
+
+    def get_user_by_id(self, user_id: int) -&gt; Optional[Dict]:
+        &quot;&quot;&quot;根据ID获取用户信息&quot;&quot;&quot;
+        conn = self.db_manager.get_mysql_connection()
+        cursor = conn.cursor()
+
+        cursor.execute('''
+            SELECT id, username, email, status
+            FROM users
+            WHERE id = %s
+        ''', (user_id,))
+
+        result = cursor.fetchone()
+        conn.close()
+
+        if result:
+            return {
+                'id': result[0],
+                'username': result[1],
+                'email': result[2],
+                'status': result[3]
+            }
+        return None
+
+    def assign_role(self, user_id: int, role_id: int):
+        &quot;&quot;&quot;为用户分配角色&quot;&quot;&quot;
+        conn = self.db_manager.get_mysql_connection()
+        cursor = conn.cursor()
+
+        try:
+            cursor.execute('''
+                INSERT INTO user_roles (user_id, role_id)
+                VALUES (%s, %s)
+            ''', (user_id, role_id))
+            conn.close()
+        except pymysql.IntegrityError:
+            conn.close()
+            raise ValueError(&quot;用户角色关系已存在&quot;)
+
+# 角色管理器
+class RoleManager:
+    def __init__(self, db_manager: DatabaseManager):
+        self.db_manager = db_manager
+
+    def create_role(self, name: str, description: str = None) -&gt; Dict:
+        &quot;&quot;&quot;创建角色&quot;&quot;&quot;
+        conn = self.db_manager.get_mysql_connection()
+        cursor = conn.cursor()
+
+        try:
+            cursor.execute('''
+                INSERT INTO roles (name, description)
+                VALUES (%s, %s)
+            ''', (name, description))
+
+            role_id = cursor.lastrowid
+            conn.close()
+
+            return {
+                'id': role_id,
+                'name': name,
+                'description': description,
+                'status': 1
+            }
+        except pymysql.IntegrityError:
+            conn.close()
+            raise ValueError(&quot;角色名已存在&quot;)
+
+    def assign_permission(self, role_id: int, permission_id: int):
+        &quot;&quot;&quot;为角色分配权限&quot;&quot;&quot;
+        conn = self.db_manager.get_mysql_connection()
+        cursor = conn.cursor()
+
+        try:
+            cursor.execute('''
+                INSERT INTO role_permissions (role_id, permission_id)
+                VALUES (%s, %s)
+            ''', (role_id, permission_id))
+            conn.close()
+        except pymysql.IntegrityError:
+            conn.close()
+            raise ValueError(&quot;角色权限关系已存在&quot;)
+
+# 权限管理器（扩展）
+class PermissionManagerExtended:
+    def __init__(self, db_manager: DatabaseManager):
+        self.db_manager = db_manager
+
+    def create_permission(self, name: str, resource: str, action: str, description: str = None) -&gt; Dict:
+        &quot;&quot;&quot;创建权限&quot;&quot;&quot;
+        conn = self.db_manager.get_mysql_connection()
+        cursor = conn.cursor()
+
+        try:
+            cursor.execute('''
+                INSERT INTO permissions (name, resource, action, description)
+                VALUES (%s, %s, %s, %s)
+            ''', (name, resource, action, description))
+
+            permission_id = cursor.lastrowid
+            conn.close()
+
+            return {
+                'id': permission_id,
+                'name': name,
+                'resource': resource,
+                'action': action,
+                'description': description,
+                'status': 1
+            }
+        except pymysql.IntegrityError:
+            conn.close()
+            raise ValueError(&quot;权限名已存在&quot;)
+
+# Flask应用
+app = Flask(__name__)
+app.config['SECRET_KEY'] = Config.SECRET_KEY
+
+# 初始化管理器
+db_manager = DatabaseManager()
+token_manager = TokenManager(db_manager)
+permission_manager = PermissionManager(db_manager)
+user_manager = UserManager(db_manager)
+role_manager = RoleManager(db_manager)
+permission_manager_ext = PermissionManagerExtended(db_manager)
+
+# 认证装饰器
+def login_required(f):
+    @wraps(f)
+    def decorated_function(*args, **kwargs):
+        token = request.headers.get('Authorization')
+        if not token:
+            return jsonify({'error': '缺少认证token'}), 401
+
+        if token.startswith('Bearer '):
+            token = token[7:]
+
+        token_data = token_manager.verify_token(token)
+        if not token_data:
+            return jsonify({'error': '无效或过期的token'}), 401
+
+        user_id = token_data['user_id']
+        user = user_manager.get_user_by_id(user_id)
+        if not user or user['status'] == 0:
+            return jsonify({'error': '用户不存在或已禁用'}), 401
+
+        g.current_user = user
+        return f(*args, **kwargs)
+
+    return decorated_function
+
+# 权限检查装饰器
+def permission_required(resource: str, action: str):
+    def decorator(f):
+        @wraps(f)
+        @login_required
+        def decorated_function(*args, **kwargs):
+            user_id = g.current_user['id']
+
+            if not permission_manager.check_permission(user_id, resource, action):
+                return jsonify({'error': '权限不足'}), 403
+
+            return f(*args, **kwargs)
+        return decorated_function
+    return decorator
+
+# API路由
+@app.route('/api/register', methods=['POST'])
+def register():
+    &quot;&quot;&quot;用户注册&quot;&quot;&quot;
+    data = request.get_json()
+    username = data.get('username')
+    password = data.get('password')
+    email = data.get('email')
+
+    if not username or not password:
+        return jsonify({'error': '用户名和密码不能为空'}), 400
+
+    try:
+        user = user_manager.create_user(username, password, email)
+        return jsonify({
+            'message': '注册成功',
+            'user': user
+        }), 201
+    except ValueError as e:
+        return jsonify({'error': str(e)}), 400
+
+@app.route('/api/login', methods=['POST'])
+def login():
+    &quot;&quot;&quot;用户登录&quot;&quot;&quot;
+    data = request.get_json()
+    username = data.get('username')
+    password = data.get('password')
+
+    if not username or not password:
+        return jsonify({'error': '用户名和密码不能为空'}), 400
+
+    user = user_manager.authenticate(username, password)
+    if not user:
+        return jsonify({'error': '用户名或密码错误'}), 401
+
+    token = token_manager.generate_token(user['id'])
+
+    return jsonify({
+        'message': '登录成功',
+        'token': token,
+        'user': user
+    })
+
+@app.route('/api/logout', methods=['POST'])
+@login_required
+def logout():
+    &quot;&quot;&quot;用户登出&quot;&quot;&quot;
+    token = request.headers.get('Authorization')
+    if token and token.startswith('Bearer '):
+        token = token[7:]
+        token_manager.revoke_token(token)
+
+    return jsonify({'message': '登出成功'})
+
+@app.route('/api/profile', methods=['GET'])
+@login_required
+def profile():
+    &quot;&quot;&quot;获取用户资料&quot;&quot;&quot;
+    user_id = g.current_user['id']
+    permissions = list(permission_manager.get_user_permissions(user_id))
+
+    return jsonify({
+        'user': g.current_user,
+        'permissions': permissions
+    })
+
+# 权限管理API
+@app.route('/api/permissions', methods=['POST'])
+@permission_required('permission', 'create')
+def create_permission():
+    &quot;&quot;&quot;创建权限&quot;&quot;&quot;
+    data = request.get_json()
+    name = data.get('name')
+    resource = data.get('resource')
+    action = data.get('action')
+    description = data.get('description')
+
+    if not all([name, resource, action]):
+        return jsonify({'error': '权限名、资源和操作不能为空'}), 400
+
+    try:
+        permission = permission_manager_ext.create_permission(name, resource, action, description)
+        return jsonify({
+            'message': '权限创建成功',
+            'permission': permission
+        }), 201
+    except ValueError as e:
+        return jsonify({'error': str(e)}), 400
+
+@app.route('/api/roles', methods=['POST'])
+@permission_required('role', 'create')
+def create_role():
+    &quot;&quot;&quot;创建角色&quot;&quot;&quot;
+    data = request.get_json()
+    name = data.get('name')
+    description = data.get('description')
+
+    if not name:
+        return jsonify({'error': '角色名不能为空'}), 400
+
+    try:
+        role = role_manager.create_role(name, description)
+        return jsonify({
+            'message': '角色创建成功',
+            'role': role
+        }), 201
+    except ValueError as e:
+        return jsonify({'error': str(e)}), 400
+
+@app.route('/api/roles/&lt;int:role_id&gt;/permissions', methods=['POST'])
+@permission_required('role', 'assign_permission')
+def assign_permission_to_role(role_id):
+    &quot;&quot;&quot;为角色分配权限&quot;&quot;&quot;
+    data = request.get_json()
+    permission_id = data.get('permission_id')
+
+    if not permission_id:
+        return jsonify({'error': '权限ID不能为空'}), 400
+
+    try:
+        role_manager.assign_permission(role_id, permission_id)
+        return jsonify({'message': '权限分配成功'})
+    except ValueError as e:
+        return jsonify({'error': str(e)}), 400
+
+@app.route('/api/users/&lt;int:user_id&gt;/roles', methods=['POST'])
+@permission_required('user', 'assign_role')
+def assign_role_to_user(user_id):
+    &quot;&quot;&quot;为用户分配角色&quot;&quot;&quot;
+    data = request.get_json()
+    role_id = data.get('role_id')
+
+    if not role_id:
+        return jsonify({'error': '角色ID不能为空'}), 400
+
+    try:
+        user_manager.assign_role(user_id, role_id)
+
+        # 清除用户权限缓存
+        permission_manager.clear_user_permissions_cache(user_id)
+
+        return jsonify({'message': '角色分配成功'})
+    except ValueError as e:
+        return jsonify({'error': str(e)}), 400
+
+# 受保护的资源API示例
+@app.route('/api/admin/users', methods=['GET'])
+@permission_required('user', 'read')
+def get_users():
+    &quot;&quot;&quot;获取用户列表（需要用户读取权限）&quot;&quot;&quot;
+    return jsonify({
+        'message': '用户列表',
+        'data': ['用户1', '用户2', '用户3']
+    })
+
+@app.route('/api/admin/users', methods=['POST'])
+@permission_required('user', 'create')
+def create_user_admin():
+    &quot;&quot;&quot;创建用户（需要用户创建权限）&quot;&quot;&quot;
+    return jsonify({
+        'message': '用户创建成功',
+        'data': {'id': 1, 'username': 'newuser'}
+    })
+
+@app.route('/api/admin/users/&lt;int:user_id&gt;', methods=['DELETE'])
+@permission_required('user', 'delete')
+def delete_user(user_id):
+    &quot;&quot;&quot;删除用户（需要用户删除权限）&quot;&quot;&quot;
+    return jsonify({
+        'message': f'用户 {user_id} 删除成功'
+    })
+
+# 初始化数据
+def init_demo_data():
+    &quot;&quot;&quot;初始化演示数据&quot;&quot;&quot;
+    try:
+        # 创建权限
+        permissions = [
+            ('user_read', 'user', 'read', '用户读取权限'),
+            ('user_create', 'user', 'create', '用户创建权限'),
+            ('user_delete', 'user', 'delete', '用户删除权限'),
+            ('role_create', 'role', 'create', '角色创建权限'),
+            ('role_assign_permission', 'role', 'assign_permission', '角色分配权限'),
+            ('user_assign_role', 'user', 'assign_role', '用户分配角色权限'),
+            ('permission_create', 'permission', 'create', '权限创建权限'),
+        ]
+
+        for name, resource, action, description in permissions:
+            try:
+                permission_manager_ext.create_permission(name, resource, action, description)
+                print(f&quot;权限 {name} 创建成功&quot;)
+            except ValueError:
+                print(f&quot;权限 {name} 已存在&quot;)
+
+        # 创建角色
+        roles = [
+            ('admin', '管理员角色'),
+            ('user', '普通用户角色'),
+        ]
+
+        for name, description in roles:
+            try:
+                role_manager.create_role(name, description)
+                print(f&quot;角色 {name} 创建成功&quot;)
+            except ValueError:
+                print(f&quot;角色 {name} 已存在&quot;)
+
+        # 为管理员角色分配所有权限
+        for i in range(1, 8):  # 权限ID 1-7
+            try:
+                role_manager.assign_permission(1, i)  # 角色ID 1 (admin)
+            except ValueError:
+                pass
+
+        # 为普通用户角色分配基础权限
+        try:
+            role_manager.assign_permission(2, 1)  # 角色ID 2 (user), 权限ID 1 (user_read)
+        except ValueError:
+            pass
+
+        # 创建用户
+        users = [
+            ('admin', 'admin123', 'admin@example.com'),
+            ('user1', 'user123', 'user1@example.com'),
+        ]
+
+        for username, password, email in users:
+            try:
+                user = user_manager.create_user(username, password, email)
+                print(f&quot;用户 {username} 创建成功，ID: {user['id']}&quot;)
+            except ValueError:
+                print(f&quot;用户 {username} 已存在&quot;)
+
+        # 为用户分配角色
+        try:
+            user_manager.assign_role(1, 1)  # 用户ID 1 (admin), 角色ID 1 (admin)
+        except ValueError:
+            pass
+
+        try:
+            user_manager.assign_role(2, 2)  # 用户ID 2 (user1), 角色ID 2 (user)
+        except ValueError:
+            pass
+
+        print(&quot;演示数据初始化完成！&quot;)
+        print(&quot;管理员账号: admin/admin123&quot;)
+        print(&quot;普通用户账号: user1/user123&quot;)
+
+    except Exception as e:
+        print(f&quot;初始化演示数据失败: {e}&quot;)
+
+if __name__ == '__main__':
+    print(&quot;初始化数据库...&quot;)
+    init_database()
+
+    print(&quot;初始化演示数据...&quot;)
+    init_demo_data()
+
+    print(&quot;启动Flask应用...&quot;)
+    print(&quot;API测试示例:&quot;)
+    print(&quot;1. 登录: POST /api/login&quot;)
+    print(&quot;2. 获取用户信息: GET /api/profile&quot;)
+    print(&quot;3. 访问受保护资源: GET /api/admin/users&quot;)
+    print(&quot;4. 创建用户: POST /api/admin/users&quot;)
+    print(&quot;5. 删除用户: DELETE /api/admin/users/1&quot;)
+
+    app.run(debug=True, host='0.0.0.0', port=5000)
+</code></pre>
+<p>现在我来创建一个测试脚本，帮助您测试这个认证系统：</p>
+<p><strong>RBAC系统测试脚本</strong></p>
+<pre><code class="language-python">import requests
+import json
+import time
+
+# 测试配置
+BASE_URL = 'http://localhost:5000'
+ADMIN_USER = {'username': 'admin', 'password': 'admin123'}
+REGULAR_USER = {'username': 'user1', 'password': 'user123'}
+
+class RBACTester:
+    def __init__(self):
+        self.admin_token = None
+        self.user_token = None
+        self.session = requests.Session()
+
+    def print_separator(self, title):
+        print(f&quot;\n{'='*50}&quot;)
+        print(f&quot; {title}&quot;)
+        print(f&quot;{'='*50}&quot;)
+
+    def print_response(self, response, title=&quot;响应&quot;):
+        print(f&quot;{title}:&quot;)
+        print(f&quot;状态码: {response.status_code}&quot;)
+        try:
+            print(f&quot;响应内容: {json.dumps(response.json(), ensure_ascii=False, indent=2)}&quot;)
+        except:
+            print(f&quot;响应内容: {response.text}&quot;)
+        print(&quot;-&quot; * 30)
+
+    def login(self, user_data, user_type=&quot;用户&quot;):
+        &quot;&quot;&quot;登录测试&quot;&quot;&quot;
+        self.print_separator(f&quot;{user_type}登录测试&quot;)
+
+        response = self.session.post(
+            f&quot;{BASE_URL}/api/login&quot;,
+            json=user_data
+        )
+
+        self.print_response(response, f&quot;{user_type}登录&quot;)
+
+        if response.status_code == 200:
+            token = response.json().get('token')
+            print(f&quot;{user_type}登录成功，Token: {token[:20]}...&quot;)
+            return token
+        else:
+            print(f&quot;{user_type}登录失败&quot;)
+            return None
+
+    def get_profile(self, token, user_type=&quot;用户&quot;):
+        &quot;&quot;&quot;获取用户资料测试&quot;&quot;&quot;
+        self.print_separator(f&quot;{user_type}获取资料测试&quot;)
+
+        headers = {'Authorization': f'Bearer {token}'}
+        response = self.session.get(
+            f&quot;{BASE_URL}/api/profile&quot;,
+            headers=headers
+        )
+
+        self.print_response(response, f&quot;{user_type}资料&quot;)
+        return response.status_code == 200
+
+    def test_protected_resource(self, token, method, endpoint, data=None, user_type=&quot;用户&quot;):
+        &quot;&quot;&quot;测试受保护的资源&quot;&quot;&quot;
+        self.print_separator(f&quot;{user_type}访问 {method} {endpoint}&quot;)
+
+        headers = {'Authorization': f'Bearer {token}'}
+
+        if method == 'GET':
+            response = self.session.get(f&quot;{BASE_URL}{endpoint}&quot;, headers=headers)
+        elif method == 'POST':
+            response = self.session.post(f&quot;{BASE_URL}{endpoint}&quot;, headers=headers, json=data)
+        elif method == 'DELETE':
+            response = self.session.delete(f&quot;{BASE_URL}{endpoint}&quot;, headers=headers)
+
+        self.print_response(response, f&quot;{user_type}访问结果&quot;)
+        return response.status_code
+
+    def test_permission_management(self, token):
+        &quot;&quot;&quot;测试权限管理&quot;&quot;&quot;
+        self.print_separator(&quot;权限管理测试&quot;)
+
+        # 创建新权限
+        permission_data = {
+            'name': 'test_permission',
+            'resource': 'test_resource',
+            'action': 'test_action',
+            'description': '测试权限'
+        }
+
+        status_code = self.test_protected_resource(
+            token, 'POST', '/api/permissions', permission_data, &quot;
+</code></pre>
+<h2 id="prompt_1">Prompt:</h2>
+<p>Continue</p>
+<h2 id="response_1">Response:</h2>
+<p><strong>RBAC系统测试脚本</strong> ∙ Version 2</p>
+<pre><code class="language-python">import requests
+import json
+import time
+
+# 测试配置
+BASE_URL = 'http://localhost:5000'
+ADMIN_USER = {'username': 'admin', 'password': 'admin123'}
+REGULAR_USER = {'username': 'user1', 'password': 'user123'}
+
+class RBACTester:
+    def __init__(self):
+        self.admin_token = None
+        self.user_token = None
+        self.session = requests.Session()
+
+    def print_separator(self, title):
+        print(f&quot;\n{'='*50}&quot;)
+        print(f&quot; {title}&quot;)
+        print(f&quot;{'='*50}&quot;)
+
+    def print_response(self, response, title=&quot;响应&quot;):
+        print(f&quot;{title}:&quot;)
+        print(f&quot;状态码: {response.status_code}&quot;)
+        try:
+            print(f&quot;响应内容: {json.dumps(response.json(), ensure_ascii=False, indent=2)}&quot;)
+        except:
+            print(f&quot;响应内容: {response.text}&quot;)
+        print(&quot;-&quot; * 30)
+
+    def login(self, user_data, user_type=&quot;用户&quot;):
+        &quot;&quot;&quot;登录测试&quot;&quot;&quot;
+        self.print_separator(f&quot;{user_type}登录测试&quot;)
+
+        response = self.session.post(
+            f&quot;{BASE_URL}/api/login&quot;,
+            json=user_data
+        )
+
+        self.print_response(response, f&quot;{user_type}登录&quot;)
+
+        if response.status_code == 200:
+            token = response.json().get('token')
+            print(f&quot;{user_type}登录成功，Token: {token[:20]}...&quot;)
+            return token
+        else:
+            print(f&quot;{user_type}登录失败&quot;)
+            return None
+
+    def get_profile(self, token, user_type=&quot;用户&quot;):
+        &quot;&quot;&quot;获取用户资料测试&quot;&quot;&quot;
+        self.print_separator(f&quot;{user_type}获取资料测试&quot;)
+
+        headers = {'Authorization': f'Bearer {token}'}
+        response = self.session.get(
+            f&quot;{BASE_URL}/api/profile&quot;,
+            headers=headers
+        )
+
+        self.print_response(response, f&quot;{user_type}资料&quot;)
+        return response.status_code == 200
+
+    def test_protected_resource(self, token, method, endpoint, data=None, user_type=&quot;用户&quot;):
+        &quot;&quot;&quot;测试受保护的资源&quot;&quot;&quot;
+        self.print_separator(f&quot;{user_type}访问 {method} {endpoint}&quot;)
+
+        headers = {'Authorization': f'Bearer {token}'}
+
+        if method == 'GET':
+            response = self.session.get(f&quot;{BASE_URL}{endpoint}&quot;, headers=headers)
+        elif method == 'POST':
+            response = self.session.post(f&quot;{BASE_URL}{endpoint}&quot;, headers=headers, json=data)
+        elif method == 'DELETE':
+            response = self.session.delete(f&quot;{BASE_URL}{endpoint}&quot;, headers=headers)
+
+        self.print_response(response, f&quot;{user_type}访问结果&quot;)
+        return response.status_code
+
+    def test_permission_management(self, token):
+        &quot;&quot;&quot;测试权限管理&quot;&quot;&quot;
+        self.print_separator(&quot;权限管理测试&quot;)
+
+        # 创建新权限
+        permission_data = {
+            'name': 'test_permission',
+            'resource': 'test_resource',
+            'action': 'test_action',
+            'description': '测试权限'
+        }
+
+        status_code = self.test_protected_resource(
+            token, 'POST', '/api/permissions', permission_data, &quot;管理员&quot;
+        )
+
+        # 创建新角色
+        role_data = {
+            'name': 'test_role',
+            'description': '测试角色'
+        }
+
+        self.test_protected_resource(
+            token, 'POST', '/api/roles', role_data, &quot;管理员&quot;
+        )
+
+        # 为角色分配权限 (假设权限ID为8，角色ID为3)
+        permission_assign_data = {'permission_id': 8}
+        self.test_protected_resource(
+            token, 'POST', '/api/roles/3/permissions', permission_assign_data, &quot;管理员&quot;
+        )
+
+        # 为用户分配角色 (假设用户ID为2，角色ID为3)
+        role_assign_data = {'role_id': 3}
+        self.test_protected_resource(
+            token, 'POST', '/api/users/2/roles', role_assign_data, &quot;管理员&quot;
+        )
+
+    def test_logout(self, token, user_type=&quot;用户&quot;):
+        &quot;&quot;&quot;测试登出&quot;&quot;&quot;
+        self.print_separator(f&quot;{user_type}登出测试&quot;)
+
+        headers = {'Authorization': f'Bearer {token}'}
+        response = self.session.post(
+            f&quot;{BASE_URL}/api/logout&quot;,
+            headers=headers
+        )
+
+        self.print_response(response, f&quot;{user_type}登出&quot;)
+        return response.status_code == 200
+
+    def test_invalid_token(self):
+        &quot;&quot;&quot;测试无效token&quot;&quot;&quot;
+        self.print_separator(&quot;无效Token测试&quot;)
+
+        # 测试无token访问
+        response = self.session.get(f&quot;{BASE_URL}/api/profile&quot;)
+        self.print_response(response, &quot;无Token访问&quot;)
+
+        # 测试错误token
+        headers = {'Authorization': 'Bearer invalid_token_here'}
+        response = self.session.get(f&quot;{BASE_URL}/api/profile&quot;, headers=headers)
+        self.print_response(response, &quot;错误Token访问&quot;)
+
+    def run_all_tests(self):
+        &quot;&quot;&quot;运行所有测试&quot;&quot;&quot;
+        print(&quot;RBAC认证权限系统测试开始...&quot;)
+        print(f&quot;测试目标: {BASE_URL}&quot;)
+
+        # 1. 登录测试
+        self.admin_token = self.login(ADMIN_USER, &quot;管理员&quot;)
+        self.user_token = self.login(REGULAR_USER, &quot;普通用户&quot;)
+
+        if not self.admin_token or not self.user_token:
+            print(&quot;登录失败，终止测试&quot;)
+            return
+
+        # 2. 获取用户资料
+        self.get_profile(self.admin_token, &quot;管理员&quot;)
+        self.get_profile(self.user_token, &quot;普通用户&quot;)
+
+        # 3. 测试受保护资源访问
+        # 管理员应该能访问所有资源
+        self.test_protected_resource(self.admin_token, 'GET', '/api/admin/users', None, &quot;管理员&quot;)
+        self.test_protected_resource(self.admin_token, 'POST', '/api/admin/users', {'username': 'test'}, &quot;管理员&quot;)
+        self.test_protected_resource(self.admin_token, 'DELETE', '/api/admin/users/1', None, &quot;管理员&quot;)
+
+        # 普通用户只能访问读取资源
+        self.test_protected_resource(self.user_token, 'GET', '/api/admin/users', None, &quot;普通用户&quot;)
+        self.test_protected_resource(self.user_token, 'POST', '/api/admin/users', {'username': 'test'}, &quot;普通用户&quot;)
+        self.test_protected_resource(self.user_token, 'DELETE', '/api/admin/users/1', None, &quot;普通用户&quot;)
+
+        # 4. 权限管理测试 (只有管理员可以)
+        self.test_permission_management(self.admin_token)
+
+        # 5. 无效token测试
+        self.test_invalid_token()
+
+        # 6. 登出测试
+        self.test_logout(self.admin_token, &quot;管理员&quot;)
+        self.test_logout(self.user_token, &quot;普通用户&quot;)
+
+        # 7. 登出后访问测试
+        self.print_separator(&quot;登出后访问测试&quot;)
+        self.test_protected_resource(self.admin_token, 'GET', '/api/profile', None, &quot;已登出管理员&quot;)
+
+        print(&quot;\n&quot; + &quot;=&quot;*50)
+        print(&quot; 测试完成!&quot;)
+        print(&quot;=&quot;*50)
+
+def main():
+    &quot;&quot;&quot;主函数&quot;&quot;&quot;
+    tester = RBACTester()
+
+    # 等待服务器启动
+    print(&quot;等待服务器启动...&quot;)
+    time.sleep(2)
+
+    # 检查服务器是否可达
+    try:
+        response = requests.get(f&quot;{BASE_URL}/api/profile&quot;)
+        print(&quot;服务器连接成功&quot;)
+    except requests.exceptions.ConnectionError:
+        print(&quot;无法连接到服务器，请确保服务器已启动&quot;)
+        return
+
+    # 运行测试
+    tester.run_all_tests()
+
+if __name__ == '__main__':
+    main()
+</code></pre>
+<p>现在让我创建一个详细的部署说明文档：</p>
+<p><strong>RBAC系统部署指南</strong></p>
+<pre><code class="language-markdown"># RBAC认证权限系统部署指南
+
+## 系统概述
+
+这是一个基于RBAC (Role-Based Access Control) 模型的动态认证和权限访问控制系统，具有以下特性：
+
+- **Token认证**: 基于Redis的Token管理，支持过期和撤销
+- **动态权限**: 从MySQL数据库动态加载权限信息
+- **Redis缓存**: 用户权限信息缓存，提高性能
+- **完整API**: 提供用户管理、角色管理、权限管理的完整API
+- **装饰器权限控制**: 通过装饰器实现细粒度的权限控制
+
+## 系统架构
+
+</code></pre>
+<p>┌─────────────────┐    ┌─────────────────┐    ┌─────────────────┐
+│   Flask App     │    │   MySQL DB      │    │   Redis Cache   │
+│                 │    │                 │    │                 │
+│ • 用户认证      │◄──►│ • 用户数据      │    │ • Token存储     │
+│ • 权限检查      │    │ • 角色权限      │◄──►│ • 权限缓存      │
+│ • API路由       │    │ • 关联关系      │    │ • 会话管理      │
+└─────────────────┘    └─────────────────┘    └─────────────────┘</p>
+<pre><code>
+## 环境要求
+
+### 软件依赖
+
+- Python 3.7+
+- MySQL 5.7+ 或 MariaDB 10.2+
+- Redis 6.0+
+
+### Python包依赖
+
+```bash
+pip install flask pymysql redis werkzeug
+</code></pre>
+<h2 id="_1">安装步骤</h2>
+<h3 id="1">1. 数据库配置</h3>
+<h4 id="mysql">MySQL配置</h4>
+<pre><code class="language-sql">-- 创建数据库
+CREATE DATABASE rbac_system CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
+
+-- 创建用户（可选）
+CREATE USER 'rbac_user'@'localhost' IDENTIFIED BY 'your_password';
+GRANT ALL PRIVILEGES ON rbac_system.* TO 'rbac_user'@'localhost';
+FLUSH PRIVILEGES;
+</code></pre>
+<h4 id="redis">Redis配置</h4>
+<p>确保Redis服务正在运行：</p>
+<pre><code class="language-bash"># 启动Redis服务
+sudo systemctl start redis
+
+# 设置开机自启
+sudo systemctl enable redis
+
+# 检查状态
+sudo systemctl status redis
+</code></pre>
+<h3 id="2">2. 应用配置</h3>
+<p>修改 <code>main.py</code> 中的配置类：</p>
+<pre><code class="language-python">class Config:
+    # MySQL配置
+    MYSQL_HOST = 'localhost'
+    MYSQL_PORT = 3306
+    MYSQL_USER = 'rbac_user'          # 修改为您的用户名
+    MYSQL_PASSWORD = 'your_password'   # 修改为您的密码
+    MYSQL_DB = 'rbac_system'
+
+    # Redis配置
+    REDIS_HOST = 'localhost'
+    REDIS_PORT = 6379
+    REDIS_DB = 0
+
+    # JWT配置
+    SECRET_KEY = 'your-secret-key-here'  # 修改为强密码
+    TOKEN_EXPIRE_HOURS = 24
+</code></pre>
+<h3 id="3">3. 运行应用</h3>
+<pre><code class="language-bash"># 运行主应用
+python main.py
+</code></pre>
+<p>首次运行时，系统会自动：
+1. 创建数据库表结构
+2. 初始化演示数据
+3. 启动Flask应用</p>
+<h2 id="_2">数据库表结构</h2>
+<h3 id="users">users (用户表)</h3>
+<ul>
+<li><code>id</code>: 用户ID (主键)</li>
+<li><code>username</code>: 用户名 (唯一)</li>
+<li><code>password_hash</code>: 密码哈希</li>
+<li><code>email</code>: 邮箱</li>
+<li><code>status</code>: 状态 (1-激活, 0-禁用)</li>
+<li><code>created_at</code>, <code>updated_at</code>: 时间戳</li>
+</ul>
+<h3 id="roles">roles (角色表)</h3>
+<ul>
+<li><code>id</code>: 角色ID (主键)</li>
+<li><code>name</code>: 角色名称 (唯一)</li>
+<li><code>description</code>: 角色描述</li>
+<li><code>status</code>: 状态 (1-激活, 0-禁用)</li>
+<li><code>created_at</code>, <code>updated_at</code>: 时间戳</li>
+</ul>
+<h3 id="permissions">permissions (权限表)</h3>
+<ul>
+<li><code>id</code>: 权限ID (主键)</li>
+<li><code>name</code>: 权限名称 (唯一)</li>
+<li><code>resource</code>: 资源名称</li>
+<li><code>action</code>: 操作类型</li>
+<li><code>description</code>: 权限描述</li>
+<li><code>status</code>: 状态 (1-激活, 0-禁用)</li>
+<li><code>created_at</code>, <code>updated_at</code>: 时间戳</li>
+</ul>
+<h3 id="user_roles">user_roles (用户角色关联表)</h3>
+<ul>
+<li><code>user_id</code>: 用户ID (外键)</li>
+<li><code>role_id</code>: 角色ID (外键)</li>
+</ul>
+<h3 id="role_permissions">role_permissions (角色权限关联表)</h3>
+<ul>
+<li><code>role_id</code>: 角色ID (外键)</li>
+<li><code>permission_id</code>: 权限ID (外键)</li>
+</ul>
+<h2 id="api">API文档</h2>
+<h3 id="_3">认证相关</h3>
+<h4 id="_4">用户注册</h4>
+<pre><code>POST /api/register
+Content-Type: application/json
+
+{
+  &quot;username&quot;: &quot;testuser&quot;,
+  &quot;password&quot;: &quot;password123&quot;,
+  &quot;email&quot;: &quot;test@example.com&quot;
+}
+</code></pre>
+<h4 id="_5">用户登录</h4>
+<pre><code>POST /api/login
+Content-Type: application/json
+
+{
+  &quot;username&quot;: &quot;admin&quot;,
+  &quot;password&quot;: &quot;admin123&quot;
+}
+
+Response:
+{
+  &quot;message&quot;: &quot;登录成功&quot;,
+  &quot;token&quot;: &quot;eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...&quot;,
+  &quot;user&quot;: {
+    &quot;id&quot;: 1,
+    &quot;username&quot;: &quot;admin&quot;,
+    &quot;email&quot;: &quot;admin@example.com&quot;,
+    &quot;status&quot;: 1
+  }
+}
+</code></pre>
+<h4 id="_6">获取用户资料</h4>
+<pre><code>GET /api/profile
+Authorization: Bearer &lt;token&gt;
+
+Response:
+{
+  &quot;user&quot;: {
+    &quot;id&quot;: 1,
+    &quot;username&quot;: &quot;admin&quot;,
+    &quot;email&quot;: &quot;admin@example.com&quot;,
+    &quot;status&quot;: 1
+  },
+  &quot;permissions&quot;: [
+    &quot;user:read&quot;,
+    &quot;user:create&quot;,
+    &quot;user:delete&quot;,
+    &quot;role:create&quot;,
+    &quot;role:assign_permission&quot;,
+    &quot;user:assign_role&quot;,
+    &quot;permission:create&quot;
+  ]
+}
+</code></pre>
+<h4 id="_7">用户登出</h4>
+<pre><code>POST /api/logout
+Authorization: Bearer &lt;token&gt;
+</code></pre>
+<h3 id="_8">权限管理</h3>
+<h4 id="_9">创建权限</h4>
+<pre><code>POST /api/permissions
+Authorization: Bearer &lt;token&gt;
+Content-Type: application/json
+
+{
+  &quot;name&quot;: &quot;product_read&quot;,
+  &quot;resource&quot;: &quot;product&quot;,
+  &quot;action&quot;: &quot;read&quot;,
+  &quot;description&quot;: &quot;产品读取权限&quot;
+}
+</code></pre>
+<h4 id="_10">创建角色</h4>
+<pre><code>POST /api/roles
+Authorization: Bearer &lt;token&gt;
+Content-Type: application/json
+
+{
+  &quot;name&quot;: &quot;editor&quot;,
+  &quot;description&quot;: &quot;编辑者角色&quot;
+}
+</code></pre>
+<h4 id="_11">为角色分配权限</h4>
+<pre><code>POST /api/roles/{role_id}/permissions
+Authorization: Bearer &lt;token&gt;
+Content-Type: application/json
+
+{
+  &quot;permission_id&quot;: 1
+}
+</code></pre>
+<h4 id="_12">为用户分配角色</h4>
+<pre><code>POST /api/users/{user_id}/roles
+Authorization: Bearer &lt;token&gt;
+Content-Type: application/json
+
+{
+  &quot;role_id&quot;: 1
+}
+</code></pre>
+<h3 id="_13">受保护资源示例</h3>
+<h4 id="userread">获取用户列表 (需要 user:read 权限)</h4>
+<pre><code>GET /api/admin/users
+Authorization: Bearer &lt;token&gt;
+</code></pre>
+<h4 id="usercreate">创建用户 (需要 user:create 权限)</h4>
+<pre><code>POST /api/admin/users
+Authorization: Bearer &lt;token&gt;
+Content-Type: application/json
+
+{
+  &quot;username&quot;: &quot;newuser&quot;,
+  &quot;password&quot;: &quot;password123&quot;
+}
+</code></pre>
+<h4 id="userdelete">删除用户 (需要 user:delete 权限)</h4>
+<pre><code>DELETE /api/admin/users/{user_id}
+Authorization: Bearer &lt;token&gt;
+</code></pre>
+<h2 id="_14">测试</h2>
+<h3 id="_15">运行测试脚本</h3>
+<pre><code class="language-bash"># 先启动主应用
+python main.py
+
+# 在另一个终端运行测试
+python test_rbac.py
+</code></pre>
+<h3 id="_16">手动测试</h3>
+<p>使用curl或Postman测试API：</p>
+<pre><code class="language-bash"># 登录获取token
+curl -X POST http://localhost:5000/api/login \
+  -H &quot;Content-Type: application/json&quot; \
+  -d '{&quot;username&quot;:&quot;admin&quot;,&quot;password&quot;:&quot;admin123&quot;}'
+
+# 使用token访问受保护资源
+curl -X GET http://localhost:5000/api/profile \
+  -H &quot;Authorization: Bearer YOUR_TOKEN_HERE&quot;
+</code></pre>
+<h2 id="_17">默认账户</h2>
+<p>系统初始化后会创建以下默认账户：</p>
+<ul>
+<li><strong>管理员账户</strong>: admin / admin123</li>
+<li>拥有所有权限</li>
+<li><strong>普通用户账户</strong>: user1 / user123</li>
+<li>只有用户读取权限</li>
+</ul>
+<h2 id="_18">权限系统说明</h2>
+<h3 id="_19">权限格式</h3>
+<p>权限采用 <code>resource:action</code> 格式，例如：
+- <code>user:read</code> - 用户读取权限
+- <code>user:create</code> - 用户创建权限
+- <code>product:update</code> - 产品更新权限</p>
+<h3 id="_20">权限检查流程</h3>
+<ol>
+<li>从请求头提取Token</li>
+<li>验证Token有效性</li>
+<li>获取用户ID</li>
+<li>从Redis缓存获取用户权限（如果没有则从数据库查询）</li>
+<li>检查用户是否具有所需权限</li>
+<li>允许或拒绝访问</li>
+</ol>
+<h3 id="_21">缓存机制</h3>
+<ul>
+<li><strong>Token缓存</strong>: 存储在Redis中，设置过期时间</li>
+<li><strong>权限缓存</strong>: 用户权限信息缓存5分钟，提高性能</li>
+<li><strong>缓存失效</strong>: 角色权限变更时自动清除相关用户的权限缓存</li>
+</ul>
+<h2 id="_22">扩展开发</h2>
+<h3 id="_23">添加新的权限控制</h3>
+<pre><code class="language-python">@app.route('/api/products', methods=['GET'])
+@permission_required('product', 'read')
+def get_products():
+    &quot;&quot;&quot;获取产品列表&quot;&quot;&quot;
+    return jsonify({'products': []})
+
+@app.route('/api/products', methods=['POST'])
+@permission_required('product', 'create')
+def create_product():
+    &quot;&quot;&quot;创建产品&quot;&quot;&quot;
+    return jsonify({'message': '产品创建成功'})
+</code></pre>
+<h3 id="_24">自定义权限装饰器</h3>
+<pre><code class="language-python">def multiple_permissions_required(*permissions):
+    &quot;&quot;&quot;需要多个权限的装饰器&quot;&quot;&quot;
+    def decorator(f):
+        @wraps(f)
+        @login_required
+        def decorated_function(*args, **kwargs):
+            user_id = g.current_user['id']
+
+            for resource, action in permissions:
+                if not permission_manager.check_permission(user_id, resource, action):
+                    return jsonify({'error': f'缺少权限: {resource}:{action}'}), 403
+
+            return f(*args, **kwargs)
+        return decorated_function
+    return decorator
+
+# 使用示例
+@app.route('/api/admin/advanced', methods=['POST'])
+@multiple_permissions_required(('user', 'create'), ('role', 'assign_permission'))
+def advanced_admin_function():
+    &quot;&quot;&quot;需要多个权限的高级管理功能&quot;&quot;&quot;
+    return jsonify({'message': '操作成功'})
+</code></pre>
+<h2 id="_25">安全建议</h2>
+<ol>
+<li><strong>密码安全</strong></li>
+<li>使用强密码策略</li>
+<li>定期更换SECRET_KEY</li>
+<li>
+<p>考虑增加密码复杂度验证</p>
+</li>
+<li>
+<p><strong>Token安全</strong></p>
+</li>
+<li>设置合理的Token过期时间</li>
+<li>考虑实现Token刷新机制</li>
+<li>
+<p>重要操作需要重新验证</p>
+</li>
+<li>
+<p><strong>数据库安全</strong></p>
+</li>
+<li>使用专用数据库用户</li>
+<li>限制数据库用户权限</li>
+<li>
+<p>定期备份数据库</p>
+</li>
+<li>
+<p><strong>网络安全</strong></p>
+</li>
+<li>使用HTTPS协议</li>
+<li>配置防火墙规则</li>
+<li>考虑使用API网关</li>
+</ol>
+<h2 id="_26">故障排除</h2>
+<h3 id="_27">常见问题</h3>
+<ol>
+<li><strong>数据库连接失败</strong></li>
+<li>检查MySQL服务是否启动</li>
+<li>验证数据库配置信息</li>
+<li>
+<p>检查防火墙设置</p>
+</li>
+<li>
+<p><strong>Redis连接失败</strong></p>
+</li>
+<li>检查Redis服务是否启动</li>
+<li>验证Redis配置信息</li>
+<li>
+<p>检查Redis密码设置</p>
+</li>
+<li>
+<p><strong>权限检查失败</strong></p>
+</li>
+<li>确认用户已分配正确角色</li>
+<li>检查角色是否有对应权限</li>
+<li>
+<p>验证权限缓存是否正常</p>
+</li>
+<li>
+<p><strong>Token失效</strong></p>
+</li>
+<li>检查Token是否过期</li>
+<li>确认Token格式正确</li>
+<li>验证Redis中Token存储</li>
+</ol>
+<h3 id="_28">日志配置</h3>
+<pre><code class="language-python">import logging
+
+# 配置日志
+logging.basicConfig(
+    level=logging.INFO,
+    format='%(asctime)s - %(name)s - %(levelname)s - %(message)s',
+    handlers=[
+        logging.FileHandler('rbac_system.log'),
+        logging.StreamHandler()
+    ]
+)
+
+logger = logging.getLogger(__name__)
+</code></pre>
+<h2 id="_29">生产部署</h2>
+<h3 id="gunicorn">使用Gunicorn部署</h3>
+<pre><code class="language-bash"># 安装Gunicorn
+pip install gunicorn
+
+# 启动应用
+gunicorn -w 4 -b 0.0.0.0:5000 main:app
+</code></pre>
+<h3 id="docker">使用Docker部署</h3>
+<pre><code class="language-dockerfile">FROM python:3.9-slim
+
+WORKDIR /app
+
+COPY requirements.txt .
+RUN pip install -r requirements.txt
+
+COPY . .
+
+EXPOSE 5000
+
+CMD [&quot;gunicorn&quot;, &quot;-w&quot;, &quot;4&quot;, &quot;-b&quot;, &quot;0.0.0.0:5000&quot;, &quot;main:app&quot;]
+</code></pre>
+<h3 id="nginx">使用Nginx反向代理</h3>
+<pre><code class="language-nginx">server {
+    listen 80;
+    server_name your-domain.com;
+
+    location / {
+        proxy_pass http://127.0.0.1:5000;
+        proxy_set_header Host $host;
+        proxy_set_header X-Real-IP $remote_addr;
+        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+    }
+}
+</code></pre>
+<h2 id="_30">总结</h2>
+<p>这个RBAC认证权限系统提供了完整的用户认证、角色管理和权限控制功能。通过Redis缓存和MySQL存储的组合，实现了高性能的动态权限检查。系统具有良好的扩展性，可以根据业务需求轻松添加新的权限控制逻辑。</p>
+<pre><code>
+我已经为您创建了一个完整的基于RBAC模型的认证和权限访问控制系统。这个系统包含以下核心功能：
+
+## 🎯 核心特性
+
+**1. 完整的RBAC模型**
+- 用户(Users) → 角色(Roles) → 权限(Permissions)
+- 支持多角色用户和动态权限分配
+
+**2. Token认证系统**
+- 基于Redis的Token管理
+- 自动过期和撤销机制
+- 支持Bearer Token格式
+
+**3. 动态权限加载**
+- 从MySQL数据库实时加载权限
+- Redis缓存提升性能
+- 权限变更时自动清除缓存
+
+**4. 装饰器权限控制**
+- `@login_required` - 登录验证
+- `@permission_required(resource, action)` - 权限验证
+- 支持细粒度权限控制
+
+## 📋 使用步骤
+
+1. **安装依赖**
+```bash
+pip install flask pymysql redis werkzeug
+</code></pre>
+<ol>
+<li><strong>配置数据库</strong></li>
+<li>确保MySQL和Redis服务运行</li>
+<li>
+<p>修改Config类中的数据库配置</p>
+</li>
+<li>
+<p><strong>运行系统</strong></p>
+</li>
+</ol>
+<pre><code class="language-bash">python main.py
+</code></pre>
+<ol>
+<li><strong>测试系统</strong></li>
+</ol>
+<pre><code class="language-bash">python test_rbac.py
+</code></pre>
+<h2 id="_31">🔑 默认账户</h2>
+<ul>
+<li><strong>管理员</strong>: admin / admin123 (拥有所有权限)</li>
+<li><strong>普通用户</strong>: user1 / user123 (只有读取权限)</li>
+</ul>
+<h2 id="api_1">🛠️ 主要API</h2>
+<ul>
+<li><code>POST /api/login</code> - 用户登录</li>
+<li><code>GET /api/profile</code> - 获取用户信息</li>
+<li><code>POST /api/permissions</code> - 创建权限</li>
+<li><code>POST /api/roles</code> - 创建角色</li>
+<li><code>POST /api/users/{id}/roles</code> - 分配角色</li>
+<li><code>GET /api/admin/users</code> - 受保护资源示例</li>
+</ul>
+<h2 id="_32">🔒 权限格式</h2>
+<p>采用 <code>resource:action</code> 格式，例如：
+- <code>user:read</code> - 用户读取权限
+- <code>user:create</code> - 用户创建权限
+- <code>product:update</code> - 产品更新权限</p>
+<p>这个系统具有良好的扩展性，您可以根据业务需求添加新的权限控制逻辑。详细的部署和使用说明请参考部署指南文档。</p>
+<hr />
+<p>Powered by <a href="https://www.claudexporter.com">Claude Exporter</a></p>
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+  <script>var tabs=__md_get("__tabs");if(Array.isArray(tabs))e:for(var set of document.querySelectorAll(".tabbed-set")){var labels=set.querySelector(".tabbed-labels");for(var tab of tabs)for(var label of labels.getElementsByTagName("label"))if(label.innerText.trim()===tab){var input=document.getElementById(label.htmlFor);input.checked=!0;continue e}}</script>
+
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+          <button type="button" class="md-top md-icon" data-md-component="top" hidden>
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8z"/></svg>
+  Back to top
+</button>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+    
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+      <div class="md-progress" data-md-component="progress" role="progressbar"></div>
+    
+    
+    
+      
+      
+      <script id="__config" type="application/json">{"annotate": null, "base": "../..", "features": ["announce.dismiss", "content.action.edit", "content.action.view", "content.code.annotate", "content.code.copy", "content.code.select", "content.tabs.link", "content.tooltips", "navigation.footer", "navigation.indexes", "navigation.instant.prefetch", "navigation.instant.progress", "navigation.path", "navigation.sections", "navigation.tabs", "navigation.tabs.sticky", "navigation.top", "navigation.tracking", "search.highlight", "search.share", "search.suggest", "toc.follow"], "search": "../../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+    
+    
+      <script src="../../assets/javascripts/bundle.79ae519e.min.js"></script>
+      
+    
+  </body>
+</html>

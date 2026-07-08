@@ -1,0 +1,5830 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+      
+      
+      
+      
+      
+        
+      
+      
+      <link rel="icon" href="../../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.6">
+    
+    
+      
+        <title>Spring Security RBAC Authentication System - gzulmc's 随笔记录</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../assets/stylesheets/main.484c7ddc.min.css">
+      
+        
+        <link rel="stylesheet" href="../../assets/stylesheets/palette.ab4e12ef.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+    <script>__md_scope=new URL("../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+  </head>
+  
+  
+    
+    
+      
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#spring-security-rbac-authentication-system" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow md-header--lifted" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href="../.." title="gzulmc&#39;s 随笔记录" class="md-header__button md-logo" aria-label="gzulmc's 随笔记录" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            gzulmc's 随笔记录
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              Spring Security RBAC Authentication System
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+        <form class="md-header__option" data-md-component="palette">
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo"  aria-label="Switch to dark mode"  type="radio" name="__palette" id="__palette_0">
+    
+      <label class="md-header__button md-icon" title="Switch to dark mode" for="__palette_1" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a4 4 0 0 0-4 4 4 4 0 0 0 4 4 4 4 0 0 0 4-4 4 4 0 0 0-4-4m0 10a6 6 0 0 1-6-6 6 6 0 0 1 6-6 6 6 0 0 1 6 6 6 6 0 0 1-6 6m8-9.31V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12z"/></svg>
+      </label>
+    
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="slate" data-md-color-primary="indigo" data-md-color-accent="indigo"  aria-label="Switch to light mode"  type="radio" name="__palette" id="__palette_1">
+    
+      <label class="md-header__button md-icon" title="Switch to light mode" for="__palette_0" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 18c-.89 0-1.74-.2-2.5-.55C11.56 16.5 13 14.42 13 12s-1.44-4.5-3.5-5.45C10.26 6.2 11.11 6 12 6a6 6 0 0 1 6 6 6 6 0 0 1-6 6m8-9.31V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12z"/></svg>
+      </label>
+    
+  
+</form>
+      
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+          <a href="javascript:void(0)" class="md-search__icon md-icon" title="Share" aria-label="Share" data-clipboard data-clipboard-text="" data-md-component="search-share" tabindex="-1">
+            
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M18 16.08c-.76 0-1.44.3-1.96.77L8.91 12.7c.05-.23.09-.46.09-.7s-.04-.47-.09-.7l7.05-4.11c.54.5 1.25.81 2.04.81a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3c0 .24.04.47.09.7L8.04 9.81C7.5 9.31 6.79 9 6 9a3 3 0 0 0-3 3 3 3 0 0 0 3 3c.79 0 1.5-.31 2.04-.81l7.12 4.15c-.05.21-.08.43-.08.66 0 1.61 1.31 2.91 2.92 2.91s2.92-1.3 2.92-2.91A2.92 2.92 0 0 0 18 16.08"/></svg>
+          </a>
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+        <div class="md-search__suggest" data-md-component="search-suggest"></div>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      
+    
+    
+  </nav>
+  
+    
+      
+<nav class="md-tabs" aria-label="Tabs" data-md-component="tabs">
+  <div class="md-grid">
+    <ul class="md-tabs__list">
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../Python/%E9%9D%A2%E5%90%91%E5%AF%B9%E8%B1%A1%E5%9F%BA%E7%A1%80/" class="md-tabs__link">
+          
+  
+  
+    
+  
+  Python
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../Django/Django%E5%9F%BA%E7%A1%80/" class="md-tabs__link">
+          
+  
+  
+    
+  
+  Django
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../Docker/Docker%E8%AF%A6%E8%A7%A3/" class="md-tabs__link">
+          
+  
+  
+    
+  
+  Docker
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../.." class="md-tabs__link">
+          
+  
+  
+    
+  
+  Java
+
+        </a>
+      </li>
+    
+  
+
+      
+    </ul>
+  </div>
+</nav>
+    
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+  
+
+
+<nav class="md-nav md-nav--primary md-nav--lifted" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../.." title="gzulmc&#39;s 随笔记录" class="md-nav__button md-logo" aria-label="gzulmc's 随笔记录" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    gzulmc's 随笔记录
+  </label>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_1" >
+        
+          
+          <label class="md-nav__link" for="__nav_1" id="__nav_1_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Python
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_1_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_1">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Python
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../Python/%E9%9D%A2%E5%90%91%E5%AF%B9%E8%B1%A1%E5%9F%BA%E7%A1%80/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    面向对象基础
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../Python/%E9%9D%A2%E5%90%91%E5%AF%B9%E8%B1%A1%E8%BF%9B%E9%98%B6/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    面向对象进阶
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../Python/%E8%BF%9B%E7%A8%8B%E5%92%8C%E7%BA%BF%E7%A8%8B/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    进程和线程
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../Python/%E5%9B%BE%E5%83%8F%E5%92%8C%E6%96%87%E6%A1%A3%E5%A4%84%E7%90%86/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    图像和文档处理
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../Python/%E7%BD%91%E7%BB%9C%E7%BC%96%E7%A8%8B%E5%BA%94%E7%94%A8/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    网络编程应用
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../Python/%E6%96%87%E4%BB%B6%E5%92%8C%E5%BC%82%E5%B8%B8/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    文件和异常
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2" >
+        
+          
+          <label class="md-nav__link" for="__nav_2" id="__nav_2_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Django
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_2_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Django
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../Django/Django%E5%9F%BA%E7%A1%80/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Django基础
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../Django/%E6%95%B0%E6%8D%AE%E6%A8%A1%E5%9E%8B/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    数据模型
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+      
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3" >
+        
+          
+          <label class="md-nav__link" for="__nav_3" id="__nav_3_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Docker
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_3">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Docker
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../Docker/Docker%E8%AF%A6%E8%A7%A3/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Docker详解
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4" >
+        
+          
+          <div class="md-nav__link md-nav__container">
+            <a href="../.." class="md-nav__link ">
+              
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Java
+  
+
+    
+  </span>
+  
+  
+
+            </a>
+            
+          </div>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_4_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Java
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#prompt" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Prompt:
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#response" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Response:
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#2" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2. 数据库实体类
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="2. 数据库实体类">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#userjava" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        User.java
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#rolejava" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Role.java
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#permissionjava" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Permission.java
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#3" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3. 数据访问层
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="3. 数据访问层">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#userrepositoryjava" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        UserRepository.java
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#rolerepositoryjava" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        RoleRepository.java
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#permissionrepositoryjava" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        PermissionRepository.java
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#4-jwt" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4. JWT工具类
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="4. JWT工具类">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#jwttokenproviderjava" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        JwtTokenProvider.java
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#5" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        5. 自定义用户详情服务
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="5. 自定义用户详情服务">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#customuserdetailsservicejava" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        CustomUserDetailsService.java
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#2_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2. 数据库实体类
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="2. 数据库实体类">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#userjava_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        User.java
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#rolejava_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Role.java
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#permissionjava_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Permission.java
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#3_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3. 数据访问层
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="3. 数据访问层">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#userrepositoryjava_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        UserRepository.java
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#rolerepositoryjava_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        RoleRepository.java
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#permissionrepositoryjava_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        PermissionRepository.java
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#4-jwt_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4. JWT工具类
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="4. JWT工具类">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#jwttokenproviderjava_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        JwtTokenProvider.java
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#5_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        5. 自定义用户详情服务
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="5. 自定义用户详情服务">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#customuserdetailsservicejava_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        CustomUserDetailsService.java
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#6-jwt" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        6. JWT认证过滤器
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="6. JWT认证过滤器">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#jwtauthenticationfilterjava" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        JwtAuthenticationFilter.java
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#7" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        7. 自定义权限数据源（重点）
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="7. 自定义权限数据源（重点）">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#customsecuritymetadatasourcejava" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        CustomSecurityMetadataSource.java
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#prompt_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Prompt:
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#response_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Response:
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#2_2" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2. 数据库实体类
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="2. 数据库实体类">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#userjava_2" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        User.java
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#rolejava_2" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Role.java
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#permissionjava_2" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Permission.java
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#3_2" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3. 数据访问层
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="3. 数据访问层">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#userrepositoryjava_2" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        UserRepository.java
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#rolerepositoryjava_2" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        RoleRepository.java
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#permissionrepositoryjava_2" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        PermissionRepository.java
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#4-jwt_2" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4. JWT工具类
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="4. JWT工具类">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#jwttokenproviderjava_2" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        JwtTokenProvider.java
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#5_2" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        5. 自定义用户详情服务
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="5. 自定义用户详情服务">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#customuserdetailsservicejava_2" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        CustomUserDetailsService.java
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#6-jwt_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        6. JWT认证过滤器
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="6. JWT认证过滤器">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#jwtauthenticationfilterjava_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        JwtAuthenticationFilter.java
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#7_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        7. 自定义权限数据源（重点）
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="7. 自定义权限数据源（重点）">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#customsecuritymetadatasourcejava_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        CustomSecurityMetadataSource.java
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#8" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        8. 自定义访问决策管理器（重点）
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="8. 自定义访问决策管理器（重点）">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#customaccessdecisionmanagerjava" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        CustomAccessDecisionManager.java
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#9" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        9. 自定义认证入口点
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="9. 自定义认证入口点">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#customauthenticationentrypointjava" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        CustomAuthenticationEntryPoint.java
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#10" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        10. 配置类
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="10. 配置类">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#securityconfigjava" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        SecurityConfig.java
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#redisconfigjava" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        RedisConfig.java
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#2_3" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2. 数据库实体类
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="2. 数据库实体类">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#userjava_3" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        User.java
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#rolejava_3" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Role.java
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#permissionjava_3" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Permission.java
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#3_3" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3. 数据访问层
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="3. 数据访问层">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#userrepositoryjava_3" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        UserRepository.java
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#rolerepositoryjava_3" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        RoleRepository.java
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#permissionrepositoryjava_3" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        PermissionRepository.java
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#4-jwt_3" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4. JWT工具类
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="4. JWT工具类">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#jwttokenproviderjava_3" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        JwtTokenProvider.java
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#5_3" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        5. 自定义用户详情服务
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="5. 自定义用户详情服务">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#customuserdetailsservicejava_3" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        CustomUserDetailsService.java
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#6-jwt_2" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        6. JWT认证过滤器
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="6. JWT认证过滤器">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#jwtauthenticationfilterjava_2" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        JwtAuthenticationFilter.java
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#7_2" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        7. 自定义权限数据源（重点）
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="7. 自定义权限数据源（重点）">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#customsecuritymetadatasourcejava_2" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        CustomSecurityMetadataSource.java
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#8_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        8. 自定义访问决策管理器（重点）
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="8. 自定义访问决策管理器（重点）">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#customaccessdecisionmanagerjava_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        CustomAccessDecisionManager.java
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#9_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        9. 自定义认证入口点
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="9. 自定义认证入口点">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#customauthenticationentrypointjava_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        CustomAuthenticationEntryPoint.java
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#10_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        10. 配置类
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="10. 配置类">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#securityconfigjava_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        SecurityConfig.java
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#redisconfigjava_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        RedisConfig.java
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              
+                
+
+
+
+
+              
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+
+<h1 id="spring-security-rbac-authentication-system">Spring Security RBAC Authentication System</h1>
+<p><strong>Created:</strong> 2025/7/15 13:11<br />
+<strong>Updated:</strong> 2025/7/15 13:14<br />
+<strong>Exported:</strong> 2025/7/15 13:16<br />
+<strong>Link:</strong> <a href="https://claude.ai/chat/abba8596-588b-434e-b899-efd2a09a8116">https://claude.ai/chat/abba8596-588b-434e-b899-efd2a09a8116</a>  </p>
+<h2 id="prompt">Prompt:</h2>
+<p>使用springboot和spring security技术,基于RBAC模型和mysql数据库和redis,实现一个基于token的动态认证和权限访问控制,动态从数据库加载权限信息。编写一个完整可运行的demo,不需要前端代码,只需要后端代码。写清楚每步的注释,重点在filtersecurityinterceptor的授权部分,这个部分是我想要掌握清楚的知识点,包括自定义数据源和自定义决策等。</p>
+<h2 id="response">Response:</h2>
+<p>我将为您创建一个基于Spring Boot、Spring Security、RBAC模型的完整认证和权限访问控制系统。重点关注FilterSecurityInterceptor的授权部分，包括自定义数据源和自定义决策管理器。</p>
+<p><strong>RBAC权限控制系统 - 完整项目结构</strong></p>
+<pre><code class="language-java"># Spring Boot RBAC 权限控制系统完整Demo
+
+## 项目结构
+</code></pre>
+<p>src/main/java/com/example/rbac/
+├── RbacApplication.java                    # 主启动类
+├── config/
+│   ├── SecurityConfig.java                # Spring Security核心配置
+│   ├── RedisConfig.java                   # Redis配置
+│   └── DataSourceConfig.java             # 数据源配置
+├── security/
+│   ├── JwtTokenProvider.java              # JWT工具类
+│   ├── JwtAuthenticationFilter.java       # JWT认证过滤器
+│   ├── CustomUserDetailsService.java     # 自定义用户详情服务
+│   ├── CustomSecurityMetadataSource.java # 自定义权限数据源（重点）
+│   ├── CustomAccessDecisionManager.java  # 自定义访问决策管理器（重点）
+│   └── CustomAuthenticationEntryPoint.java # 自定义认证入口点
+├── entity/
+│   ├── User.java                          # 用户实体
+│   ├── Role.java                          # 角色实体
+│   ├── Permission.java                    # 权限实体
+│   └── UserRole.java                      # 用户角色关联实体
+├── repository/
+│   ├── UserRepository.java                # 用户仓库
+│   ├── RoleRepository.java                # 角色仓库
+│   └── PermissionRepository.java          # 权限仓库
+├── service/
+│   ├── UserService.java                   # 用户服务
+│   ├── AuthService.java                   # 认证服务
+│   └── PermissionService.java             # 权限服务
+├── controller/
+│   ├── AuthController.java                # 认证控制器
+│   ├── UserController.java                # 用户控制器
+│   └── AdminController.java               # 管理员控制器
+└── dto/
+    ├── LoginRequest.java                  # 登录请求DTO
+    ├── LoginResponse.java                 # 登录响应DTO
+    └── ApiResponse.java                   # 通用响应DTO</p>
+<pre><code>
+## 1. 主启动类
+
+```java
+package com.example.rbac;
+
+import org.springframework.boot.SpringApplication;
+import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.cache.annotation.EnableCaching;
+import org.springframework.transaction.annotation.EnableTransactionManagement;
+
+@SpringBootApplication
+@EnableCaching
+@EnableTransactionManagement
+public class RbacApplication {
+    public static void main(String[] args) {
+        SpringApplication.run(RbacApplication.class, args);
+    }
+}
+</code></pre>
+<h2 id="2">2. 数据库实体类</h2>
+<h3 id="userjava">User.java</h3>
+<pre><code class="language-java">package com.example.rbac.entity;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import javax.persistence.*;
+import java.time.LocalDateTime;
+import java.util.HashSet;
+import java.util.Set;
+
+@Entity
+@Table(name = &quot;users&quot;)
+public class User {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+
+    @Column(unique = true, nullable = false)
+    private String username;
+
+    @JsonIgnore
+    @Column(nullable = false)
+    private String password;
+
+    @Column(nullable = false)
+    private String email;
+
+    @Column(nullable = false)
+    private Boolean enabled = true;
+
+    @Column(name = &quot;created_at&quot;)
+    private LocalDateTime createdAt;
+
+    @Column(name = &quot;updated_at&quot;)
+    private LocalDateTime updatedAt;
+
+    // 多对多关系：用户-角色
+    @ManyToMany(fetch = FetchType.LAZY)
+    @JoinTable(
+        name = &quot;user_roles&quot;,
+        joinColumns = @JoinColumn(name = &quot;user_id&quot;),
+        inverseJoinColumns = @JoinColumn(name = &quot;role_id&quot;)
+    )
+    private Set&lt;Role&gt; roles = new HashSet&lt;&gt;();
+
+    @PrePersist
+    protected void onCreate() {
+        createdAt = LocalDateTime.now();
+        updatedAt = LocalDateTime.now();
+    }
+
+    @PreUpdate
+    protected void onUpdate() {
+        updatedAt = LocalDateTime.now();
+    }
+
+    // 构造函数
+    public User() {}
+
+    public User(String username, String password, String email) {
+        this.username = username;
+        this.password = password;
+        this.email = email;
+    }
+
+    // Getters and Setters
+    public Long getId() { return id; }
+    public void setId(Long id) { this.id = id; }
+
+    public String getUsername() { return username; }
+    public void setUsername(String username) { this.username = username; }
+
+    public String getPassword() { return password; }
+    public void setPassword(String password) { this.password = password; }
+
+    public String getEmail() { return email; }
+    public void setEmail(String email) { this.email = email; }
+
+    public Boolean getEnabled() { return enabled; }
+    public void setEnabled(Boolean enabled) { this.enabled = enabled; }
+
+    public LocalDateTime getCreatedAt() { return createdAt; }
+    public void setCreatedAt(LocalDateTime createdAt) { this.createdAt = createdAt; }
+
+    public LocalDateTime getUpdatedAt() { return updatedAt; }
+    public void setUpdatedAt(LocalDateTime updatedAt) { this.updatedAt = updatedAt; }
+
+    public Set&lt;Role&gt; getRoles() { return roles; }
+    public void setRoles(Set&lt;Role&gt; roles) { this.roles = roles; }
+}
+</code></pre>
+<h3 id="rolejava">Role.java</h3>
+<pre><code class="language-java">package com.example.rbac.entity;
+
+import javax.persistence.*;
+import java.time.LocalDateTime;
+import java.util.HashSet;
+import java.util.Set;
+
+@Entity
+@Table(name = &quot;roles&quot;)
+public class Role {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+
+    @Column(unique = true, nullable = false)
+    private String name;
+
+    @Column
+    private String description;
+
+    @Column(name = &quot;created_at&quot;)
+    private LocalDateTime createdAt;
+
+    // 多对多关系：角色-权限
+    @ManyToMany(fetch = FetchType.LAZY)
+    @JoinTable(
+        name = &quot;role_permissions&quot;,
+        joinColumns = @JoinColumn(name = &quot;role_id&quot;),
+        inverseJoinColumns = @JoinColumn(name = &quot;permission_id&quot;)
+    )
+    private Set&lt;Permission&gt; permissions = new HashSet&lt;&gt;();
+
+    @PrePersist
+    protected void onCreate() {
+        createdAt = LocalDateTime.now();
+    }
+
+    // 构造函数
+    public Role() {}
+
+    public Role(String name, String description) {
+        this.name = name;
+        this.description = description;
+    }
+
+    // Getters and Setters
+    public Long getId() { return id; }
+    public void setId(Long id) { this.id = id; }
+
+    public String getName() { return name; }
+    public void setName(String name) { this.name = name; }
+
+    public String getDescription() { return description; }
+    public void setDescription(String description) { this.description = description; }
+
+    public LocalDateTime getCreatedAt() { return createdAt; }
+    public void setCreatedAt(LocalDateTime createdAt) { this.createdAt = createdAt; }
+
+    public Set&lt;Permission&gt; getPermissions() { return permissions; }
+    public void setPermissions(Set&lt;Permission&gt; permissions) { this.permissions = permissions; }
+}
+</code></pre>
+<h3 id="permissionjava">Permission.java</h3>
+<pre><code class="language-java">package com.example.rbac.entity;
+
+import javax.persistence.*;
+import java.time.LocalDateTime;
+
+@Entity
+@Table(name = &quot;permissions&quot;)
+public class Permission {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+
+    @Column(unique = true, nullable = false)
+    private String name;
+
+    @Column
+    private String description;
+
+    @Column(name = &quot;resource_url&quot;)
+    private String resourceUrl; // 资源URL匹配模式
+
+    @Column(name = &quot;http_method&quot;)
+    private String httpMethod; // HTTP方法：GET, POST, PUT, DELETE等
+
+    @Column(name = &quot;created_at&quot;)
+    private LocalDateTime createdAt;
+
+    @PrePersist
+    protected void onCreate() {
+        createdAt = LocalDateTime.now();
+    }
+
+    // 构造函数
+    public Permission() {}
+
+    public Permission(String name, String description, String resourceUrl, String httpMethod) {
+        this.name = name;
+        this.description = description;
+        this.resourceUrl = resourceUrl;
+        this.httpMethod = httpMethod;
+    }
+
+    // Getters and Setters
+    public Long getId() { return id; }
+    public void setId(Long id) { this.id = id; }
+
+    public String getName() { return name; }
+    public void setName(String name) { this.name = name; }
+
+    public String getDescription() { return description; }
+    public void setDescription(String description) { this.description = description; }
+
+    public String getResourceUrl() { return resourceUrl; }
+    public void setResourceUrl(String resourceUrl) { this.resourceUrl = resourceUrl; }
+
+    public String getHttpMethod() { return httpMethod; }
+    public void setHttpMethod(String httpMethod) { this.httpMethod = httpMethod; }
+
+    public LocalDateTime getCreatedAt() { return createdAt; }
+    public void setCreatedAt(LocalDateTime createdAt) { this.createdAt = createdAt; }
+}
+</code></pre>
+<h2 id="3">3. 数据访问层</h2>
+<h3 id="userrepositoryjava">UserRepository.java</h3>
+<pre><code class="language-java">package com.example.rbac.repository;
+
+import com.example.rbac.entity.User;
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
+import org.springframework.stereotype.Repository;
+
+import java.util.Optional;
+
+@Repository
+public interface UserRepository extends JpaRepository&lt;User, Long&gt; {
+
+    /**
+     * 根据用户名查找用户，同时预加载角色和权限信息
+     * 使用左连接避免N+1查询问题
+     */
+    @Query(&quot;SELECT DISTINCT u FROM User u &quot; +
+           &quot;LEFT JOIN FETCH u.roles r &quot; +
+           &quot;LEFT JOIN FETCH r.permissions &quot; +
+           &quot;WHERE u.username = :username&quot;)
+    Optional&lt;User&gt; findByUsernameWithRolesAndPermissions(@Param(&quot;username&quot;) String username);
+
+    /**
+     * 根据用户名查找用户
+     */
+    Optional&lt;User&gt; findByUsername(String username);
+
+    /**
+     * 检查用户名是否存在
+     */
+    boolean existsByUsername(String username);
+
+    /**
+     * 检查邮箱是否存在
+     */
+    boolean existsByEmail(String email);
+}
+</code></pre>
+<h3 id="rolerepositoryjava">RoleRepository.java</h3>
+<pre><code class="language-java">package com.example.rbac.repository;
+
+import com.example.rbac.entity.Role;
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.stereotype.Repository;
+
+import java.util.List;
+import java.util.Optional;
+
+@Repository
+public interface RoleRepository extends JpaRepository&lt;Role, Long&gt; {
+
+    /**
+     * 根据角色名查找角色
+     */
+    Optional&lt;Role&gt; findByName(String name);
+
+    /**
+     * 查找所有角色并预加载权限信息
+     */
+    @Query(&quot;SELECT DISTINCT r FROM Role r LEFT JOIN FETCH r.permissions&quot;)
+    List&lt;Role&gt; findAllWithPermissions();
+
+    /**
+     * 检查角色名是否存在
+     */
+    boolean existsByName(String name);
+}
+</code></pre>
+<h3 id="permissionrepositoryjava">PermissionRepository.java</h3>
+<pre><code class="language-java">package com.example.rbac.repository;
+
+import com.example.rbac.entity.Permission;
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
+import org.springframework.stereotype.Repository;
+
+import java.util.List;
+import java.util.Optional;
+
+@Repository
+public interface PermissionRepository extends JpaRepository&lt;Permission, Long&gt; {
+
+    /**
+     * 根据权限名查找权限
+     */
+    Optional&lt;Permission&gt; findByName(String name);
+
+    /**
+     * 根据资源URL和HTTP方法查找权限
+     */
+    Optional&lt;Permission&gt; findByResourceUrlAndHttpMethod(String resourceUrl, String httpMethod);
+
+    /**
+     * 查找所有权限资源配置，用于动态权限验证
+     * 返回所有包含资源URL的权限
+     */
+    @Query(&quot;SELECT p FROM Permission p WHERE p.resourceUrl IS NOT NULL&quot;)
+    List&lt;Permission&gt; findAllResourcePermissions();
+
+    /**
+     * 根据用户ID查找该用户拥有的所有权限
+     * 通过用户-&gt;角色-&gt;权限的关联查询
+     */
+    @Query(&quot;SELECT DISTINCT p FROM Permission p &quot; +
+           &quot;JOIN p.roles r &quot; +
+           &quot;JOIN r.users u &quot; +
+           &quot;WHERE u.id = :userId&quot;)
+    List&lt;Permission&gt; findPermissionsByUserId(@Param(&quot;userId&quot;) Long userId);
+
+    /**
+     * 检查权限名是否存在
+     */
+    boolean existsByName(String name);
+}
+</code></pre>
+<h2 id="4-jwt">4. JWT工具类</h2>
+<h3 id="jwttokenproviderjava">JwtTokenProvider.java</h3>
+<pre><code class="language-java">package com.example.rbac.security;
+
+import io.jsonwebtoken.*;
+import io.jsonwebtoken.security.Keys;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.stereotype.Component;
+
+import javax.crypto.SecretKey;
+import java.util.Date;
+
+/**
+ * JWT Token 提供者
+ * 负责生成、解析和验证JWT令牌
+ */
+@Component
+public class JwtTokenProvider {
+
+    private static final Logger logger = LoggerFactory.getLogger(JwtTokenProvider.class);
+
+    // JWT密钥，从配置文件读取
+    @Value(&quot;${app.jwt.secret:mySecretKey}&quot;)
+    private String jwtSecret;
+
+    // JWT过期时间（毫秒），默认24小时
+    @Value(&quot;${app.jwt.expiration:86400000}&quot;)
+    private long jwtExpiration;
+
+    /**
+     * 生成JWT令牌
+     * @param authentication 认证信息
+     * @return JWT令牌字符串
+     */
+    public String generateToken(Authentication authentication) {
+        UserDetails userDetails = (UserDetails) authentication.getPrincipal();
+        Date expiryDate = new Date(System.currentTimeMillis() + jwtExpiration);
+
+        // 使用HMAC SHA算法签名
+        SecretKey key = Keys.hmacShaKeyFor(jwtSecret.getBytes());
+
+        return Jwts.builder()
+                .setSubject(userDetails.getUsername())
+                .setIssuedAt(new Date())
+                .setExpiration(expiryDate)
+                .signWith(key, SignatureAlgorithm.HS512)
+                .compact();
+    }
+
+    /**
+     * 从JWT令牌中获取用户名
+     * @param token JWT令牌
+     * @return 用户名
+     */
+    public String getUsernameFromToken(String token) {
+        SecretKey key = Keys.hmacShaKeyFor(jwtSecret.getBytes());
+        Claims claims = Jwts.parserBuilder()
+                .setSigningKey(key)
+                .build()
+                .parseClaimsJws(token)
+                .getBody();
+        return claims.getSubject();
+    }
+
+    /**
+     * 验证JWT令牌
+     * @param token JWT令牌
+     * @return 是否有效
+     */
+    public boolean validateToken(String token) {
+        try {
+            SecretKey key = Keys.hmacShaKeyFor(jwtSecret.getBytes());
+            Jwts.parserBuilder()
+                .setSigningKey(key)
+                .build()
+                .parseClaimsJws(token);
+            return true;
+        } catch (SecurityException ex) {
+            logger.error(&quot;Invalid JWT signature: {}&quot;, ex.getMessage());
+        } catch (MalformedJwtException ex) {
+            logger.error(&quot;Invalid JWT token: {}&quot;, ex.getMessage());
+        } catch (ExpiredJwtException ex) {
+            logger.error(&quot;Expired JWT token: {}&quot;, ex.getMessage());
+        } catch (UnsupportedJwtException ex) {
+            logger.error(&quot;Unsupported JWT token: {}&quot;, ex.getMessage());
+        } catch (IllegalArgumentException ex) {
+            logger.error(&quot;JWT claims string is empty: {}&quot;, ex.getMessage());
+        }
+        return false;
+    }
+}
+</code></pre>
+<h2 id="5">5. 自定义用户详情服务</h2>
+<h3 id="customuserdetailsservicejava">CustomUserDetailsService.java</h3>
+<pre><code class="language-java">package com.example.rbac.security;
+
+import com.example.rbac.entity.User;
+import com.example.rbac.entity.Role;
+import com.example.rbac.entity.Permission;
+import com.example.rbac.repository.UserRepository;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Set;
+
+/**
+ * 自定义用户详情服务
+ * 实现Spring Security的UserDetailsService接口
+ * 负责从数据库加载用户信息和权限信息
+ */
+@Service
+public class CustomUserDetailsService implements UserDetailsService {
+
+    @Autowired
+    private UserRepository userRepository;
+
+    /**
+     * 根据用户名加载用户详情
+     * 这个方法在用户认证时被调用
+     * @param username 用户名
+     * @return UserDetails 用户详情对象
+     * @throws UsernameNotFoundException 用户不存在异常
+     */
+    @Override
+    @Transactional(readOnly = true)
+    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+        // 从数据库查找用户，同时预加载角色和权限信息
+        User user = userRepository.findByUsernameWithRolesAndPermissions(username)
+                .orElseThrow(() -&gt; new UsernameNotFoundException(&quot;User not found: &quot; + username));
+
+        // 构建用户权限列表
+        List&lt;GrantedAuthority&gt; authorities = buildUserAuthorities(user.getRoles());
+
+        // 创建Spring Security的User对象
+        return org.springframework.security.core.userdetails.User.builder()
+                .username(user.getUsername())
+                .password(user.getPassword())
+                .authorities(authorities)
+                .accountExpired(false)
+                .accountLocked(false)
+                .credentialsExpired(false)
+                .disabled(!user.getEnabled())
+                .build();
+    }
+
+    /**
+     * 构建用户权限列表
+     * 将角色和权限转换为Spring Security的GrantedAuthority
+     * @param roles 用户角色集合
+     * @return 权限列表
+     */
+    private List&lt;GrantedAuthority&gt; buildUserAuthorities(Set&lt;Role&gt; roles) {
+        List&lt;GrantedAuthority&gt; authorities = new ArrayList&lt;&gt;();
+
+        for (Role role : roles) {
+            // 添加角色权限，角色名前缀为ROLE_
+            authorities.add(new SimpleGrantedAuthority(&quot;ROLE_&quot; + role.getName()));
+
+            // 添加角色下的具体权限
+            for (Permission permission : role.getPermissions()) {
+                authorities.add(new SimpleGrantedAuthority(permission.getName()));
+            }
+        }
+
+        return authorities;
+    }
+}
+</code></pre>
+<p>继续下一部分...</p>
+<pre><code>
+**RBAC权限控制系统 - 完整项目结构** ∙ Version 2
+
+```java
+# Spring Boot RBAC 权限控制系统完整Demo
+
+## 项目结构
+</code></pre>
+<p>src/main/java/com/example/rbac/
+├── RbacApplication.java                    # 主启动类
+├── config/
+│   ├── SecurityConfig.java                # Spring Security核心配置
+│   ├── RedisConfig.java                   # Redis配置
+│   └── DataSourceConfig.java             # 数据源配置
+├── security/
+│   ├── JwtTokenProvider.java              # JWT工具类
+│   ├── JwtAuthenticationFilter.java       # JWT认证过滤器
+│   ├── CustomUserDetailsService.java     # 自定义用户详情服务
+│   ├── CustomSecurityMetadataSource.java # 自定义权限数据源（重点）
+│   ├── CustomAccessDecisionManager.java  # 自定义访问决策管理器（重点）
+│   └── CustomAuthenticationEntryPoint.java # 自定义认证入口点
+├── entity/
+│   ├── User.java                          # 用户实体
+│   ├── Role.java                          # 角色实体
+│   ├── Permission.java                    # 权限实体
+│   └── UserRole.java                      # 用户角色关联实体
+├── repository/
+│   ├── UserRepository.java                # 用户仓库
+│   ├── RoleRepository.java                # 角色仓库
+│   └── PermissionRepository.java          # 权限仓库
+├── service/
+│   ├── UserService.java                   # 用户服务
+│   ├── AuthService.java                   # 认证服务
+│   └── PermissionService.java             # 权限服务
+├── controller/
+│   ├── AuthController.java                # 认证控制器
+│   ├── UserController.java                # 用户控制器
+│   └── AdminController.java               # 管理员控制器
+└── dto/
+    ├── LoginRequest.java                  # 登录请求DTO
+    ├── LoginResponse.java                 # 登录响应DTO
+    └── ApiResponse.java                   # 通用响应DTO</p>
+<pre><code>
+## 1. 主启动类
+
+```java
+package com.example.rbac;
+
+import org.springframework.boot.SpringApplication;
+import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.cache.annotation.EnableCaching;
+import org.springframework.transaction.annotation.EnableTransactionManagement;
+
+@SpringBootApplication
+@EnableCaching
+@EnableTransactionManagement
+public class RbacApplication {
+    public static void main(String[] args) {
+        SpringApplication.run(RbacApplication.class, args);
+    }
+}
+</code></pre>
+<h2 id="2_1">2. 数据库实体类</h2>
+<h3 id="userjava_1">User.java</h3>
+<pre><code class="language-java">package com.example.rbac.entity;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import javax.persistence.*;
+import java.time.LocalDateTime;
+import java.util.HashSet;
+import java.util.Set;
+
+@Entity
+@Table(name = &quot;users&quot;)
+public class User {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+
+    @Column(unique = true, nullable = false)
+    private String username;
+
+    @JsonIgnore
+    @Column(nullable = false)
+    private String password;
+
+    @Column(nullable = false)
+    private String email;
+
+    @Column(nullable = false)
+    private Boolean enabled = true;
+
+    @Column(name = &quot;created_at&quot;)
+    private LocalDateTime createdAt;
+
+    @Column(name = &quot;updated_at&quot;)
+    private LocalDateTime updatedAt;
+
+    // 多对多关系：用户-角色
+    @ManyToMany(fetch = FetchType.LAZY)
+    @JoinTable(
+        name = &quot;user_roles&quot;,
+        joinColumns = @JoinColumn(name = &quot;user_id&quot;),
+        inverseJoinColumns = @JoinColumn(name = &quot;role_id&quot;)
+    )
+    private Set&lt;Role&gt; roles = new HashSet&lt;&gt;();
+
+    @PrePersist
+    protected void onCreate() {
+        createdAt = LocalDateTime.now();
+        updatedAt = LocalDateTime.now();
+    }
+
+    @PreUpdate
+    protected void onUpdate() {
+        updatedAt = LocalDateTime.now();
+    }
+
+    // 构造函数
+    public User() {}
+
+    public User(String username, String password, String email) {
+        this.username = username;
+        this.password = password;
+        this.email = email;
+    }
+
+    // Getters and Setters
+    public Long getId() { return id; }
+    public void setId(Long id) { this.id = id; }
+
+    public String getUsername() { return username; }
+    public void setUsername(String username) { this.username = username; }
+
+    public String getPassword() { return password; }
+    public void setPassword(String password) { this.password = password; }
+
+    public String getEmail() { return email; }
+    public void setEmail(String email) { this.email = email; }
+
+    public Boolean getEnabled() { return enabled; }
+    public void setEnabled(Boolean enabled) { this.enabled = enabled; }
+
+    public LocalDateTime getCreatedAt() { return createdAt; }
+    public void setCreatedAt(LocalDateTime createdAt) { this.createdAt = createdAt; }
+
+    public LocalDateTime getUpdatedAt() { return updatedAt; }
+    public void setUpdatedAt(LocalDateTime updatedAt) { this.updatedAt = updatedAt; }
+
+    public Set&lt;Role&gt; getRoles() { return roles; }
+    public void setRoles(Set&lt;Role&gt; roles) { this.roles = roles; }
+}
+</code></pre>
+<h3 id="rolejava_1">Role.java</h3>
+<pre><code class="language-java">package com.example.rbac.entity;
+
+import javax.persistence.*;
+import java.time.LocalDateTime;
+import java.util.HashSet;
+import java.util.Set;
+
+@Entity
+@Table(name = &quot;roles&quot;)
+public class Role {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+
+    @Column(unique = true, nullable = false)
+    private String name;
+
+    @Column
+    private String description;
+
+    @Column(name = &quot;created_at&quot;)
+    private LocalDateTime createdAt;
+
+    // 多对多关系：角色-权限
+    @ManyToMany(fetch = FetchType.LAZY)
+    @JoinTable(
+        name = &quot;role_permissions&quot;,
+        joinColumns = @JoinColumn(name = &quot;role_id&quot;),
+        inverseJoinColumns = @JoinColumn(name = &quot;permission_id&quot;)
+    )
+    private Set&lt;Permission&gt; permissions = new HashSet&lt;&gt;();
+
+    @PrePersist
+    protected void onCreate() {
+        createdAt = LocalDateTime.now();
+    }
+
+    // 构造函数
+    public Role() {}
+
+    public Role(String name, String description) {
+        this.name = name;
+        this.description = description;
+    }
+
+    // Getters and Setters
+    public Long getId() { return id; }
+    public void setId(Long id) { this.id = id; }
+
+    public String getName() { return name; }
+    public void setName(String name) { this.name = name; }
+
+    public String getDescription() { return description; }
+    public void setDescription(String description) { this.description = description; }
+
+    public LocalDateTime getCreatedAt() { return createdAt; }
+    public void setCreatedAt(LocalDateTime createdAt) { this.createdAt = createdAt; }
+
+    public Set&lt;Permission&gt; getPermissions() { return permissions; }
+    public void setPermissions(Set&lt;Permission&gt; permissions) { this.permissions = permissions; }
+}
+</code></pre>
+<h3 id="permissionjava_1">Permission.java</h3>
+<pre><code class="language-java">package com.example.rbac.entity;
+
+import javax.persistence.*;
+import java.time.LocalDateTime;
+
+@Entity
+@Table(name = &quot;permissions&quot;)
+public class Permission {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+
+    @Column(unique = true, nullable = false)
+    private String name;
+
+    @Column
+    private String description;
+
+    @Column(name = &quot;resource_url&quot;)
+    private String resourceUrl; // 资源URL匹配模式
+
+    @Column(name = &quot;http_method&quot;)
+    private String httpMethod; // HTTP方法：GET, POST, PUT, DELETE等
+
+    @Column(name = &quot;created_at&quot;)
+    private LocalDateTime createdAt;
+
+    @PrePersist
+    protected void onCreate() {
+        createdAt = LocalDateTime.now();
+    }
+
+    // 构造函数
+    public Permission() {}
+
+    public Permission(String name, String description, String resourceUrl, String httpMethod) {
+        this.name = name;
+        this.description = description;
+        this.resourceUrl = resourceUrl;
+        this.httpMethod = httpMethod;
+    }
+
+    // Getters and Setters
+    public Long getId() { return id; }
+    public void setId(Long id) { this.id = id; }
+
+    public String getName() { return name; }
+    public void setName(String name) { this.name = name; }
+
+    public String getDescription() { return description; }
+    public void setDescription(String description) { this.description = description; }
+
+    public String getResourceUrl() { return resourceUrl; }
+    public void setResourceUrl(String resourceUrl) { this.resourceUrl = resourceUrl; }
+
+    public String getHttpMethod() { return httpMethod; }
+    public void setHttpMethod(String httpMethod) { this.httpMethod = httpMethod; }
+
+    public LocalDateTime getCreatedAt() { return createdAt; }
+    public void setCreatedAt(LocalDateTime createdAt) { this.createdAt = createdAt; }
+}
+</code></pre>
+<h2 id="3_1">3. 数据访问层</h2>
+<h3 id="userrepositoryjava_1">UserRepository.java</h3>
+<pre><code class="language-java">package com.example.rbac.repository;
+
+import com.example.rbac.entity.User;
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
+import org.springframework.stereotype.Repository;
+
+import java.util.Optional;
+
+@Repository
+public interface UserRepository extends JpaRepository&lt;User, Long&gt; {
+
+    /**
+     * 根据用户名查找用户，同时预加载角色和权限信息
+     * 使用左连接避免N+1查询问题
+     */
+    @Query(&quot;SELECT DISTINCT u FROM User u &quot; +
+           &quot;LEFT JOIN FETCH u.roles r &quot; +
+           &quot;LEFT JOIN FETCH r.permissions &quot; +
+           &quot;WHERE u.username = :username&quot;)
+    Optional&lt;User&gt; findByUsernameWithRolesAndPermissions(@Param(&quot;username&quot;) String username);
+
+    /**
+     * 根据用户名查找用户
+     */
+    Optional&lt;User&gt; findByUsername(String username);
+
+    /**
+     * 检查用户名是否存在
+     */
+    boolean existsByUsername(String username);
+
+    /**
+     * 检查邮箱是否存在
+     */
+    boolean existsByEmail(String email);
+}
+</code></pre>
+<h3 id="rolerepositoryjava_1">RoleRepository.java</h3>
+<pre><code class="language-java">package com.example.rbac.repository;
+
+import com.example.rbac.entity.Role;
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.stereotype.Repository;
+
+import java.util.List;
+import java.util.Optional;
+
+@Repository
+public interface RoleRepository extends JpaRepository&lt;Role, Long&gt; {
+
+    /**
+     * 根据角色名查找角色
+     */
+    Optional&lt;Role&gt; findByName(String name);
+
+    /**
+     * 查找所有角色并预加载权限信息
+     */
+    @Query(&quot;SELECT DISTINCT r FROM Role r LEFT JOIN FETCH r.permissions&quot;)
+    List&lt;Role&gt; findAllWithPermissions();
+
+    /**
+     * 检查角色名是否存在
+     */
+    boolean existsByName(String name);
+}
+</code></pre>
+<h3 id="permissionrepositoryjava_1">PermissionRepository.java</h3>
+<pre><code class="language-java">package com.example.rbac.repository;
+
+import com.example.rbac.entity.Permission;
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
+import org.springframework.stereotype.Repository;
+
+import java.util.List;
+import java.util.Optional;
+
+@Repository
+public interface PermissionRepository extends JpaRepository&lt;Permission, Long&gt; {
+
+    /**
+     * 根据权限名查找权限
+     */
+    Optional&lt;Permission&gt; findByName(String name);
+
+    /**
+     * 根据资源URL和HTTP方法查找权限
+     */
+    Optional&lt;Permission&gt; findByResourceUrlAndHttpMethod(String resourceUrl, String httpMethod);
+
+    /**
+     * 查找所有权限资源配置，用于动态权限验证
+     * 返回所有包含资源URL的权限
+     */
+    @Query(&quot;SELECT p FROM Permission p WHERE p.resourceUrl IS NOT NULL&quot;)
+    List&lt;Permission&gt; findAllResourcePermissions();
+
+    /**
+     * 根据用户ID查找该用户拥有的所有权限
+     * 通过用户-&gt;角色-&gt;权限的关联查询
+     */
+    @Query(&quot;SELECT DISTINCT p FROM Permission p &quot; +
+           &quot;JOIN p.roles r &quot; +
+           &quot;JOIN r.users u &quot; +
+           &quot;WHERE u.id = :userId&quot;)
+    List&lt;Permission&gt; findPermissionsByUserId(@Param(&quot;userId&quot;) Long userId);
+
+    /**
+     * 检查权限名是否存在
+     */
+    boolean existsByName(String name);
+}
+</code></pre>
+<h2 id="4-jwt_1">4. JWT工具类</h2>
+<h3 id="jwttokenproviderjava_1">JwtTokenProvider.java</h3>
+<pre><code class="language-java">package com.example.rbac.security;
+
+import io.jsonwebtoken.*;
+import io.jsonwebtoken.security.Keys;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.stereotype.Component;
+
+import javax.crypto.SecretKey;
+import java.util.Date;
+
+/**
+ * JWT Token 提供者
+ * 负责生成、解析和验证JWT令牌
+ */
+@Component
+public class JwtTokenProvider {
+
+    private static final Logger logger = LoggerFactory.getLogger(JwtTokenProvider.class);
+
+    // JWT密钥，从配置文件读取
+    @Value(&quot;${app.jwt.secret:mySecretKey}&quot;)
+    private String jwtSecret;
+
+    // JWT过期时间（毫秒），默认24小时
+    @Value(&quot;${app.jwt.expiration:86400000}&quot;)
+    private long jwtExpiration;
+
+    /**
+     * 生成JWT令牌
+     * @param authentication 认证信息
+     * @return JWT令牌字符串
+     */
+    public String generateToken(Authentication authentication) {
+        UserDetails userDetails = (UserDetails) authentication.getPrincipal();
+        Date expiryDate = new Date(System.currentTimeMillis() + jwtExpiration);
+
+        // 使用HMAC SHA算法签名
+        SecretKey key = Keys.hmacShaKeyFor(jwtSecret.getBytes());
+
+        return Jwts.builder()
+                .setSubject(userDetails.getUsername())
+                .setIssuedAt(new Date())
+                .setExpiration(expiryDate)
+                .signWith(key, SignatureAlgorithm.HS512)
+                .compact();
+    }
+
+    /**
+     * 从JWT令牌中获取用户名
+     * @param token JWT令牌
+     * @return 用户名
+     */
+    public String getUsernameFromToken(String token) {
+        SecretKey key = Keys.hmacShaKeyFor(jwtSecret.getBytes());
+        Claims claims = Jwts.parserBuilder()
+                .setSigningKey(key)
+                .build()
+                .parseClaimsJws(token)
+                .getBody();
+        return claims.getSubject();
+    }
+
+    /**
+     * 验证JWT令牌
+     * @param token JWT令牌
+     * @return 是否有效
+     */
+    public boolean validateToken(String token) {
+        try {
+            SecretKey key = Keys.hmacShaKeyFor(jwtSecret.getBytes());
+            Jwts.parserBuilder()
+                .setSigningKey(key)
+                .build()
+                .parseClaimsJws(token);
+            return true;
+        } catch (SecurityException ex) {
+            logger.error(&quot;Invalid JWT signature: {}&quot;, ex.getMessage());
+        } catch (MalformedJwtException ex) {
+            logger.error(&quot;Invalid JWT token: {}&quot;, ex.getMessage());
+        } catch (ExpiredJwtException ex) {
+            logger.error(&quot;Expired JWT token: {}&quot;, ex.getMessage());
+        } catch (UnsupportedJwtException ex) {
+            logger.error(&quot;Unsupported JWT token: {}&quot;, ex.getMessage());
+        } catch (IllegalArgumentException ex) {
+            logger.error(&quot;JWT claims string is empty: {}&quot;, ex.getMessage());
+        }
+        return false;
+    }
+}
+</code></pre>
+<h2 id="5_1">5. 自定义用户详情服务</h2>
+<h3 id="customuserdetailsservicejava_1">CustomUserDetailsService.java</h3>
+<pre><code class="language-java">package com.example.rbac.security;
+
+import com.example.rbac.entity.User;
+import com.example.rbac.entity.Role;
+import com.example.rbac.entity.Permission;
+import com.example.rbac.repository.UserRepository;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Set;
+
+/**
+ * 自定义用户详情服务
+ * 实现Spring Security的UserDetailsService接口
+ * 负责从数据库加载用户信息和权限信息
+ */
+@Service
+public class CustomUserDetailsService implements UserDetailsService {
+
+    @Autowired
+    private UserRepository userRepository;
+
+    /**
+     * 根据用户名加载用户详情
+     * 这个方法在用户认证时被调用
+     * @param username 用户名
+     * @return UserDetails 用户详情对象
+     * @throws UsernameNotFoundException 用户不存在异常
+     */
+    @Override
+    @Transactional(readOnly = true)
+    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+        // 从数据库查找用户，同时预加载角色和权限信息
+        User user = userRepository.findByUsernameWithRolesAndPermissions(username)
+                .orElseThrow(() -&gt; new UsernameNotFoundException(&quot;User not found: &quot; + username));
+
+        // 构建用户权限列表
+        List&lt;GrantedAuthority&gt; authorities = buildUserAuthorities(user.getRoles());
+
+        // 创建Spring Security的User对象
+        return org.springframework.security.core.userdetails.User.builder()
+                .username(user.getUsername())
+                .password(user.getPassword())
+                .authorities(authorities)
+                .accountExpired(false)
+                .accountLocked(false)
+                .credentialsExpired(false)
+                .disabled(!user.getEnabled())
+                .build();
+    }
+
+    /**
+     * 构建用户权限列表
+     * 将角色和权限转换为Spring Security的GrantedAuthority
+     * @param roles 用户角色集合
+     * @return 权限列表
+     */
+    private List&lt;GrantedAuthority&gt; buildUserAuthorities(Set&lt;Role&gt; roles) {
+        List&lt;GrantedAuthority&gt; authorities = new ArrayList&lt;&gt;();
+
+        for (Role role : roles) {
+            // 添加角色权限，角色名前缀为ROLE_
+            authorities.add(new SimpleGrantedAuthority(&quot;ROLE_&quot; + role.getName()));
+
+            // 添加角色下的具体权限
+            for (Permission permission : role.getPermissions()) {
+                authorities.add(new SimpleGrantedAuthority(permission.getName()));
+            }
+        }
+
+        return authorities;
+    }
+}
+</code></pre>
+<h2 id="6-jwt">6. JWT认证过滤器</h2>
+<h3 id="jwtauthenticationfilterjava">JwtAuthenticationFilter.java</h3>
+<pre><code class="language-java">package com.example.rbac.security;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.web.authentication.WebAuthenticationDetailsSource;
+import org.springframework.stereotype.Component;
+import org.springframework.util.StringUtils;
+import org.springframework.web.filter.OncePerRequestFilter;
+
+import javax.servlet.FilterChain;
+import javax.servlet.ServletException;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
+
+/**
+ * JWT认证过滤器
+ * 继承OncePerRequestFilter确保每个请求只执行一次
+ * 负责从请求头中提取JWT令牌并验证用户身份
+ */
+@Component
+public class JwtAuthenticationFilter extends OncePerRequestFilter {
+
+    private static final Logger logger = LoggerFactory.getLogger(JwtAuthenticationFilter.class);
+
+    @Autowired
+    private JwtTokenProvider jwtTokenProvider;
+
+    @Autowired
+    private CustomUserDetailsService userDetailsService;
+
+    /**
+     * 执行JWT认证过滤
+     * @param request HTTP请求
+     * @param response HTTP响应
+     * @param filterChain 过滤器链
+     */
+    @Override
+    protected void doFilterInternal(HttpServletRequest request, 
+                                   HttpServletResponse response, 
+                                   FilterChain filterChain) throws ServletException, IOException {
+        try {
+            // 从请求头中提取JWT令牌
+            String jwt = getJwtFromRequest(request);
+
+            // 验证令牌并设置认证信息
+            if (StringUtils.hasText(jwt) &amp;&amp; jwtTokenProvider.validateToken(jwt)) {
+                String username = jwtTokenProvider.getUsernameFromToken(jwt);
+
+                // 加载用户详情
+                UserDetails userDetails = userDetailsService.loadUserByUsername(username);
+
+                // 创建认证令牌
+                UsernamePasswordAuthenticationToken authentication = 
+                    new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities());
+                authentication.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
+
+                // 设置到安全上下文中
+                SecurityContextHolder.getContext().setAuthentication(authentication);
+            }
+        } catch (Exception ex) {
+            logger.error(&quot;Could not set user authentication in security context&quot;, ex);
+        }
+
+        // 继续执行过滤器链
+        filterChain.doFilter(request, response);
+    }
+
+    /**
+     * 从请求头中提取JWT令牌
+     * @param request HTTP请求
+     * @return JWT令牌字符串
+     */
+    private String getJwtFromRequest(HttpServletRequest request) {
+        String bearerToken = request.getHeader(&quot;Authorization&quot;);
+        if (StringUtils.hasText(bearerToken) &amp;&amp; bearerToken.startsWith(&quot;Bearer &quot;)) {
+            return bearerToken.substring(7);
+        }
+        return null;
+    }
+}
+</code></pre>
+<h2 id="7">7. 自定义权限数据源（重点）</h2>
+<h3 id="customsecuritymetadatasourcejava">CustomSecurityMetadataSource.java</h3>
+<pre><code class="language-java">package com.example.rbac.security;
+
+import com.example.rbac.entity.Permission;
+import com.example.rbac.repository.PermissionRepository;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.redis.core.RedisTemplate;
+import org.springframework.security.access.ConfigAttribute;
+import org.springframework.security.access.SecurityConfig;
+import org.springframework.security.web.FilterInvocation;
+import org.springframework.security.web.access.intercept.FilterInvocationSecurityMetadataSource;
+import org.springframework.stereotype.Component;
+import org.springframework.util.AntPathMatcher;
+
+import javax.annotation.PostConstruct;
+import java.util.*;
+import java.util.concurrent.TimeUnit;
+
+/**
+ * 自定义权限数据源（重点类）
+ * 实现FilterInvocationSecurityMetadataSource接口
+ * 
+ * 核心作用：
+ * 1. 根据请求的URL和HTTP方法，动态确定访问该资源所需的权限
+ * 2. 从数据库动态加载权限配置，支持权限的动态更新
+ * 3. 使用Redis缓存提高性能
+ * 4. 为FilterSecurityInterceptor提供权限配置信息
+ */
+@Component
+public class CustomSecurityMetadataSource implements FilterInvocationSecurityMetadataSource {
+
+    private static final Logger logger = LoggerFactory.getLogger(CustomSecurityMetadataSource.class);
+
+    @Autowired
+    private PermissionRepository permissionRepository;
+
+    @Autowired
+    private RedisTemplate&lt;String, Object&gt; redisTemplate;
+
+    // 路径匹配器，用于匹配URL模式
+    private final AntPathMatcher pathMatcher = new AntPathMatcher();
+
+    // Redis缓存key前缀
+    private static final String PERMISSION_CACHE_PREFIX = &quot;permission:&quot;;
+    private static final String ALL_PERMISSIONS_CACHE_KEY = &quot;all_permissions&quot;;
+
+    // 权限配置本地缓存
+    private Map&lt;String, List&lt;String&gt;&gt; resourcePermissionMap = new HashMap&lt;&gt;();
+
+    /**
+     * 初始化权限数据源
+     * 系统启动时加载所有权限配置到缓存
+     */
+    @PostConstruct
+    public void init() {
+        logger.info(&quot;初始化权限数据源...&quot;);
+        loadAllPermissions();
+        logger.info(&quot;权限数据源初始化完成，共加载{}个权限配置&quot;, resourcePermissionMap.size());
+    }
+
+    /**
+     * 核心方法：根据请求获取所需权限
+     * 这个方法在每次请求时被FilterSecurityInterceptor调用
+     * 
+     * @param object FilterInvocation对象，包含请求信息
+     * @return 访问该资源所需的权限配置集合
+     */
+    @Override
+    public Collection&lt;ConfigAttribute&gt; getAttributes(Object object) throws IllegalArgumentException {
+        FilterInvocation filterInvocation = (FilterInvocation) object;
+        String requestUrl = filterInvocation.getRequestUrl();
+        String httpMethod = filterInvocation.getRequest().getMethod();
+
+        logger.debug(&quot;获取资源权限配置: URL={}, Method={}&quot;, requestUrl, httpMethod);
+
+        // 移除查询参数，只保留路径部分
+        String path = requestUrl.split(&quot;\\?&quot;)[0];
+
+        // 构建缓存key
+        String cacheKey = PERMISSION_CACHE_PREFIX + httpMethod + &quot;:&quot; + path;
+
+        // 1. 先从Redis缓存中查找
+        List&lt;String&gt; cachedPermissions = (List&lt;String&gt;) redisTemplate.opsForValue().get(cacheKey);
+        if (cachedPermissions != null) {
+            logger.debug(&quot;从Redis缓存获取权限: {}&quot;, cachedPermissions);
+            return createConfigAttributes(cachedPermissions);
+        }
+
+        // 2. 从本地缓存查找匹配的权限
+        List&lt;String&gt; requiredPermissions = findMatchingPermissions(path, httpMethod);
+
+        // 3. 如果没有找到匹配的权限，检查是否需要重新加载
+        if (requiredPermissions.isEmpty()) {
+            logger.debug(&quot;本地缓存中未找到匹配权限，尝试重新加载...&quot;);
+            loadAllPermissions();
+            requiredPermissions = findMatchingPermissions(path, httpMethod);
+        }
+
+        // 4. 缓存结果到Redis（TTL 10分钟）
+        if (!requiredPermissions.isEmpty()) {
+            redisTemplate.opsForValue().set(cacheKey, requiredPermissions, 10, TimeUnit.MINUTES);
+            logger.debug(&quot;权限配置已缓存到Redis: {} -&gt; {}&quot;, cacheKey, requiredPermissions);
+        }
+
+        // 5. 返回权限配置
+        if (requiredPermissions.isEmpty()) {
+            logger.debug(&quot;资源不需要特定权限: {}&quot;, path);
+            return null; // 返回null表示该资源不需要特定权限
+        }
+
+        logger.debug(&quot;资源需要权限: {} -&gt; {}&quot;, path, requiredPermissions);
+        return createConfigAttributes(requiredPermissions);
+    }
+
+    /**
+     * 查找匹配的权限
+     * @param path 请求路径
+     * @param httpMethod HTTP方法
+     * @return 匹配的权限列表
+     */
+    private List&lt;String&gt; findMatchingPermissions(String path, String httpMethod) {
+        List&lt;String&gt; matchedPermissions = new ArrayList&lt;&gt;();
+
+        // 遍历所有权限配置，查找匹配的URL模式
+        for (Map.Entry&lt;String, List
+</code></pre>
+<h2 id="prompt_1">Prompt:</h2>
+<p>Continue</p>
+<h2 id="response_1">Response:</h2>
+<p><strong>RBAC权限控制系统 - 完整项目结构</strong> ∙ Version 3</p>
+<pre><code class="language-java"># Spring Boot RBAC 权限控制系统完整Demo
+
+## 项目结构
+</code></pre>
+<p>src/main/java/com/example/rbac/
+├── RbacApplication.java                    # 主启动类
+├── config/
+│   ├── SecurityConfig.java                # Spring Security核心配置
+│   ├── RedisConfig.java                   # Redis配置
+│   └── DataSourceConfig.java             # 数据源配置
+├── security/
+│   ├── JwtTokenProvider.java              # JWT工具类
+│   ├── JwtAuthenticationFilter.java       # JWT认证过滤器
+│   ├── CustomUserDetailsService.java     # 自定义用户详情服务
+│   ├── CustomSecurityMetadataSource.java # 自定义权限数据源（重点）
+│   ├── CustomAccessDecisionManager.java  # 自定义访问决策管理器（重点）
+│   └── CustomAuthenticationEntryPoint.java # 自定义认证入口点
+├── entity/
+│   ├── User.java                          # 用户实体
+│   ├── Role.java                          # 角色实体
+│   ├── Permission.java                    # 权限实体
+│   └── UserRole.java                      # 用户角色关联实体
+├── repository/
+│   ├── UserRepository.java                # 用户仓库
+│   ├── RoleRepository.java                # 角色仓库
+│   └── PermissionRepository.java          # 权限仓库
+├── service/
+│   ├── UserService.java                   # 用户服务
+│   ├── AuthService.java                   # 认证服务
+│   └── PermissionService.java             # 权限服务
+├── controller/
+│   ├── AuthController.java                # 认证控制器
+│   ├── UserController.java                # 用户控制器
+│   └── AdminController.java               # 管理员控制器
+└── dto/
+    ├── LoginRequest.java                  # 登录请求DTO
+    ├── LoginResponse.java                 # 登录响应DTO
+    └── ApiResponse.java                   # 通用响应DTO</p>
+<pre><code>
+## 1. 主启动类
+
+```java
+package com.example.rbac;
+
+import org.springframework.boot.SpringApplication;
+import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.cache.annotation.EnableCaching;
+import org.springframework.transaction.annotation.EnableTransactionManagement;
+
+@SpringBootApplication
+@EnableCaching
+@EnableTransactionManagement
+public class RbacApplication {
+    public static void main(String[] args) {
+        SpringApplication.run(RbacApplication.class, args);
+    }
+}
+</code></pre>
+<h2 id="2_2">2. 数据库实体类</h2>
+<h3 id="userjava_2">User.java</h3>
+<pre><code class="language-java">package com.example.rbac.entity;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import javax.persistence.*;
+import java.time.LocalDateTime;
+import java.util.HashSet;
+import java.util.Set;
+
+@Entity
+@Table(name = &quot;users&quot;)
+public class User {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+
+    @Column(unique = true, nullable = false)
+    private String username;
+
+    @JsonIgnore
+    @Column(nullable = false)
+    private String password;
+
+    @Column(nullable = false)
+    private String email;
+
+    @Column(nullable = false)
+    private Boolean enabled = true;
+
+    @Column(name = &quot;created_at&quot;)
+    private LocalDateTime createdAt;
+
+    @Column(name = &quot;updated_at&quot;)
+    private LocalDateTime updatedAt;
+
+    // 多对多关系：用户-角色
+    @ManyToMany(fetch = FetchType.LAZY)
+    @JoinTable(
+        name = &quot;user_roles&quot;,
+        joinColumns = @JoinColumn(name = &quot;user_id&quot;),
+        inverseJoinColumns = @JoinColumn(name = &quot;role_id&quot;)
+    )
+    private Set&lt;Role&gt; roles = new HashSet&lt;&gt;();
+
+    @PrePersist
+    protected void onCreate() {
+        createdAt = LocalDateTime.now();
+        updatedAt = LocalDateTime.now();
+    }
+
+    @PreUpdate
+    protected void onUpdate() {
+        updatedAt = LocalDateTime.now();
+    }
+
+    // 构造函数
+    public User() {}
+
+    public User(String username, String password, String email) {
+        this.username = username;
+        this.password = password;
+        this.email = email;
+    }
+
+    // Getters and Setters
+    public Long getId() { return id; }
+    public void setId(Long id) { this.id = id; }
+
+    public String getUsername() { return username; }
+    public void setUsername(String username) { this.username = username; }
+
+    public String getPassword() { return password; }
+    public void setPassword(String password) { this.password = password; }
+
+    public String getEmail() { return email; }
+    public void setEmail(String email) { this.email = email; }
+
+    public Boolean getEnabled() { return enabled; }
+    public void setEnabled(Boolean enabled) { this.enabled = enabled; }
+
+    public LocalDateTime getCreatedAt() { return createdAt; }
+    public void setCreatedAt(LocalDateTime createdAt) { this.createdAt = createdAt; }
+
+    public LocalDateTime getUpdatedAt() { return updatedAt; }
+    public void setUpdatedAt(LocalDateTime updatedAt) { this.updatedAt = updatedAt; }
+
+    public Set&lt;Role&gt; getRoles() { return roles; }
+    public void setRoles(Set&lt;Role&gt; roles) { this.roles = roles; }
+}
+</code></pre>
+<h3 id="rolejava_2">Role.java</h3>
+<pre><code class="language-java">package com.example.rbac.entity;
+
+import javax.persistence.*;
+import java.time.LocalDateTime;
+import java.util.HashSet;
+import java.util.Set;
+
+@Entity
+@Table(name = &quot;roles&quot;)
+public class Role {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+
+    @Column(unique = true, nullable = false)
+    private String name;
+
+    @Column
+    private String description;
+
+    @Column(name = &quot;created_at&quot;)
+    private LocalDateTime createdAt;
+
+    // 多对多关系：角色-权限
+    @ManyToMany(fetch = FetchType.LAZY)
+    @JoinTable(
+        name = &quot;role_permissions&quot;,
+        joinColumns = @JoinColumn(name = &quot;role_id&quot;),
+        inverseJoinColumns = @JoinColumn(name = &quot;permission_id&quot;)
+    )
+    private Set&lt;Permission&gt; permissions = new HashSet&lt;&gt;();
+
+    @PrePersist
+    protected void onCreate() {
+        createdAt = LocalDateTime.now();
+    }
+
+    // 构造函数
+    public Role() {}
+
+    public Role(String name, String description) {
+        this.name = name;
+        this.description = description;
+    }
+
+    // Getters and Setters
+    public Long getId() { return id; }
+    public void setId(Long id) { this.id = id; }
+
+    public String getName() { return name; }
+    public void setName(String name) { this.name = name; }
+
+    public String getDescription() { return description; }
+    public void setDescription(String description) { this.description = description; }
+
+    public LocalDateTime getCreatedAt() { return createdAt; }
+    public void setCreatedAt(LocalDateTime createdAt) { this.createdAt = createdAt; }
+
+    public Set&lt;Permission&gt; getPermissions() { return permissions; }
+    public void setPermissions(Set&lt;Permission&gt; permissions) { this.permissions = permissions; }
+}
+</code></pre>
+<h3 id="permissionjava_2">Permission.java</h3>
+<pre><code class="language-java">package com.example.rbac.entity;
+
+import javax.persistence.*;
+import java.time.LocalDateTime;
+
+@Entity
+@Table(name = &quot;permissions&quot;)
+public class Permission {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+
+    @Column(unique = true, nullable = false)
+    private String name;
+
+    @Column
+    private String description;
+
+    @Column(name = &quot;resource_url&quot;)
+    private String resourceUrl; // 资源URL匹配模式
+
+    @Column(name = &quot;http_method&quot;)
+    private String httpMethod; // HTTP方法：GET, POST, PUT, DELETE等
+
+    @Column(name = &quot;created_at&quot;)
+    private LocalDateTime createdAt;
+
+    @PrePersist
+    protected void onCreate() {
+        createdAt = LocalDateTime.now();
+    }
+
+    // 构造函数
+    public Permission() {}
+
+    public Permission(String name, String description, String resourceUrl, String httpMethod) {
+        this.name = name;
+        this.description = description;
+        this.resourceUrl = resourceUrl;
+        this.httpMethod = httpMethod;
+    }
+
+    // Getters and Setters
+    public Long getId() { return id; }
+    public void setId(Long id) { this.id = id; }
+
+    public String getName() { return name; }
+    public void setName(String name) { this.name = name; }
+
+    public String getDescription() { return description; }
+    public void setDescription(String description) { this.description = description; }
+
+    public String getResourceUrl() { return resourceUrl; }
+    public void setResourceUrl(String resourceUrl) { this.resourceUrl = resourceUrl; }
+
+    public String getHttpMethod() { return httpMethod; }
+    public void setHttpMethod(String httpMethod) { this.httpMethod = httpMethod; }
+
+    public LocalDateTime getCreatedAt() { return createdAt; }
+    public void setCreatedAt(LocalDateTime createdAt) { this.createdAt = createdAt; }
+}
+</code></pre>
+<h2 id="3_2">3. 数据访问层</h2>
+<h3 id="userrepositoryjava_2">UserRepository.java</h3>
+<pre><code class="language-java">package com.example.rbac.repository;
+
+import com.example.rbac.entity.User;
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
+import org.springframework.stereotype.Repository;
+
+import java.util.Optional;
+
+@Repository
+public interface UserRepository extends JpaRepository&lt;User, Long&gt; {
+
+    /**
+     * 根据用户名查找用户，同时预加载角色和权限信息
+     * 使用左连接避免N+1查询问题
+     */
+    @Query(&quot;SELECT DISTINCT u FROM User u &quot; +
+           &quot;LEFT JOIN FETCH u.roles r &quot; +
+           &quot;LEFT JOIN FETCH r.permissions &quot; +
+           &quot;WHERE u.username = :username&quot;)
+    Optional&lt;User&gt; findByUsernameWithRolesAndPermissions(@Param(&quot;username&quot;) String username);
+
+    /**
+     * 根据用户名查找用户
+     */
+    Optional&lt;User&gt; findByUsername(String username);
+
+    /**
+     * 检查用户名是否存在
+     */
+    boolean existsByUsername(String username);
+
+    /**
+     * 检查邮箱是否存在
+     */
+    boolean existsByEmail(String email);
+}
+</code></pre>
+<h3 id="rolerepositoryjava_2">RoleRepository.java</h3>
+<pre><code class="language-java">package com.example.rbac.repository;
+
+import com.example.rbac.entity.Role;
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.stereotype.Repository;
+
+import java.util.List;
+import java.util.Optional;
+
+@Repository
+public interface RoleRepository extends JpaRepository&lt;Role, Long&gt; {
+
+    /**
+     * 根据角色名查找角色
+     */
+    Optional&lt;Role&gt; findByName(String name);
+
+    /**
+     * 查找所有角色并预加载权限信息
+     */
+    @Query(&quot;SELECT DISTINCT r FROM Role r LEFT JOIN FETCH r.permissions&quot;)
+    List&lt;Role&gt; findAllWithPermissions();
+
+    /**
+     * 检查角色名是否存在
+     */
+    boolean existsByName(String name);
+}
+</code></pre>
+<h3 id="permissionrepositoryjava_2">PermissionRepository.java</h3>
+<pre><code class="language-java">package com.example.rbac.repository;
+
+import com.example.rbac.entity.Permission;
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
+import org.springframework.stereotype.Repository;
+
+import java.util.List;
+import java.util.Optional;
+
+@Repository
+public interface PermissionRepository extends JpaRepository&lt;Permission, Long&gt; {
+
+    /**
+     * 根据权限名查找权限
+     */
+    Optional&lt;Permission&gt; findByName(String name);
+
+    /**
+     * 根据资源URL和HTTP方法查找权限
+     */
+    Optional&lt;Permission&gt; findByResourceUrlAndHttpMethod(String resourceUrl, String httpMethod);
+
+    /**
+     * 查找所有权限资源配置，用于动态权限验证
+     * 返回所有包含资源URL的权限
+     */
+    @Query(&quot;SELECT p FROM Permission p WHERE p.resourceUrl IS NOT NULL&quot;)
+    List&lt;Permission&gt; findAllResourcePermissions();
+
+    /**
+     * 根据用户ID查找该用户拥有的所有权限
+     * 通过用户-&gt;角色-&gt;权限的关联查询
+     */
+    @Query(&quot;SELECT DISTINCT p FROM Permission p &quot; +
+           &quot;JOIN p.roles r &quot; +
+           &quot;JOIN r.users u &quot; +
+           &quot;WHERE u.id = :userId&quot;)
+    List&lt;Permission&gt; findPermissionsByUserId(@Param(&quot;userId&quot;) Long userId);
+
+    /**
+     * 检查权限名是否存在
+     */
+    boolean existsByName(String name);
+}
+</code></pre>
+<h2 id="4-jwt_2">4. JWT工具类</h2>
+<h3 id="jwttokenproviderjava_2">JwtTokenProvider.java</h3>
+<pre><code class="language-java">package com.example.rbac.security;
+
+import io.jsonwebtoken.*;
+import io.jsonwebtoken.security.Keys;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.stereotype.Component;
+
+import javax.crypto.SecretKey;
+import java.util.Date;
+
+/**
+ * JWT Token 提供者
+ * 负责生成、解析和验证JWT令牌
+ */
+@Component
+public class JwtTokenProvider {
+
+    private static final Logger logger = LoggerFactory.getLogger(JwtTokenProvider.class);
+
+    // JWT密钥，从配置文件读取
+    @Value(&quot;${app.jwt.secret:mySecretKey}&quot;)
+    private String jwtSecret;
+
+    // JWT过期时间（毫秒），默认24小时
+    @Value(&quot;${app.jwt.expiration:86400000}&quot;)
+    private long jwtExpiration;
+
+    /**
+     * 生成JWT令牌
+     * @param authentication 认证信息
+     * @return JWT令牌字符串
+     */
+    public String generateToken(Authentication authentication) {
+        UserDetails userDetails = (UserDetails) authentication.getPrincipal();
+        Date expiryDate = new Date(System.currentTimeMillis() + jwtExpiration);
+
+        // 使用HMAC SHA算法签名
+        SecretKey key = Keys.hmacShaKeyFor(jwtSecret.getBytes());
+
+        return Jwts.builder()
+                .setSubject(userDetails.getUsername())
+                .setIssuedAt(new Date())
+                .setExpiration(expiryDate)
+                .signWith(key, SignatureAlgorithm.HS512)
+                .compact();
+    }
+
+    /**
+     * 从JWT令牌中获取用户名
+     * @param token JWT令牌
+     * @return 用户名
+     */
+    public String getUsernameFromToken(String token) {
+        SecretKey key = Keys.hmacShaKeyFor(jwtSecret.getBytes());
+        Claims claims = Jwts.parserBuilder()
+                .setSigningKey(key)
+                .build()
+                .parseClaimsJws(token)
+                .getBody();
+        return claims.getSubject();
+    }
+
+    /**
+     * 验证JWT令牌
+     * @param token JWT令牌
+     * @return 是否有效
+     */
+    public boolean validateToken(String token) {
+        try {
+            SecretKey key = Keys.hmacShaKeyFor(jwtSecret.getBytes());
+            Jwts.parserBuilder()
+                .setSigningKey(key)
+                .build()
+                .parseClaimsJws(token);
+            return true;
+        } catch (SecurityException ex) {
+            logger.error(&quot;Invalid JWT signature: {}&quot;, ex.getMessage());
+        } catch (MalformedJwtException ex) {
+            logger.error(&quot;Invalid JWT token: {}&quot;, ex.getMessage());
+        } catch (ExpiredJwtException ex) {
+            logger.error(&quot;Expired JWT token: {}&quot;, ex.getMessage());
+        } catch (UnsupportedJwtException ex) {
+            logger.error(&quot;Unsupported JWT token: {}&quot;, ex.getMessage());
+        } catch (IllegalArgumentException ex) {
+            logger.error(&quot;JWT claims string is empty: {}&quot;, ex.getMessage());
+        }
+        return false;
+    }
+}
+</code></pre>
+<h2 id="5_2">5. 自定义用户详情服务</h2>
+<h3 id="customuserdetailsservicejava_2">CustomUserDetailsService.java</h3>
+<pre><code class="language-java">package com.example.rbac.security;
+
+import com.example.rbac.entity.User;
+import com.example.rbac.entity.Role;
+import com.example.rbac.entity.Permission;
+import com.example.rbac.repository.UserRepository;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Set;
+
+/**
+ * 自定义用户详情服务
+ * 实现Spring Security的UserDetailsService接口
+ * 负责从数据库加载用户信息和权限信息
+ */
+@Service
+public class CustomUserDetailsService implements UserDetailsService {
+
+    @Autowired
+    private UserRepository userRepository;
+
+    /**
+     * 根据用户名加载用户详情
+     * 这个方法在用户认证时被调用
+     * @param username 用户名
+     * @return UserDetails 用户详情对象
+     * @throws UsernameNotFoundException 用户不存在异常
+     */
+    @Override
+    @Transactional(readOnly = true)
+    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+        // 从数据库查找用户，同时预加载角色和权限信息
+        User user = userRepository.findByUsernameWithRolesAndPermissions(username)
+                .orElseThrow(() -&gt; new UsernameNotFoundException(&quot;User not found: &quot; + username));
+
+        // 构建用户权限列表
+        List&lt;GrantedAuthority&gt; authorities = buildUserAuthorities(user.getRoles());
+
+        // 创建Spring Security的User对象
+        return org.springframework.security.core.userdetails.User.builder()
+                .username(user.getUsername())
+                .password(user.getPassword())
+                .authorities(authorities)
+                .accountExpired(false)
+                .accountLocked(false)
+                .credentialsExpired(false)
+                .disabled(!user.getEnabled())
+                .build();
+    }
+
+    /**
+     * 构建用户权限列表
+     * 将角色和权限转换为Spring Security的GrantedAuthority
+     * @param roles 用户角色集合
+     * @return 权限列表
+     */
+    private List&lt;GrantedAuthority&gt; buildUserAuthorities(Set&lt;Role&gt; roles) {
+        List&lt;GrantedAuthority&gt; authorities = new ArrayList&lt;&gt;();
+
+        for (Role role : roles) {
+            // 添加角色权限，角色名前缀为ROLE_
+            authorities.add(new SimpleGrantedAuthority(&quot;ROLE_&quot; + role.getName()));
+
+            // 添加角色下的具体权限
+            for (Permission permission : role.getPermissions()) {
+                authorities.add(new SimpleGrantedAuthority(permission.getName()));
+            }
+        }
+
+        return authorities;
+    }
+}
+</code></pre>
+<h2 id="6-jwt_1">6. JWT认证过滤器</h2>
+<h3 id="jwtauthenticationfilterjava_1">JwtAuthenticationFilter.java</h3>
+<pre><code class="language-java">package com.example.rbac.security;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.web.authentication.WebAuthenticationDetailsSource;
+import org.springframework.stereotype.Component;
+import org.springframework.util.StringUtils;
+import org.springframework.web.filter.OncePerRequestFilter;
+
+import javax.servlet.FilterChain;
+import javax.servlet.ServletException;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
+
+/**
+ * JWT认证过滤器
+ * 继承OncePerRequestFilter确保每个请求只执行一次
+ * 负责从请求头中提取JWT令牌并验证用户身份
+ */
+@Component
+public class JwtAuthenticationFilter extends OncePerRequestFilter {
+
+    private static final Logger logger = LoggerFactory.getLogger(JwtAuthenticationFilter.class);
+
+    @Autowired
+    private JwtTokenProvider jwtTokenProvider;
+
+    @Autowired
+    private CustomUserDetailsService userDetailsService;
+
+    /**
+     * 执行JWT认证过滤
+     * @param request HTTP请求
+     * @param response HTTP响应
+     * @param filterChain 过滤器链
+     */
+    @Override
+    protected void doFilterInternal(HttpServletRequest request, 
+                                   HttpServletResponse response, 
+                                   FilterChain filterChain) throws ServletException, IOException {
+        try {
+            // 从请求头中提取JWT令牌
+            String jwt = getJwtFromRequest(request);
+
+            // 验证令牌并设置认证信息
+            if (StringUtils.hasText(jwt) &amp;&amp; jwtTokenProvider.validateToken(jwt)) {
+                String username = jwtTokenProvider.getUsernameFromToken(jwt);
+
+                // 加载用户详情
+                UserDetails userDetails = userDetailsService.loadUserByUsername(username);
+
+                // 创建认证令牌
+                UsernamePasswordAuthenticationToken authentication = 
+                    new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities());
+                authentication.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
+
+                // 设置到安全上下文中
+                SecurityContextHolder.getContext().setAuthentication(authentication);
+            }
+        } catch (Exception ex) {
+            logger.error(&quot;Could not set user authentication in security context&quot;, ex);
+        }
+
+        // 继续执行过滤器链
+        filterChain.doFilter(request, response);
+    }
+
+    /**
+     * 从请求头中提取JWT令牌
+     * @param request HTTP请求
+     * @return JWT令牌字符串
+     */
+    private String getJwtFromRequest(HttpServletRequest request) {
+        String bearerToken = request.getHeader(&quot;Authorization&quot;);
+        if (StringUtils.hasText(bearerToken) &amp;&amp; bearerToken.startsWith(&quot;Bearer &quot;)) {
+            return bearerToken.substring(7);
+        }
+        return null;
+    }
+}
+</code></pre>
+<h2 id="7_1">7. 自定义权限数据源（重点）</h2>
+<h3 id="customsecuritymetadatasourcejava_1">CustomSecurityMetadataSource.java</h3>
+<pre><code class="language-java">package com.example.rbac.security;
+
+import com.example.rbac.entity.Permission;
+import com.example.rbac.repository.PermissionRepository;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.redis.core.RedisTemplate;
+import org.springframework.security.access.ConfigAttribute;
+import org.springframework.security.access.SecurityConfig;
+import org.springframework.security.web.FilterInvocation;
+import org.springframework.security.web.access.intercept.FilterInvocationSecurityMetadataSource;
+import org.springframework.stereotype.Component;
+import org.springframework.util.AntPathMatcher;
+
+import javax.annotation.PostConstruct;
+import java.util.*;
+import java.util.concurrent.TimeUnit;
+
+/**
+ * 自定义权限数据源（重点类）
+ * 实现FilterInvocationSecurityMetadataSource接口
+ * 
+ * 核心作用：
+ * 1. 根据请求的URL和HTTP方法，动态确定访问该资源所需的权限
+ * 2. 从数据库动态加载权限配置，支持权限的动态更新
+ * 3. 使用Redis缓存提高性能
+ * 4. 为FilterSecurityInterceptor提供权限配置信息
+ */
+@Component
+public class CustomSecurityMetadataSource implements FilterInvocationSecurityMetadataSource {
+
+    private static final Logger logger = LoggerFactory.getLogger(CustomSecurityMetadataSource.class);
+
+    @Autowired
+    private PermissionRepository permissionRepository;
+
+    @Autowired
+    private RedisTemplate&lt;String, Object&gt; redisTemplate;
+
+    // 路径匹配器，用于匹配URL模式
+    private final AntPathMatcher pathMatcher = new AntPathMatcher();
+
+    // Redis缓存key前缀
+    private static final String PERMISSION_CACHE_PREFIX = &quot;permission:&quot;;
+    private static final String ALL_PERMISSIONS_CACHE_KEY = &quot;all_permissions&quot;;
+
+    // 权限配置本地缓存
+    private Map&lt;String, List&lt;String&gt;&gt; resourcePermissionMap = new HashMap&lt;&gt;();
+
+    /**
+     * 初始化权限数据源
+     * 系统启动时加载所有权限配置到缓存
+     */
+    @PostConstruct
+    public void init() {
+        logger.info(&quot;初始化权限数据源...&quot;);
+        loadAllPermissions();
+        logger.info(&quot;权限数据源初始化完成，共加载{}个权限配置&quot;, resourcePermissionMap.size());
+    }
+
+    /**
+     * 核心方法：根据请求获取所需权限
+     * 这个方法在每次请求时被FilterSecurityInterceptor调用
+     * 
+     * @param object FilterInvocation对象，包含请求信息
+     * @return 访问该资源所需的权限配置集合
+     */
+    @Override
+    public Collection&lt;ConfigAttribute&gt; getAttributes(Object object) throws IllegalArgumentException {
+        FilterInvocation filterInvocation = (FilterInvocation) object;
+        String requestUrl = filterInvocation.getRequestUrl();
+        String httpMethod = filterInvocation.getRequest().getMethod();
+
+        logger.debug(&quot;获取资源权限配置: URL={}, Method={}&quot;, requestUrl, httpMethod);
+
+        // 移除查询参数，只保留路径部分
+        String path = requestUrl.split(&quot;\\?&quot;)[0];
+
+        // 构建缓存key
+        String cacheKey = PERMISSION_CACHE_PREFIX + httpMethod + &quot;:&quot; + path;
+
+        // 1. 先从Redis缓存中查找
+        List&lt;String&gt; cachedPermissions = (List&lt;String&gt;) redisTemplate.opsForValue().get(cacheKey);
+        if (cachedPermissions != null) {
+            logger.debug(&quot;从Redis缓存获取权限: {}&quot;, cachedPermissions);
+            return createConfigAttributes(cachedPermissions);
+        }
+
+        // 2. 从本地缓存查找匹配的权限
+        List&lt;String&gt; requiredPermissions = findMatchingPermissions(path, httpMethod);
+
+        // 3. 如果没有找到匹配的权限，检查是否需要重新加载
+        if (requiredPermissions.isEmpty()) {
+            logger.debug(&quot;本地缓存中未找到匹配权限，尝试重新加载...&quot;);
+            loadAllPermissions();
+            requiredPermissions = findMatchingPermissions(path, httpMethod);
+        }
+
+        // 4. 缓存结果到Redis（TTL 10分钟）
+        if (!requiredPermissions.isEmpty()) {
+            redisTemplate.opsForValue().set(cacheKey, requiredPermissions, 10, TimeUnit.MINUTES);
+            logger.debug(&quot;权限配置已缓存到Redis: {} -&gt; {}&quot;, cacheKey, requiredPermissions);
+        }
+
+        // 5. 返回权限配置
+        if (requiredPermissions.isEmpty()) {
+            logger.debug(&quot;资源不需要特定权限: {}&quot;, path);
+            return null; // 返回null表示该资源不需要特定权限
+        }
+
+        logger.debug(&quot;资源需要权限: {} -&gt; {}&quot;, path, requiredPermissions);
+        return createConfigAttributes(requiredPermissions);
+    }
+
+    /**
+     * 查找匹配的权限
+     * @param path 请求路径
+     * @param httpMethod HTTP方法
+     * @return 匹配的权限列表
+     */
+    private List&lt;String&gt; findMatchingPermissions(String path, String httpMethod) {
+        List&lt;String&gt; matchedPermissions = new ArrayList&lt;&gt;();
+
+        // 遍历所有权限配置，查找匹配的URL模式
+        for (Map.Entry&lt;String, List&lt;String&gt;&gt; entry : resourcePermissionMap.entrySet()) {
+            String resourcePattern = entry.getKey();
+            List&lt;String&gt; permissions = entry.getValue();
+
+            // 解析资源模式：METHOD:URL_PATTERN
+            String[] parts = resourcePattern.split(&quot;:&quot;, 2);
+            if (parts.length == 2) {
+                String patternMethod = parts[0];
+                String patternUrl = parts[1];
+
+                // 匹配HTTP方法和URL模式
+                if (patternMethod.equals(httpMethod) &amp;&amp; pathMatcher.match(patternUrl, path)) {
+                    matchedPermissions.addAll(permissions);
+                    logger.debug(&quot;匹配到权限模式: {} -&gt; {}&quot;, resourcePattern, permissions);
+                }
+            }
+        }
+
+        return matchedPermissions;
+    }
+
+    /**
+     * 从数据库加载所有权限配置
+     */
+    private void loadAllPermissions() {
+        try {
+            // 清空本地缓存
+            resourcePermissionMap.clear();
+
+            // 从数据库查询所有权限配置
+            List&lt;Permission&gt; permissions = permissionRepository.findAllResourcePermissions();
+
+            for (Permission permission : permissions) {
+                String resourceUrl = permission.getResourceUrl();
+                String httpMethod = permission.getHttpMethod();
+                String permissionName = permission.getName();
+
+                if (resourceUrl != null &amp;&amp; httpMethod != null) {
+                    // 构建资源模式key：METHOD:URL_PATTERN
+                    String resourceKey = httpMethod + &quot;:&quot; + resourceUrl;
+
+                    // 将权限添加到对应的资源模式中
+                    resourcePermissionMap.computeIfAbsent(resourceKey, k -&gt; new ArrayList&lt;&gt;())
+                            .add(permissionName);
+                }
+            }
+
+            // 更新Redis中的全量权限缓存
+            redisTemplate.opsForValue().set(ALL_PERMISSIONS_CACHE_KEY, resourcePermissionMap, 30, TimeUnit.MINUTES);
+
+            logger.info(&quot;权限配置加载完成，共{}个资源模式&quot;, resourcePermissionMap.size());
+
+        } catch (Exception e) {
+            logger.error(&quot;加载权限配置失败&quot;, e);
+        }
+    }
+
+    /**
+     * 创建权限配置属性集合
+     * @param permissions 权限名称列表
+     * @return ConfigAttribute集合
+     */
+    private Collection&lt;ConfigAttribute&gt; createConfigAttributes(List&lt;String&gt; permissions) {
+        Collection&lt;ConfigAttribute&gt; configAttributes = new ArrayList&lt;&gt;();
+        for (String permission : permissions) {
+            configAttributes.add(new SecurityConfig(permission));
+        }
+        return configAttributes;
+    }
+
+    /**
+     * 获取所有权限配置
+     * FilterSecurityInterceptor在启动时会调用这个方法
+     * @return 所有权限配置
+     */
+    @Override
+    public Collection&lt;ConfigAttribute&gt; getAllConfigAttributes() {
+        // 收集所有权限配置
+        Set&lt;ConfigAttribute&gt; allAttributes = new HashSet&lt;&gt;();
+        for (List&lt;String&gt; permissions : resourcePermissionMap.values()) {
+            allAttributes.addAll(createConfigAttributes(permissions));
+        }
+        return allAttributes;
+    }
+
+    /**
+     * 指示是否支持指定的类
+     * @param clazz 类
+     * @return 是否支持
+     */
+    @Override
+    public boolean supports(Class&lt;?&gt; clazz) {
+        return FilterInvocation.class.isAssignableFrom(clazz);
+    }
+
+    /**
+     * 刷新权限配置
+     * 当权限配置发生变化时可以调用此方法
+     */
+    public void refreshPermissions() {
+        logger.info(&quot;刷新权限配置...&quot;);
+        loadAllPermissions();
+        // 清空Redis中的权限缓存
+        Set&lt;String&gt; keys = redisTemplate.keys(PERMISSION_CACHE_PREFIX + &quot;*&quot;);
+        if (keys != null &amp;&amp; !keys.isEmpty()) {
+            redisTemplate.delete(keys);
+        }
+        logger.info(&quot;权限配置刷新完成&quot;);
+    }
+}
+</code></pre>
+<h2 id="8">8. 自定义访问决策管理器（重点）</h2>
+<h3 id="customaccessdecisionmanagerjava">CustomAccessDecisionManager.java</h3>
+<pre><code class="language-java">package com.example.rbac.security;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.security.access.AccessDecisionManager;
+import org.springframework.security.access.AccessDeniedException;
+import org.springframework.security.access.ConfigAttribute;
+import org.springframework.security.authentication.InsufficientAuthenticationException;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.stereotype.Component;
+
+import java.util.Collection;
+
+/**
+ * 自定义访问决策管理器（重点类）
+ * 实现AccessDecisionManager接口
+ * 
+ * 核心作用：
+ * 1. 决定用户是否有权限访问特定资源
+ * 2. 比较用户拥有的权限与资源所需的权限
+ * 3. 实现灵活的权限决策逻辑
+ * 4. 支持多种决策策略：一票通过、一票否决、少数服从多数
+ */
+@Component
+public class CustomAccessDecisionManager implements AccessDecisionManager {
+
+    private static final Logger logger = LoggerFactory.getLogger(CustomAccessDecisionManager.class);
+
+    /**
+     * 核心决策方法
+     * 这个方法在每次权限验证时被调用
+     * 
+     * @param authentication 当前用户的认证信息
+     * @param object 被访问的资源对象（通常是FilterInvocation）
+     * @param configAttributes 访问该资源所需的权限配置
+     * @throws AccessDeniedException 访问被拒绝异常
+     * @throws InsufficientAuthenticationException 认证不足异常
+     */
+    @Override
+    public void decide(Authentication authentication, Object object, Collection&lt;ConfigAttribute&gt; configAttributes)
+            throws AccessDeniedException, InsufficientAuthenticationException {
+
+        // 1. 如果没有配置权限要求，直接通过
+        if (configAttributes == null || configAttributes.isEmpty()) {
+            logger.debug(&quot;资源没有权限要求，直接通过访问&quot;);
+            return;
+        }
+
+        // 2. 检查用户是否已认证
+        if (authentication == null || !authentication.isAuthenticated()) {
+            logger.warn(&quot;用户未认证，拒绝访问&quot;);
+            throw new InsufficientAuthenticationException(&quot;用户未认证&quot;);
+        }
+
+        // 3. 获取用户的权限
+        Collection&lt;? extends GrantedAuthority&gt; authorities = authentication.getAuthorities();
+        String username = authentication.getName();
+
+        logger.debug(&quot;开始权限决策: 用户={}, 用户权限={}&quot;, username, authorities);
+
+        // 4. 遍历资源所需的权限，检查用户是否具备
+        for (ConfigAttribute configAttribute : configAttributes) {
+            String needPermission = configAttribute.getAttribute();
+
+            logger.debug(&quot;检查权限: 需要权限={}&quot;, needPermission);
+
+            // 5. 检查用户是否拥有所需权限
+            if (hasPermission(authorities, needPermission)) {
+                logger.debug(&quot;权限验证通过: 用户={}, 权限={}&quot;, username, needPermission);
+                return; // 一票通过策略：只要有一个权限匹配就通过
+            }
+        }
+
+        // 6. 如果没有匹配的权限，拒绝访问
+        logger.warn(&quot;权限验证失败: 用户={}, 需要权限={}, 用户权限={}&quot;, 
+                   username, configAttributes, authorities);
+        throw new AccessDeniedException(&quot;权限不足，访问被拒绝&quot;);
+    }
+
+    /**
+     * 检查用户是否拥有指定权限
+     * @param authorities 用户权限集合
+     * @param needPermission 需要的权限
+     * @return 是否拥有权限
+     */
+    private boolean hasPermission(Collection&lt;? extends GrantedAuthority&gt; authorities, String needPermission) {
+        for (GrantedAuthority authority : authorities) {
+            String userPermission = authority.getAuthority();
+
+            // 精确匹配权限
+            if (needPermission.equals(userPermission)) {
+                logger.debug(&quot;权限精确匹配: {}&quot;, needPermission);
+                return true;
+            }
+
+            // 支持超级管理员权限
+            if (&quot;ROLE_SUPER_ADMIN&quot;.equals(userPermission)) {
+                logger.debug(&quot;超级管理员权限通过: {}&quot;, needPermission);
+                return true;
+            }
+
+            // 可以在这里添加更多的权限匹配逻辑
+            // 例如：层级权限、通配符权限等
+        }
+        return false;
+    }
+
+    /**
+     * 指示是否支持指定的权限配置属性
+     * @param attribute 权限配置属性
+     * @return 是否支持
+     */
+    @Override
+    public boolean supports(ConfigAttribute attribute) {
+        return attribute.getAttribute() != null;
+    }
+
+    /**
+     * 指示是否支持指定的类
+     * @param clazz 类
+     * @return 是否支持
+     */
+    @Override
+    public boolean supports(Class&lt;?&gt; clazz) {
+        return true;
+    }
+}
+</code></pre>
+<h2 id="9">9. 自定义认证入口点</h2>
+<h3 id="customauthenticationentrypointjava">CustomAuthenticationEntryPoint.java</h3>
+<pre><code class="language-java">package com.example.rbac.security;
+
+import com.fasterxml.jackson.databind.ObjectMapper;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.http.MediaType;
+import org.springframework.security.core.AuthenticationException;
+import org.springframework.security.web.AuthenticationEntryPoint;
+import org.springframework.stereotype.Component;
+
+import javax.servlet.ServletException;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
+import java.util.HashMap;
+import java.util.Map;
+
+/**
+ * 自定义认证入口点
+ * 当用户未认证时的处理逻辑
+ */
+@Component
+public class CustomAuthenticationEntryPoint implements AuthenticationEntryPoint {
+
+    private static final Logger logger = LoggerFactory.getLogger(CustomAuthenticationEntryPoint.class);
+
+    private final ObjectMapper objectMapper = new ObjectMapper();
+
+    @Override
+    public void commence(HttpServletRequest request, HttpServletResponse response,
+                         AuthenticationException authException) throws IOException, ServletException {
+
+        logger.error(&quot;认证失败: {}&quot;, authException.getMessage());
+
+        response.setContentType(MediaType.APPLICATION_JSON_VALUE);
+        response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+
+        Map&lt;String, Object&gt; result = new HashMap&lt;&gt;();
+        result.put(&quot;code&quot;, HttpServletResponse.SC_UNAUTHORIZED);
+        result.put(&quot;message&quot;, &quot;认证失败，请先登录&quot;);
+        result.put(&quot;data&quot;, null);
+        result.put(&quot;timestamp&quot;, System.currentTimeMillis());
+
+        objectMapper.writeValue(response.getOutputStream(), result);
+    }
+}
+</code></pre>
+<h2 id="10">10. 配置类</h2>
+<h3 id="securityconfigjava">SecurityConfig.java</h3>
+<pre><code class="language-java">package com.example.rbac.config;
+
+import com.example.rbac.security.*;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
+import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
+import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
+import org.springframework.security.config.http.SessionCreationPolicy;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.access.intercept.FilterSecurityInterceptor;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+
+/**
+ * Spring Security核心配置类
+ * 配置认证和授权的核心组件
+ */
+@Configuration
+@EnableWebSecurity
+@EnableGlobalMethodSecurity(prePostEnabled = true)
+public class SecurityConfig {
+
+    @Autowired
+    private CustomUserDetailsService userDetailsService;
+
+    @Autowired
+    private CustomAuthenticationEntryPoint authenticationEntryPoint;
+
+    @Autowired
+    private JwtAuthenticationFilter jwtAuthenticationFilter;
+
+    @Autowired
+    private CustomSecurityMetadataSource securityMetadataSource;
+
+    @Autowired
+    private CustomAccessDecisionManager accessDecisionManager;
+
+    /**
+     * 密码编码器
+     */
+    @Bean
+    public PasswordEncoder passwordEncoder() {
+        return new BCryptPasswordEncoder();
+    }
+
+    /**
+     * 认证管理器
+     */
+    @Bean
+    public AuthenticationManager authenticationManager(AuthenticationConfiguration config) throws Exception {
+        return config.getAuthenticationManager();
+    }
+
+    /**
+     * 自定义FilterSecurityInterceptor
+     * 这是权限控制的核心过滤器
+     */
+    @Bean
+    public FilterSecurityInterceptor filterSecurityInterceptor() {
+        FilterSecurityInterceptor interceptor = new FilterSecurityInterceptor();
+
+        // 设置自定义的权限数据源
+        interceptor.setSecurityMetadataSource(securityMetadataSource);
+
+        // 设置自定义的访问决策管理器
+        interceptor.setAccessDecisionManager(accessDecisionManager);
+
+        return interceptor;
+    }
+
+    /**
+     * 安全过滤器链配置
+     */
+    @Bean
+    public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
+        http.cors().and().csrf().disable()
+            .exceptionHandling()
+                .authenticationEntryPoint(authenticationEntryPoint)
+                .and()
+            .sessionManagement()
+                .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
+                .and()
+            .authorizeHttpRequests(authz -&gt; authz
+                // 允许访问的公共端点
+                .requestMatchers(&quot;/auth/login&quot;, &quot;/auth/register&quot;).permitAll()
+                .requestMatchers(&quot;/public/**&quot;).permitAll()
+                // 其他所有请求都需要认证
+                .anyRequest().authenticated()
+            );
+
+        // 添加JWT认证过滤器
+        http.addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);
+
+        // 添加自定义的权限过滤器
+        http.addFilterBefore(filterSecurityInterceptor(), FilterSecurityInterceptor.class);
+
+        return http.build();
+    }
+}
+</code></pre>
+<h3 id="redisconfigjava">RedisConfig.java</h3>
+<pre><code class="language-java">package com.example.rbac.config;
+
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.data.redis.connection.RedisConnectionFactory;
+import org.springframework.data.redis.core.RedisTemplate;
+import org.springframework.data.redis.serializer.GenericJackson2JsonRedisSerializer;
+import org.springframework.data.redis.serializer.StringRedisSerializer;
+
+/**
+ * Redis配置类
+ */
+@Configuration
+public class RedisConfig {
+
+    @Bean
+    public RedisTemplate&lt;String, Object&gt; redisTemplate(RedisConnectionFactory connectionFactory) {
+        RedisTemplate&lt;String, Object&gt; template = new RedisTemplate&lt;&gt;();
+        template.setConnectionFactory(connectionFactory);
+
+        // 设置序列化器
+        template.setKeySerializer(new StringRedisSerializer());
+        template.setValueSerializer(new GenericJackson2JsonRedisSerializer());
+        template.setHashKeySerializer(new StringRedisSerializer());
+        template.setHashValueSerializer(new GenericJackson2JsonRedisSerializer());
+
+        template.afterPropertiesSet();
+        return template;
+    }
+}
+</code></pre>
+<p>继续下一部分...</p>
+<pre><code>
+**RBAC权限控制系统 - 完整项目结构** ∙ Version 4
+
+```java
+# Spring Boot RBAC 权限控制系统完整Demo
+
+## 项目结构
+</code></pre>
+<p>src/main/java/com/example/rbac/
+├── RbacApplication.java                    # 主启动类
+├── config/
+│   ├── SecurityConfig.java                # Spring Security核心配置
+│   ├── RedisConfig.java                   # Redis配置
+│   └── DataSourceConfig.java             # 数据源配置
+├── security/
+│   ├── JwtTokenProvider.java              # JWT工具类
+│   ├── JwtAuthenticationFilter.java       # JWT认证过滤器
+│   ├── CustomUserDetailsService.java     # 自定义用户详情服务
+│   ├── CustomSecurityMetadataSource.java # 自定义权限数据源（重点）
+│   ├── CustomAccessDecisionManager.java  # 自定义访问决策管理器（重点）
+│   └── CustomAuthenticationEntryPoint.java # 自定义认证入口点
+├── entity/
+│   ├── User.java                          # 用户实体
+│   ├── Role.java                          # 角色实体
+│   ├── Permission.java                    # 权限实体
+│   └── UserRole.java                      # 用户角色关联实体
+├── repository/
+│   ├── UserRepository.java                # 用户仓库
+│   ├── RoleRepository.java                # 角色仓库
+│   └── PermissionRepository.java          # 权限仓库
+├── service/
+│   ├── UserService.java                   # 用户服务
+│   ├── AuthService.java                   # 认证服务
+│   └── PermissionService.java             # 权限服务
+├── controller/
+│   ├── AuthController.java                # 认证控制器
+│   ├── UserController.java                # 用户控制器
+│   └── AdminController.java               # 管理员控制器
+└── dto/
+    ├── LoginRequest.java                  # 登录请求DTO
+    ├── LoginResponse.java                 # 登录响应DTO
+    └── ApiResponse.java                   # 通用响应DTO</p>
+<pre><code>
+## 1. 主启动类
+
+```java
+package com.example.rbac;
+
+import org.springframework.boot.SpringApplication;
+import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.cache.annotation.EnableCaching;
+import org.springframework.transaction.annotation.EnableTransactionManagement;
+
+@SpringBootApplication
+@EnableCaching
+@EnableTransactionManagement
+public class RbacApplication {
+    public static void main(String[] args) {
+        SpringApplication.run(RbacApplication.class, args);
+    }
+}
+</code></pre>
+<h2 id="2_3">2. 数据库实体类</h2>
+<h3 id="userjava_3">User.java</h3>
+<pre><code class="language-java">package com.example.rbac.entity;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import javax.persistence.*;
+import java.time.LocalDateTime;
+import java.util.HashSet;
+import java.util.Set;
+
+@Entity
+@Table(name = &quot;users&quot;)
+public class User {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+
+    @Column(unique = true, nullable = false)
+    private String username;
+
+    @JsonIgnore
+    @Column(nullable = false)
+    private String password;
+
+    @Column(nullable = false)
+    private String email;
+
+    @Column(nullable = false)
+    private Boolean enabled = true;
+
+    @Column(name = &quot;created_at&quot;)
+    private LocalDateTime createdAt;
+
+    @Column(name = &quot;updated_at&quot;)
+    private LocalDateTime updatedAt;
+
+    // 多对多关系：用户-角色
+    @ManyToMany(fetch = FetchType.LAZY)
+    @JoinTable(
+        name = &quot;user_roles&quot;,
+        joinColumns = @JoinColumn(name = &quot;user_id&quot;),
+        inverseJoinColumns = @JoinColumn(name = &quot;role_id&quot;)
+    )
+    private Set&lt;Role&gt; roles = new HashSet&lt;&gt;();
+
+    @PrePersist
+    protected void onCreate() {
+        createdAt = LocalDateTime.now();
+        updatedAt = LocalDateTime.now();
+    }
+
+    @PreUpdate
+    protected void onUpdate() {
+        updatedAt = LocalDateTime.now();
+    }
+
+    // 构造函数
+    public User() {}
+
+    public User(String username, String password, String email) {
+        this.username = username;
+        this.password = password;
+        this.email = email;
+    }
+
+    // Getters and Setters
+    public Long getId() { return id; }
+    public void setId(Long id) { this.id = id; }
+
+    public String getUsername() { return username; }
+    public void setUsername(String username) { this.username = username; }
+
+    public String getPassword() { return password; }
+    public void setPassword(String password) { this.password = password; }
+
+    public String getEmail() { return email; }
+    public void setEmail(String email) { this.email = email; }
+
+    public Boolean getEnabled() { return enabled; }
+    public void setEnabled(Boolean enabled) { this.enabled = enabled; }
+
+    public LocalDateTime getCreatedAt() { return createdAt; }
+    public void setCreatedAt(LocalDateTime createdAt) { this.createdAt = createdAt; }
+
+    public LocalDateTime getUpdatedAt() { return updatedAt; }
+    public void setUpdatedAt(LocalDateTime updatedAt) { this.updatedAt = updatedAt; }
+
+    public Set&lt;Role&gt; getRoles() { return roles; }
+    public void setRoles(Set&lt;Role&gt; roles) { this.roles = roles; }
+}
+</code></pre>
+<h3 id="rolejava_3">Role.java</h3>
+<pre><code class="language-java">package com.example.rbac.entity;
+
+import javax.persistence.*;
+import java.time.LocalDateTime;
+import java.util.HashSet;
+import java.util.Set;
+
+@Entity
+@Table(name = &quot;roles&quot;)
+public class Role {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+
+    @Column(unique = true, nullable = false)
+    private String name;
+
+    @Column
+    private String description;
+
+    @Column(name = &quot;created_at&quot;)
+    private LocalDateTime createdAt;
+
+    // 多对多关系：角色-权限
+    @ManyToMany(fetch = FetchType.LAZY)
+    @JoinTable(
+        name = &quot;role_permissions&quot;,
+        joinColumns = @JoinColumn(name = &quot;role_id&quot;),
+        inverseJoinColumns = @JoinColumn(name = &quot;permission_id&quot;)
+    )
+    private Set&lt;Permission&gt; permissions = new HashSet&lt;&gt;();
+
+    @PrePersist
+    protected void onCreate() {
+        createdAt = LocalDateTime.now();
+    }
+
+    // 构造函数
+    public Role() {}
+
+    public Role(String name, String description) {
+        this.name = name;
+        this.description = description;
+    }
+
+    // Getters and Setters
+    public Long getId() { return id; }
+    public void setId(Long id) { this.id = id; }
+
+    public String getName() { return name; }
+    public void setName(String name) { this.name = name; }
+
+    public String getDescription() { return description; }
+    public void setDescription(String description) { this.description = description; }
+
+    public LocalDateTime getCreatedAt() { return createdAt; }
+    public void setCreatedAt(LocalDateTime createdAt) { this.createdAt = createdAt; }
+
+    public Set&lt;Permission&gt; getPermissions() { return permissions; }
+    public void setPermissions(Set&lt;Permission&gt; permissions) { this.permissions = permissions; }
+}
+</code></pre>
+<h3 id="permissionjava_3">Permission.java</h3>
+<pre><code class="language-java">package com.example.rbac.entity;
+
+import javax.persistence.*;
+import java.time.LocalDateTime;
+
+@Entity
+@Table(name = &quot;permissions&quot;)
+public class Permission {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+
+    @Column(unique = true, nullable = false)
+    private String name;
+
+    @Column
+    private String description;
+
+    @Column(name = &quot;resource_url&quot;)
+    private String resourceUrl; // 资源URL匹配模式
+
+    @Column(name = &quot;http_method&quot;)
+    private String httpMethod; // HTTP方法：GET, POST, PUT, DELETE等
+
+    @Column(name = &quot;created_at&quot;)
+    private LocalDateTime createdAt;
+
+    @PrePersist
+    protected void onCreate() {
+        createdAt = LocalDateTime.now();
+    }
+
+    // 构造函数
+    public Permission() {}
+
+    public Permission(String name, String description, String resourceUrl, String httpMethod) {
+        this.name = name;
+        this.description = description;
+        this.resourceUrl = resourceUrl;
+        this.httpMethod = httpMethod;
+    }
+
+    // Getters and Setters
+    public Long getId() { return id; }
+    public void setId(Long id) { this.id = id; }
+
+    public String getName() { return name; }
+    public void setName(String name) { this.name = name; }
+
+    public String getDescription() { return description; }
+    public void setDescription(String description) { this.description = description; }
+
+    public String getResourceUrl() { return resourceUrl; }
+    public void setResourceUrl(String resourceUrl) { this.resourceUrl = resourceUrl; }
+
+    public String getHttpMethod() { return httpMethod; }
+    public void setHttpMethod(String httpMethod) { this.httpMethod = httpMethod; }
+
+    public LocalDateTime getCreatedAt() { return createdAt; }
+    public void setCreatedAt(LocalDateTime createdAt) { this.createdAt = createdAt; }
+}
+</code></pre>
+<h2 id="3_3">3. 数据访问层</h2>
+<h3 id="userrepositoryjava_3">UserRepository.java</h3>
+<pre><code class="language-java">package com.example.rbac.repository;
+
+import com.example.rbac.entity.User;
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
+import org.springframework.stereotype.Repository;
+
+import java.util.Optional;
+
+@Repository
+public interface UserRepository extends JpaRepository&lt;User, Long&gt; {
+
+    /**
+     * 根据用户名查找用户，同时预加载角色和权限信息
+     * 使用左连接避免N+1查询问题
+     */
+    @Query(&quot;SELECT DISTINCT u FROM User u &quot; +
+           &quot;LEFT JOIN FETCH u.roles r &quot; +
+           &quot;LEFT JOIN FETCH r.permissions &quot; +
+           &quot;WHERE u.username = :username&quot;)
+    Optional&lt;User&gt; findByUsernameWithRolesAndPermissions(@Param(&quot;username&quot;) String username);
+
+    /**
+     * 根据用户名查找用户
+     */
+    Optional&lt;User&gt; findByUsername(String username);
+
+    /**
+     * 检查用户名是否存在
+     */
+    boolean existsByUsername(String username);
+
+    /**
+     * 检查邮箱是否存在
+     */
+    boolean existsByEmail(String email);
+}
+</code></pre>
+<h3 id="rolerepositoryjava_3">RoleRepository.java</h3>
+<pre><code class="language-java">package com.example.rbac.repository;
+
+import com.example.rbac.entity.Role;
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.stereotype.Repository;
+
+import java.util.List;
+import java.util.Optional;
+
+@Repository
+public interface RoleRepository extends JpaRepository&lt;Role, Long&gt; {
+
+    /**
+     * 根据角色名查找角色
+     */
+    Optional&lt;Role&gt; findByName(String name);
+
+    /**
+     * 查找所有角色并预加载权限信息
+     */
+    @Query(&quot;SELECT DISTINCT r FROM Role r LEFT JOIN FETCH r.permissions&quot;)
+    List&lt;Role&gt; findAllWithPermissions();
+
+    /**
+     * 检查角色名是否存在
+     */
+    boolean existsByName(String name);
+}
+</code></pre>
+<h3 id="permissionrepositoryjava_3">PermissionRepository.java</h3>
+<pre><code class="language-java">package com.example.rbac.repository;
+
+import com.example.rbac.entity.Permission;
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
+import org.springframework.stereotype.Repository;
+
+import java.util.List;
+import java.util.Optional;
+
+@Repository
+public interface PermissionRepository extends JpaRepository&lt;Permission, Long&gt; {
+
+    /**
+     * 根据权限名查找权限
+     */
+    Optional&lt;Permission&gt; findByName(String name);
+
+    /**
+     * 根据资源URL和HTTP方法查找权限
+     */
+    Optional&lt;Permission&gt; findByResourceUrlAndHttpMethod(String resourceUrl, String httpMethod);
+
+    /**
+     * 查找所有权限资源配置，用于动态权限验证
+     * 返回所有包含资源URL的权限
+     */
+    @Query(&quot;SELECT p FROM Permission p WHERE p.resourceUrl IS NOT NULL&quot;)
+    List&lt;Permission&gt; findAllResourcePermissions();
+
+    /**
+     * 根据用户ID查找该用户拥有的所有权限
+     * 通过用户-&gt;角色-&gt;权限的关联查询
+     */
+    @Query(&quot;SELECT DISTINCT p FROM Permission p &quot; +
+           &quot;JOIN p.roles r &quot; +
+           &quot;JOIN r.users u &quot; +
+           &quot;WHERE u.id = :userId&quot;)
+    List&lt;Permission&gt; findPermissionsByUserId(@Param(&quot;userId&quot;) Long userId);
+
+    /**
+     * 检查权限名是否存在
+     */
+    boolean existsByName(String name);
+}
+</code></pre>
+<h2 id="4-jwt_3">4. JWT工具类</h2>
+<h3 id="jwttokenproviderjava_3">JwtTokenProvider.java</h3>
+<pre><code class="language-java">package com.example.rbac.security;
+
+import io.jsonwebtoken.*;
+import io.jsonwebtoken.security.Keys;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.stereotype.Component;
+
+import javax.crypto.SecretKey;
+import java.util.Date;
+
+/**
+ * JWT Token 提供者
+ * 负责生成、解析和验证JWT令牌
+ */
+@Component
+public class JwtTokenProvider {
+
+    private static final Logger logger = LoggerFactory.getLogger(JwtTokenProvider.class);
+
+    // JWT密钥，从配置文件读取
+    @Value(&quot;${app.jwt.secret:mySecretKey}&quot;)
+    private String jwtSecret;
+
+    // JWT过期时间（毫秒），默认24小时
+    @Value(&quot;${app.jwt.expiration:86400000}&quot;)
+    private long jwtExpiration;
+
+    /**
+     * 生成JWT令牌
+     * @param authentication 认证信息
+     * @return JWT令牌字符串
+     */
+    public String generateToken(Authentication authentication) {
+        UserDetails userDetails = (UserDetails) authentication.getPrincipal();
+        Date expiryDate = new Date(System.currentTimeMillis() + jwtExpiration);
+
+        // 使用HMAC SHA算法签名
+        SecretKey key = Keys.hmacShaKeyFor(jwtSecret.getBytes());
+
+        return Jwts.builder()
+                .setSubject(userDetails.getUsername())
+                .setIssuedAt(new Date())
+                .setExpiration(expiryDate)
+                .signWith(key, SignatureAlgorithm.HS512)
+                .compact();
+    }
+
+    /**
+     * 从JWT令牌中获取用户名
+     * @param token JWT令牌
+     * @return 用户名
+     */
+    public String getUsernameFromToken(String token) {
+        SecretKey key = Keys.hmacShaKeyFor(jwtSecret.getBytes());
+        Claims claims = Jwts.parserBuilder()
+                .setSigningKey(key)
+                .build()
+                .parseClaimsJws(token)
+                .getBody();
+        return claims.getSubject();
+    }
+
+    /**
+     * 验证JWT令牌
+     * @param token JWT令牌
+     * @return 是否有效
+     */
+    public boolean validateToken(String token) {
+        try {
+            SecretKey key = Keys.hmacShaKeyFor(jwtSecret.getBytes());
+            Jwts.parserBuilder()
+                .setSigningKey(key)
+                .build()
+                .parseClaimsJws(token);
+            return true;
+        } catch (SecurityException ex) {
+            logger.error(&quot;Invalid JWT signature: {}&quot;, ex.getMessage());
+        } catch (MalformedJwtException ex) {
+            logger.error(&quot;Invalid JWT token: {}&quot;, ex.getMessage());
+        } catch (ExpiredJwtException ex) {
+            logger.error(&quot;Expired JWT token: {}&quot;, ex.getMessage());
+        } catch (UnsupportedJwtException ex) {
+            logger.error(&quot;Unsupported JWT token: {}&quot;, ex.getMessage());
+        } catch (IllegalArgumentException ex) {
+            logger.error(&quot;JWT claims string is empty: {}&quot;, ex.getMessage());
+        }
+        return false;
+    }
+}
+</code></pre>
+<h2 id="5_3">5. 自定义用户详情服务</h2>
+<h3 id="customuserdetailsservicejava_3">CustomUserDetailsService.java</h3>
+<pre><code class="language-java">package com.example.rbac.security;
+
+import com.example.rbac.entity.User;
+import com.example.rbac.entity.Role;
+import com.example.rbac.entity.Permission;
+import com.example.rbac.repository.UserRepository;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Set;
+
+/**
+ * 自定义用户详情服务
+ * 实现Spring Security的UserDetailsService接口
+ * 负责从数据库加载用户信息和权限信息
+ */
+@Service
+public class CustomUserDetailsService implements UserDetailsService {
+
+    @Autowired
+    private UserRepository userRepository;
+
+    /**
+     * 根据用户名加载用户详情
+     * 这个方法在用户认证时被调用
+     * @param username 用户名
+     * @return UserDetails 用户详情对象
+     * @throws UsernameNotFoundException 用户不存在异常
+     */
+    @Override
+    @Transactional(readOnly = true)
+    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+        // 从数据库查找用户，同时预加载角色和权限信息
+        User user = userRepository.findByUsernameWithRolesAndPermissions(username)
+                .orElseThrow(() -&gt; new UsernameNotFoundException(&quot;User not found: &quot; + username));
+
+        // 构建用户权限列表
+        List&lt;GrantedAuthority&gt; authorities = buildUserAuthorities(user.getRoles());
+
+        // 创建Spring Security的User对象
+        return org.springframework.security.core.userdetails.User.builder()
+                .username(user.getUsername())
+                .password(user.getPassword())
+                .authorities(authorities)
+                .accountExpired(false)
+                .accountLocked(false)
+                .credentialsExpired(false)
+                .disabled(!user.getEnabled())
+                .build();
+    }
+
+    /**
+     * 构建用户权限列表
+     * 将角色和权限转换为Spring Security的GrantedAuthority
+     * @param roles 用户角色集合
+     * @return 权限列表
+     */
+    private List&lt;GrantedAuthority&gt; buildUserAuthorities(Set&lt;Role&gt; roles) {
+        List&lt;GrantedAuthority&gt; authorities = new ArrayList&lt;&gt;();
+
+        for (Role role : roles) {
+            // 添加角色权限，角色名前缀为ROLE_
+            authorities.add(new SimpleGrantedAuthority(&quot;ROLE_&quot; + role.getName()));
+
+            // 添加角色下的具体权限
+            for (Permission permission : role.getPermissions()) {
+                authorities.add(new SimpleGrantedAuthority(permission.getName()));
+            }
+        }
+
+        return authorities;
+    }
+}
+</code></pre>
+<h2 id="6-jwt_2">6. JWT认证过滤器</h2>
+<h3 id="jwtauthenticationfilterjava_2">JwtAuthenticationFilter.java</h3>
+<pre><code class="language-java">package com.example.rbac.security;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.web.authentication.WebAuthenticationDetailsSource;
+import org.springframework.stereotype.Component;
+import org.springframework.util.StringUtils;
+import org.springframework.web.filter.OncePerRequestFilter;
+
+import javax.servlet.FilterChain;
+import javax.servlet.ServletException;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
+
+/**
+ * JWT认证过滤器
+ * 继承OncePerRequestFilter确保每个请求只执行一次
+ * 负责从请求头中提取JWT令牌并验证用户身份
+ */
+@Component
+public class JwtAuthenticationFilter extends OncePerRequestFilter {
+
+    private static final Logger logger = LoggerFactory.getLogger(JwtAuthenticationFilter.class);
+
+    @Autowired
+    private JwtTokenProvider jwtTokenProvider;
+
+    @Autowired
+    private CustomUserDetailsService userDetailsService;
+
+    /**
+     * 执行JWT认证过滤
+     * @param request HTTP请求
+     * @param response HTTP响应
+     * @param filterChain 过滤器链
+     */
+    @Override
+    protected void doFilterInternal(HttpServletRequest request, 
+                                   HttpServletResponse response, 
+                                   FilterChain filterChain) throws ServletException, IOException {
+        try {
+            // 从请求头中提取JWT令牌
+            String jwt = getJwtFromRequest(request);
+
+            // 验证令牌并设置认证信息
+            if (StringUtils.hasText(jwt) &amp;&amp; jwtTokenProvider.validateToken(jwt)) {
+                String username = jwtTokenProvider.getUsernameFromToken(jwt);
+
+                // 加载用户详情
+                UserDetails userDetails = userDetailsService.loadUserByUsername(username);
+
+                // 创建认证令牌
+                UsernamePasswordAuthenticationToken authentication = 
+                    new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities());
+                authentication.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
+
+                // 设置到安全上下文中
+                SecurityContextHolder.getContext().setAuthentication(authentication);
+            }
+        } catch (Exception ex) {
+            logger.error(&quot;Could not set user authentication in security context&quot;, ex);
+        }
+
+        // 继续执行过滤器链
+        filterChain.doFilter(request, response);
+    }
+
+    /**
+     * 从请求头中提取JWT令牌
+     * @param request HTTP请求
+     * @return JWT令牌字符串
+     */
+    private String getJwtFromRequest(HttpServletRequest request) {
+        String bearerToken = request.getHeader(&quot;Authorization&quot;);
+        if (StringUtils.hasText(bearerToken) &amp;&amp; bearerToken.startsWith(&quot;Bearer &quot;)) {
+            return bearerToken.substring(7);
+        }
+        return null;
+    }
+}
+</code></pre>
+<h2 id="7_2">7. 自定义权限数据源（重点）</h2>
+<h3 id="customsecuritymetadatasourcejava_2">CustomSecurityMetadataSource.java</h3>
+<pre><code class="language-java">package com.example.rbac.security;
+
+import com.example.rbac.entity.Permission;
+import com.example.rbac.repository.PermissionRepository;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.redis.core.RedisTemplate;
+import org.springframework.security.access.ConfigAttribute;
+import org.springframework.security.access.SecurityConfig;
+import org.springframework.security.web.FilterInvocation;
+import org.springframework.security.web.access.intercept.FilterInvocationSecurityMetadataSource;
+import org.springframework.stereotype.Component;
+import org.springframework.util.AntPathMatcher;
+
+import javax.annotation.PostConstruct;
+import java.util.*;
+import java.util.concurrent.TimeUnit;
+
+/**
+ * 自定义权限数据源（重点类）
+ * 实现FilterInvocationSecurityMetadataSource接口
+ * 
+ * 核心作用：
+ * 1. 根据请求的URL和HTTP方法，动态确定访问该资源所需的权限
+ * 2. 从数据库动态加载权限配置，支持权限的动态更新
+ * 3. 使用Redis缓存提高性能
+ * 4. 为FilterSecurityInterceptor提供权限配置信息
+ */
+@Component
+public class CustomSecurityMetadataSource implements FilterInvocationSecurityMetadataSource {
+
+    private static final Logger logger = LoggerFactory.getLogger(CustomSecurityMetadataSource.class);
+
+    @Autowired
+    private PermissionRepository permissionRepository;
+
+    @Autowired
+    private RedisTemplate&lt;String, Object&gt; redisTemplate;
+
+    // 路径匹配器，用于匹配URL模式
+    private final AntPathMatcher pathMatcher = new AntPathMatcher();
+
+    // Redis缓存key前缀
+    private static final String PERMISSION_CACHE_PREFIX = &quot;permission:&quot;;
+    private static final String ALL_PERMISSIONS_CACHE_KEY = &quot;all_permissions&quot;;
+
+    // 权限配置本地缓存
+    private Map&lt;String, List&lt;String&gt;&gt; resourcePermissionMap = new HashMap&lt;&gt;();
+
+    /**
+     * 初始化权限数据源
+     * 系统启动时加载所有权限配置到缓存
+     */
+    @PostConstruct
+    public void init() {
+        logger.info(&quot;初始化权限数据源...&quot;);
+        loadAllPermissions();
+        logger.info(&quot;权限数据源初始化完成，共加载{}个权限配置&quot;, resourcePermissionMap.size());
+    }
+
+    /**
+     * 核心方法：根据请求获取所需权限
+     * 这个方法在每次请求时被FilterSecurityInterceptor调用
+     * 
+     * @param object FilterInvocation对象，包含请求信息
+     * @return 访问该资源所需的权限配置集合
+     */
+    @Override
+    public Collection&lt;ConfigAttribute&gt; getAttributes(Object object) throws IllegalArgumentException {
+        FilterInvocation filterInvocation = (FilterInvocation) object;
+        String requestUrl = filterInvocation.getRequestUrl();
+        String httpMethod = filterInvocation.getRequest().getMethod();
+
+        logger.debug(&quot;获取资源权限配置: URL={}, Method={}&quot;, requestUrl, httpMethod);
+
+        // 移除查询参数，只保留路径部分
+        String path = requestUrl.split(&quot;\\?&quot;)[0];
+
+        // 构建缓存key
+        String cacheKey = PERMISSION_CACHE_PREFIX + httpMethod + &quot;:&quot; + path;
+
+        // 1. 先从Redis缓存中查找
+        List&lt;String&gt; cachedPermissions = (List&lt;String&gt;) redisTemplate.opsForValue().get(cacheKey);
+        if (cachedPermissions != null) {
+            logger.debug(&quot;从Redis缓存获取权限: {}&quot;, cachedPermissions);
+            return createConfigAttributes(cachedPermissions);
+        }
+
+        // 2. 从本地缓存查找匹配的权限
+        List&lt;String&gt; requiredPermissions = findMatchingPermissions(path, httpMethod);
+
+        // 3. 如果没有找到匹配的权限，检查是否需要重新加载
+        if (requiredPermissions.isEmpty()) {
+            logger.debug(&quot;本地缓存中未找到匹配权限，尝试重新加载...&quot;);
+            loadAllPermissions();
+            requiredPermissions = findMatchingPermissions(path, httpMethod);
+        }
+
+        // 4. 缓存结果到Redis（TTL 10分钟）
+        if (!requiredPermissions.isEmpty()) {
+            redisTemplate.opsForValue().set(cacheKey, requiredPermissions, 10, TimeUnit.MINUTES);
+            logger.debug(&quot;权限配置已缓存到Redis: {} -&gt; {}&quot;, cacheKey, requiredPermissions);
+        }
+
+        // 5. 返回权限配置
+        if (requiredPermissions.isEmpty()) {
+            logger.debug(&quot;资源不需要特定权限: {}&quot;, path);
+            return null; // 返回null表示该资源不需要特定权限
+        }
+
+        logger.debug(&quot;资源需要权限: {} -&gt; {}&quot;, path, requiredPermissions);
+        return createConfigAttributes(requiredPermissions);
+    }
+
+    /**
+     * 查找匹配的权限
+     * @param path 请求路径
+     * @param httpMethod HTTP方法
+     * @return 匹配的权限列表
+     */
+    private List&lt;String&gt; findMatchingPermissions(String path, String httpMethod) {
+        List&lt;String&gt; matchedPermissions = new ArrayList&lt;&gt;();
+
+        // 遍历所有权限配置，查找匹配的URL模式
+        for (Map.Entry&lt;String, List&lt;String&gt;&gt; entry : resourcePermissionMap.entrySet()) {
+            String resourcePattern = entry.getKey();
+            List&lt;String&gt; permissions = entry.getValue();
+
+            // 解析资源模式：METHOD:URL_PATTERN
+            String[] parts = resourcePattern.split(&quot;:&quot;, 2);
+            if (parts.length == 2) {
+                String patternMethod = parts[0];
+                String patternUrl = parts[1];
+
+                // 匹配HTTP方法和URL模式
+                if (patternMethod.equals(httpMethod) &amp;&amp; pathMatcher.match(patternUrl, path)) {
+                    matchedPermissions.addAll(permissions);
+                    logger.debug(&quot;匹配到权限模式: {} -&gt; {}&quot;, resourcePattern, permissions);
+                }
+            }
+        }
+
+        return matchedPermissions;
+    }
+
+    /**
+     * 从数据库加载所有权限配置
+     */
+    private void loadAllPermissions() {
+        try {
+            // 清空本地缓存
+            resourcePermissionMap.clear();
+
+            // 从数据库查询所有权限配置
+            List&lt;Permission&gt; permissions = permissionRepository.findAllResourcePermissions();
+
+            for (Permission permission : permissions) {
+                String resourceUrl = permission.getResourceUrl();
+                String httpMethod = permission.getHttpMethod();
+                String permissionName = permission.getName();
+
+                if (resourceUrl != null &amp;&amp; httpMethod != null) {
+                    // 构建资源模式key：METHOD:URL_PATTERN
+                    String resourceKey = httpMethod + &quot;:&quot; + resourceUrl;
+
+                    // 将权限添加到对应的资源模式中
+                    resourcePermissionMap.computeIfAbsent(resourceKey, k -&gt; new ArrayList&lt;&gt;())
+                            .add(permissionName);
+                }
+            }
+
+            // 更新Redis中的全量权限缓存
+            redisTemplate.opsForValue().set(ALL_PERMISSIONS_CACHE_KEY, resourcePermissionMap, 30, TimeUnit.MINUTES);
+
+            logger.info(&quot;权限配置加载完成，共{}个资源模式&quot;, resourcePermissionMap.size());
+
+        } catch (Exception e) {
+            logger.error(&quot;加载权限配置失败&quot;, e);
+        }
+    }
+
+    /**
+     * 创建权限配置属性集合
+     * @param permissions 权限名称列表
+     * @return ConfigAttribute集合
+     */
+    private Collection&lt;ConfigAttribute&gt; createConfigAttributes(List&lt;String&gt; permissions) {
+        Collection&lt;ConfigAttribute&gt; configAttributes = new ArrayList&lt;&gt;();
+        for (String permission : permissions) {
+            configAttributes.add(new SecurityConfig(permission));
+        }
+        return configAttributes;
+    }
+
+    /**
+     * 获取所有权限配置
+     * FilterSecurityInterceptor在启动时会调用这个方法
+     * @return 所有权限配置
+     */
+    @Override
+    public Collection&lt;ConfigAttribute&gt; getAllConfigAttributes() {
+        // 收集所有权限配置
+        Set&lt;ConfigAttribute&gt; allAttributes = new HashSet&lt;&gt;();
+        for (List&lt;String&gt; permissions : resourcePermissionMap.values()) {
+            allAttributes.addAll(createConfigAttributes(permissions));
+        }
+        return allAttributes;
+    }
+
+    /**
+     * 指示是否支持指定的类
+     * @param clazz 类
+     * @return 是否支持
+     */
+    @Override
+    public boolean supports(Class&lt;?&gt; clazz) {
+        return FilterInvocation.class.isAssignableFrom(clazz);
+    }
+
+    /**
+     * 刷新权限配置
+     * 当权限配置发生变化时可以调用此方法
+     */
+    public void refreshPermissions() {
+        logger.info(&quot;刷新权限配置...&quot;);
+        loadAllPermissions();
+        // 清空Redis中的权限缓存
+        Set&lt;String&gt; keys = redisTemplate.keys(PERMISSION_CACHE_PREFIX + &quot;*&quot;);
+        if (keys != null &amp;&amp; !keys.isEmpty()) {
+            redisTemplate.delete(keys);
+        }
+        logger.info(&quot;权限配置刷新完成&quot;);
+    }
+}
+</code></pre>
+<h2 id="8_1">8. 自定义访问决策管理器（重点）</h2>
+<h3 id="customaccessdecisionmanagerjava_1">CustomAccessDecisionManager.java</h3>
+<pre><code class="language-java">package com.example.rbac.security;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.security.access.AccessDecisionManager;
+import org.springframework.security.access.AccessDeniedException;
+import org.springframework.security.access.ConfigAttribute;
+import org.springframework.security.authentication.InsufficientAuthenticationException;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.stereotype.Component;
+
+import java.util.Collection;
+
+/**
+ * 自定义访问决策管理器（重点类）
+ * 实现AccessDecisionManager接口
+ * 
+ * 核心作用：
+ * 1. 决定用户是否有权限访问特定资源
+ * 2. 比较用户拥有的权限与资源所需的权限
+ * 3. 实现灵活的权限决策逻辑
+ * 4. 支持多种决策策略：一票通过、一票否决、少数服从多数
+ */
+@Component
+public class CustomAccessDecisionManager implements AccessDecisionManager {
+
+    private static final Logger logger = LoggerFactory.getLogger(CustomAccessDecisionManager.class);
+
+    /**
+     * 核心决策方法
+     * 这个方法在每次权限验证时被调用
+     * 
+     * @param authentication 当前用户的认证信息
+     * @param object 被访问的资源对象（通常是FilterInvocation）
+     * @param configAttributes 访问该资源所需的权限配置
+     * @throws AccessDeniedException 访问被拒绝异常
+     * @throws InsufficientAuthenticationException 认证不足异常
+     */
+    @Override
+    public void decide(Authentication authentication, Object object, Collection&lt;ConfigAttribute&gt; configAttributes)
+            throws AccessDeniedException, InsufficientAuthenticationException {
+
+        // 1. 如果没有配置权限要求，直接通过
+        if (configAttributes == null || configAttributes.isEmpty()) {
+            logger.debug(&quot;资源没有权限要求，直接通过访问&quot;);
+            return;
+        }
+
+        // 2. 检查用户是否已认证
+        if (authentication == null || !authentication.isAuthenticated()) {
+            logger.warn(&quot;用户未认证，拒绝访问&quot;);
+            throw new InsufficientAuthenticationException(&quot;用户未认证&quot;);
+        }
+
+        // 3. 获取用户的权限
+        Collection&lt;? extends GrantedAuthority&gt; authorities = authentication.getAuthorities();
+        String username = authentication.getName();
+
+        logger.debug(&quot;开始权限决策: 用户={}, 用户权限={}&quot;, username, authorities);
+
+        // 4. 遍历资源所需的权限，检查用户是否具备
+        for (ConfigAttribute configAttribute : configAttributes) {
+            String needPermission = configAttribute.getAttribute();
+
+            logger.debug(&quot;检查权限: 需要权限={}&quot;, needPermission);
+
+            // 5. 检查用户是否拥有所需权限
+            if (hasPermission(authorities, needPermission)) {
+                logger.debug(&quot;权限验证通过: 用户={}, 权限={}&quot;, username, needPermission);
+                return; // 一票通过策略：只要有一个权限匹配就通过
+            }
+        }
+
+        // 6. 如果没有匹配的权限，拒绝访问
+        logger.warn(&quot;权限验证失败: 用户={}, 需要权限={}, 用户权限={}&quot;, 
+                   username, configAttributes, authorities);
+        throw new AccessDeniedException(&quot;权限不足，访问被拒绝&quot;);
+    }
+
+    /**
+     * 检查用户是否拥有指定权限
+     * @param authorities 用户权限集合
+     * @param needPermission 需要的权限
+     * @return 是否拥有权限
+     */
+    private boolean hasPermission(Collection&lt;? extends GrantedAuthority&gt; authorities, String needPermission) {
+        for (GrantedAuthority authority : authorities) {
+            String userPermission = authority.getAuthority();
+
+            // 精确匹配权限
+            if (needPermission.equals(userPermission)) {
+                logger.debug(&quot;权限精确匹配: {}&quot;, needPermission);
+                return true;
+            }
+
+            // 支持超级管理员权限
+            if (&quot;ROLE_SUPER_ADMIN&quot;.equals(userPermission)) {
+                logger.debug(&quot;超级管理员权限通过: {}&quot;, needPermission);
+                return true;
+            }
+
+            // 可以在这里添加更多的权限匹配逻辑
+            // 例如：层级权限、通配符权限等
+        }
+        return false;
+    }
+
+    /**
+     * 指示是否支持指定的权限配置属性
+     * @param attribute 权限配置属性
+     * @return 是否支持
+     */
+    @Override
+    public boolean supports(ConfigAttribute attribute) {
+        return attribute.getAttribute() != null;
+    }
+
+    /**
+     * 指示是否支持指定的类
+     * @param clazz 类
+     * @return 是否支持
+     */
+    @Override
+    public boolean supports(Class&lt;?&gt; clazz) {
+        return true;
+    }
+}
+</code></pre>
+<h2 id="9_1">9. 自定义认证入口点</h2>
+<h3 id="customauthenticationentrypointjava_1">CustomAuthenticationEntryPoint.java</h3>
+<pre><code class="language-java">package com.example.rbac.security;
+
+import com.fasterxml.jackson.databind.ObjectMapper;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.http.MediaType;
+import org.springframework.security.core.AuthenticationException;
+import org.springframework.security.web.AuthenticationEntryPoint;
+import org.springframework.stereotype.Component;
+
+import javax.servlet.ServletException;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
+import java.util.HashMap;
+import java.util.Map;
+
+/**
+ * 自定义认证入口点
+ * 当用户未认证时的处理逻辑
+ */
+@Component
+public class CustomAuthenticationEntryPoint implements AuthenticationEntryPoint {
+
+    private static final Logger logger = LoggerFactory.getLogger(CustomAuthenticationEntryPoint.class);
+
+    private final ObjectMapper objectMapper = new ObjectMapper();
+
+    @Override
+    public void commence(HttpServletRequest request, HttpServletResponse response,
+                         AuthenticationException authException) throws IOException, ServletException {
+
+        logger.error(&quot;认证失败: {}&quot;, authException.getMessage());
+
+        response.setContentType(MediaType.APPLICATION_JSON_VALUE);
+        response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+
+        Map&lt;String, Object&gt; result = new HashMap&lt;&gt;();
+        result.put(&quot;code&quot;, HttpServletResponse.SC_UNAUTHORIZED);
+        result.put(&quot;message&quot;, &quot;认证失败，请先登录&quot;);
+        result.put(&quot;data&quot;, null);
+        result.put(&quot;timestamp&quot;, System.currentTimeMillis());
+
+        objectMapper.writeValue(response.getOutputStream(), result);
+    }
+}
+</code></pre>
+<h2 id="10_1">10. 配置类</h2>
+<h3 id="securityconfigjava_1">SecurityConfig.java</h3>
+<pre><code class="language-java">package com.example.rbac.config;
+
+import com.example.rbac.security.*;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
+import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
+import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
+import org.springframework.security.config.http.SessionCreationPolicy;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.access.intercept.FilterSecurityInterceptor;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+
+/**
+ * Spring Security核心配置类
+ * 配置认证和授权的核心组件
+ */
+@Configuration
+@EnableWebSecurity
+@EnableGlobalMethodSecurity(prePostEnabled = true)
+public class SecurityConfig {
+
+    @Autowired
+    private CustomUserDetailsService userDetailsService;
+
+    @Autowired
+    private CustomAuthenticationEntryPoint authenticationEntryPoint;
+
+    @Autowired
+    private JwtAuthenticationFilter jwtAuthenticationFilter;
+
+    @Autowired
+    private CustomSecurityMetadataSource securityMetadataSource;
+
+    @Autowired
+    private CustomAccessDecisionManager accessDecisionManager;
+
+    /**
+     * 密码编码器
+     */
+    @Bean
+    public PasswordEncoder passwordEncoder() {
+        return new BCryptPasswordEncoder();
+    }
+
+    /**
+     * 认证管理器
+     */
+    @Bean
+    public AuthenticationManager authenticationManager(AuthenticationConfiguration config) throws Exception {
+        return config.getAuthenticationManager();
+    }
+
+    /**
+     * 自定义FilterSecurityInterceptor
+     * 这是权限控制的核心过滤器
+     */
+    @Bean
+    public FilterSecurityInterceptor filterSecurityInterceptor() {
+        FilterSecurityInterceptor interceptor = new FilterSecurityInterceptor();
+
+        // 设置自定义的权限数据源
+        interceptor.setSecurityMetadataSource(securityMetadataSource);
+
+        // 设置自定义的访问决策管理器
+        interceptor.setAccessDecisionManager(accessDecisionManager);
+
+        return interceptor;
+    }
+
+    /**
+     * 安全过滤器链配置
+     */
+    @Bean
+    public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
+        http.cors().and().csrf().disable()
+            .exceptionHandling()
+                .authenticationEntryPoint(authenticationEntryPoint)
+                .and()
+            .sessionManagement()
+                .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
+                .and()
+            .authorizeHttpRequests(authz -&gt; authz
+                // 允许访问的公共端点
+                .requestMatchers(&quot;/auth/login&quot;, &quot;/auth/register&quot;).permitAll()
+                .requestMatchers(&quot;/public/**&quot;).permitAll()
+                // 其他所有请求都需要认证
+                .anyRequest().authenticated()
+            );
+
+        // 添加JWT认证过滤器
+        http.addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);
+
+        // 添加自定义的权限过滤器
+        http.addFilterBefore(filterSecurityInterceptor(), FilterSecurityInterceptor.class);
+
+        return http.build();
+    }
+}
+</code></pre>
+<h3 id="redisconfigjava_1">RedisConfig.java</h3>
+<pre><code class="language-java">package com.example.rbac.config;
+
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.data.redis.connection.RedisConnectionFactory;
+import org.springframework.data.redis.core.RedisTemplate;
+import org.springframework.data.redis.serializer.GenericJackson2JsonRedisSerializer;
+import org.springframework.data.redis.serializer.StringRedisSerializer;
+
+/**
+ * Redis配置类
+ */
+@Configuration
+public class RedisConfig {
+
+    @Bean
+    public RedisTemplate&lt;String, Object&gt; redisTemplate(RedisConnectionFactory connectionFactory) {
+        RedisTemplate&lt;String, Object&gt; template = new RedisTemplate&lt;&gt;();
+        template.setConnectionFactory(connectionFactory);
+
+        // 设置序列化器
+        template.setKeySerializer(new StringRedisSerializer());
+        template.setValueSerializer(new GenericJackson2JsonRedisSerializer());
+        template.setHashKeySerializer(new StringRedisSerializer());
+        template.setHashValueSerializer(new GenericJackson2JsonRedisSerializer());
+
+        template.afterPropertiesSet();
+        return template;
+    }
+}
+</code></pre>
+<p>继续下一部分...
+```</p>
+<hr />
+<p>Powered by <a href="https://www.claudexporter.com">Claude Exporter</a></p>
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+  <script>var tabs=__md_get("__tabs");if(Array.isArray(tabs))e:for(var set of document.querySelectorAll(".tabbed-set")){var labels=set.querySelector(".tabbed-labels");for(var tab of tabs)for(var label of labels.getElementsByTagName("label"))if(label.innerText.trim()===tab){var input=document.getElementById(label.htmlFor);input.checked=!0;continue e}}</script>
+
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+          <button type="button" class="md-top md-icon" data-md-component="top" hidden>
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8z"/></svg>
+  Back to top
+</button>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+    
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+      <div class="md-progress" data-md-component="progress" role="progressbar"></div>
+    
+    
+    
+      
+      
+      <script id="__config" type="application/json">{"annotate": null, "base": "../..", "features": ["announce.dismiss", "content.action.edit", "content.action.view", "content.code.annotate", "content.code.copy", "content.code.select", "content.tabs.link", "content.tooltips", "navigation.footer", "navigation.indexes", "navigation.instant.prefetch", "navigation.instant.progress", "navigation.path", "navigation.sections", "navigation.tabs", "navigation.tabs.sticky", "navigation.top", "navigation.tracking", "search.highlight", "search.share", "search.suggest", "toc.follow"], "search": "../../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+    
+    
+      <script src="../../assets/javascripts/bundle.79ae519e.min.js"></script>
+      
+    
+  </body>
+</html>

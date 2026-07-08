@@ -1,0 +1,1325 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+      
+      
+      
+      
+      
+        
+      
+      
+      <link rel="icon" href="../../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.6">
+    
+    
+      
+        <title>LangChain事件流和代理消息学习指南 - gzulmc's 随笔记录</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../assets/stylesheets/main.484c7ddc.min.css">
+      
+        
+        <link rel="stylesheet" href="../../assets/stylesheets/palette.ab4e12ef.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+    <script>__md_scope=new URL("../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+  </head>
+  
+  
+    
+    
+      
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#langchain" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow md-header--lifted" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href="../.." title="gzulmc&#39;s 随笔记录" class="md-header__button md-logo" aria-label="gzulmc's 随笔记录" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            gzulmc's 随笔记录
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              LangChain事件流和代理消息学习指南
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+        <form class="md-header__option" data-md-component="palette">
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo"  aria-label="Switch to dark mode"  type="radio" name="__palette" id="__palette_0">
+    
+      <label class="md-header__button md-icon" title="Switch to dark mode" for="__palette_1" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a4 4 0 0 0-4 4 4 4 0 0 0 4 4 4 4 0 0 0 4-4 4 4 0 0 0-4-4m0 10a6 6 0 0 1-6-6 6 6 0 0 1 6-6 6 6 0 0 1 6 6 6 6 0 0 1-6 6m8-9.31V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12z"/></svg>
+      </label>
+    
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="slate" data-md-color-primary="indigo" data-md-color-accent="indigo"  aria-label="Switch to light mode"  type="radio" name="__palette" id="__palette_1">
+    
+      <label class="md-header__button md-icon" title="Switch to light mode" for="__palette_0" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 18c-.89 0-1.74-.2-2.5-.55C11.56 16.5 13 14.42 13 12s-1.44-4.5-3.5-5.45C10.26 6.2 11.11 6 12 6a6 6 0 0 1 6 6 6 6 0 0 1-6 6m8-9.31V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12z"/></svg>
+      </label>
+    
+  
+</form>
+      
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+          <a href="javascript:void(0)" class="md-search__icon md-icon" title="Share" aria-label="Share" data-clipboard data-clipboard-text="" data-md-component="search-share" tabindex="-1">
+            
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M18 16.08c-.76 0-1.44.3-1.96.77L8.91 12.7c.05-.23.09-.46.09-.7s-.04-.47-.09-.7l7.05-4.11c.54.5 1.25.81 2.04.81a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3c0 .24.04.47.09.7L8.04 9.81C7.5 9.31 6.79 9 6 9a3 3 0 0 0-3 3 3 3 0 0 0 3 3c.79 0 1.5-.31 2.04-.81l7.12 4.15c-.05.21-.08.43-.08.66 0 1.61 1.31 2.91 2.92 2.91s2.92-1.3 2.92-2.91A2.92 2.92 0 0 0 18 16.08"/></svg>
+          </a>
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+        <div class="md-search__suggest" data-md-component="search-suggest"></div>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      
+    
+    
+  </nav>
+  
+    
+      
+<nav class="md-tabs" aria-label="Tabs" data-md-component="tabs">
+  <div class="md-grid">
+    <ul class="md-tabs__list">
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../Python/%E9%9D%A2%E5%90%91%E5%AF%B9%E8%B1%A1%E5%9F%BA%E7%A1%80/" class="md-tabs__link">
+          
+  
+  
+    
+  
+  Python
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../Django/Django%E5%9F%BA%E7%A1%80/" class="md-tabs__link">
+          
+  
+  
+    
+  
+  Django
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../Docker/Docker%E8%AF%A6%E8%A7%A3/" class="md-tabs__link">
+          
+  
+  
+    
+  
+  Docker
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../.." class="md-tabs__link">
+          
+  
+  
+    
+  
+  Java
+
+        </a>
+      </li>
+    
+  
+
+      
+    </ul>
+  </div>
+</nav>
+    
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+  
+
+
+<nav class="md-nav md-nav--primary md-nav--lifted" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../.." title="gzulmc&#39;s 随笔记录" class="md-nav__button md-logo" aria-label="gzulmc's 随笔记录" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    gzulmc's 随笔记录
+  </label>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_1" >
+        
+          
+          <label class="md-nav__link" for="__nav_1" id="__nav_1_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Python
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_1_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_1">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Python
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../Python/%E9%9D%A2%E5%90%91%E5%AF%B9%E8%B1%A1%E5%9F%BA%E7%A1%80/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    面向对象基础
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../Python/%E9%9D%A2%E5%90%91%E5%AF%B9%E8%B1%A1%E8%BF%9B%E9%98%B6/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    面向对象进阶
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../Python/%E8%BF%9B%E7%A8%8B%E5%92%8C%E7%BA%BF%E7%A8%8B/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    进程和线程
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../Python/%E5%9B%BE%E5%83%8F%E5%92%8C%E6%96%87%E6%A1%A3%E5%A4%84%E7%90%86/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    图像和文档处理
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../Python/%E7%BD%91%E7%BB%9C%E7%BC%96%E7%A8%8B%E5%BA%94%E7%94%A8/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    网络编程应用
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../Python/%E6%96%87%E4%BB%B6%E5%92%8C%E5%BC%82%E5%B8%B8/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    文件和异常
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2" >
+        
+          
+          <label class="md-nav__link" for="__nav_2" id="__nav_2_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Django
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_2_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Django
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../Django/Django%E5%9F%BA%E7%A1%80/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Django基础
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../Django/%E6%95%B0%E6%8D%AE%E6%A8%A1%E5%9E%8B/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    数据模型
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+      
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3" >
+        
+          
+          <label class="md-nav__link" for="__nav_3" id="__nav_3_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Docker
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_3">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Docker
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../Docker/Docker%E8%AF%A6%E8%A7%A3/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Docker详解
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4" >
+        
+          
+          <div class="md-nav__link md-nav__container">
+            <a href="../.." class="md-nav__link ">
+              
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Java
+  
+
+    
+  </span>
+  
+  
+
+            </a>
+            
+          </div>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_4_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Java
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#user" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        User:
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#assistant" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Assistant:
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              
+                
+
+
+
+
+              
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+
+<h1 id="langchain">LangChain事件流和代理消息学习指南</h1>
+<p><strong>Created:</strong> 6/21/2026 7:53:35<br />
+<strong>Updated:</strong> 6/21/2026 8:42:31<br />
+<strong>Exported:</strong> 6/21/2026 8:48:40<br />
+<strong>Link:</strong> <a href="https://claude.ai/chat/008debad-0b28-4b37-b2ac-0abf285f1d35">https://claude.ai/chat/008debad-0b28-4b37-b2ac-0abf285f1d35</a>  </p>
+<h2 id="user">User:</h2>
+<blockquote>
+<p>6/21/2026 7:53:35</p>
+</blockquote>
+<p>https://docs.langchain.com/oss/python/langchain/event-streaming#agent-messages 阅读这篇文档,带我学习,它是什么?解决了什么问题没有它之前是怎么做的有了它之后的变化,以及怎么理解怎么学. 并通过具体的案例一步步的带我理解它的运行流程和底层逻辑, 和掌握它的常规使用方式以及高级使用方式等</p>
+<h2 id="assistant">Assistant:</h2>
+<blockquote>
+<p>6/21/2026 7:55:38</p>
+<p>构思了全面的中文教程框架与代码对比示例。</p>
+<ul>
+<li>Let me fetch the documentation page first.</li>
+<li><a href="https://docs.langchain.com/oss/python/langchain/event-streaming#agent-messages">Event Streaming - Docs by LangChain (langchain.com)</a></li>
+<li>I have the doc content. Now let me also fetch the underlying Streaming page and LangGraph event-streaming page for more context on "before this feature" comparison, since the user wants to understand what problem it solves, what was the situation before, what changed. Let me fetch the streaming page too for comparison, and maybe the LangGraph event-streaming explanation page.</li>
+</ul>
+<p>Given the user's background (Java/Python dev, learning LangChain, DeepSeek, agent architectures, prefers concrete executable answers over abstract conceptual discussion, communicates in Chinese), I should write a thorough, structured Chinese tutorial covering:
+  1. 是什么 (what is it)
+  2. 解决了什么问题，没有它之前怎么做 (problem before)
+  3. 有了它之后的变化 (after)
+  4. 怎么理解，怎么学
+  5. 具体案例一步步带着理解运行流程和底层逻辑
+  6. 常规用法和高级用法</p>
+<p>Let me fetch the streaming.md page (lower-level Pregel stream modes) to understand the "before" state - i.e., stream_mode tuples vs stream_events typed projections. This will help explain "没有它之前是怎么做的".
+- <a href="https://docs.langchain.com/oss/python/langchain/streaming">https://docs.langchain.com/oss/python/langchain/streaming (langchain.com)</a>
+- Now I have a great understanding of both old (stream_mode tuples) and new (stream_events / Event Streaming with typed projections) approaches. Let me now write a comprehensive Chinese tutorial.</p>
+<p>I'll structure the response:
+  1. 一句话总结：它是什么
+  2. 没有它之前怎么做（stream_mode的痛点）—用代码对比
+  3. 有了它之后的变化（typed projections / run对象）
+  4. 底层逻辑：LangChain agent基于LangGraph，Event Streaming是stream_events(version="v3")，返回一个run对象，提供了多个"投影"(projection)视角而不需要手动判断tuple类型
+  5. 具体案例一步步带你走一遍运行流程 - 用get_weather例子，逐行解释发生了什么
+  6. 常规使用方式：run.messages, message.text, run.tool_calls, run.values, run.output
+  7. 高级用法：message.tool_calls vs run.tool_calls的区别，message.reasoning，run.extensions（自定义transformer投影），多agent场景（虽然没明确提到在这篇文档，但可以提一下stream_events支持sub-agent via metadata 类似）
+  8. 怎么理解/怎么学 - 学习路径建议</p>
+<p>I should be careful about citations - I fetched two docs, need to cite specific claims with antml:cite. Let me build the response with citations woven in naturally, but since this is a tutorial in Chinese, I need to translate claims into my own words while citing source sentences.</p>
+<p>Given the docs have sentence indices, let me identify key citable claims:</p>
+<p>Doc 1 (event-streaming):
+  - "LangChain agents are built on LangGraph, so they support the same Event Streaming model with agent-focused projections for messages, tool calls, state, and custom updates." sentence index 1-X
+  - "For most application and frontend use cases, use Event Streaming through stream_events(..., version="v3"). Event Streaming returns a run object with typed projections, so you can choose the view you need instead of parsing stream-mode tuples."
+  - Table of projections
+  - "run.messages yields ChatModelStream objects. Each message stream exposes .text, .reasoning, .tool_calls, and .output. Sync projections are iterable for live deltas and drainable for final values."
+  …
+- <strong>Done</strong></p>
+</blockquote>
+<h1 id="langchain-event-streaming">LangChain Event Streaming 学习笔记</h1>
+<p>我把这篇文档读完了，结合它链接的 Streaming 页面（讲的是"以前"的方式），给你梳理一遍。</p>
+<h2 id="_1">一句话理解它是什么</h2>
+<p>Event Streaming 是 LangChain agent（v1.3+）提供的一套<strong>流式输出 API</strong>，调用方式是 <code>agent.stream_events(input, version="v3")</code>。它返回一个 <code>run</code> 对象，这个对象不是一坨事件元组，而是按"语义"切好的多个<strong>视角（projection）</strong>——你可以选择只看模型文本、只看工具调用、只看状态快照，互不干扰，不用自己写 if/elif 去分流。</p>
+<p>LangChain 的 agent 本质上是构建在 LangGraph 之上的一张图（StateGraph），节点之间跳转执行。Event Streaming 就是对 LangGraph 底层事件流的一层"语义化包装"。</p>
+<h2 id="_2">没有它之前是怎么做的（痛点）</h2>
+<p>旧的方式是 <code>agent.stream(input, stream_mode=[...])</code>，你要先决定监听哪些 <code>stream_mode</code>：</p>
+<ul>
+<li><code>updates</code>：每个节点跑完后的状态更新（比如模型生成了带 tool_call 的消息、工具执行完返回了 ToolMessage）</li>
+<li><code>messages</code>：每个 LLM 调用产生的 <code>(token, metadata)</code> 元组，是真正的逐字流</li>
+<li><code>custom</code>：你在工具里用 <code>get_stream_writer()</code> 手动写的自定义数据</li>
+</ul>
+<p>问题在于：</p>
+<p><strong>第一，你必须自己拼。</strong> <code>messages</code> 模式吐出来的是碎片化的 token chunk（包括 <code>tool_call_chunk</code>），如果你想要"完整的一条消息"，得自己用 <code>AIMessageChunk</code> 相加累积，并且通过 <code>chunk_position == "last"</code> 判断什么时候拼完了。</p>
+<p><strong>第二，你必须自己分流。</strong> 每次循环拿到的是 <code>(mode, chunk)</code>（v1 格式）或者 <code>{"type": ..., "data": ...}</code>（v2 格式），你得手写：</p>
+<pre><code class="language-python">if chunk[&quot;type&quot;] == &quot;messages&quot;:
+    token, metadata = chunk[&quot;data&quot;]
+    ...
+elif chunk[&quot;type&quot;] == &quot;updates&quot;:
+    for source, update in chunk[&quot;data&quot;].items():
+        if source in (&quot;model&quot;, &quot;tools&quot;):
+            ...
+</code></pre>
+<p><strong>第三，工具调用的"生成阶段"和"执行阶段"混在一起。</strong> 想同时拿到工具调用的参数流、模型最终消息、工具执行结果，往往要同时开 <code>stream_mode=["messages", "updates", "custom"]</code> 三种模式一起跑，在一个大循环里靠节点名字（<code>source</code>）做区分。</p>
+<p>这套机制能用，但心智负担重——你本质上是在手写一个小状态机来"重组"语义。</p>
+<h2 id="_3">有了它之后的变化</h2>
+<p><code>stream_events(..., version="v3")</code> 把这套"重组"逻辑收进了框架内部，对外暴露的是已经按语义切好的视角：</p>
+<table>
+<thead>
+<tr>
+<th>投影</th>
+<th>作用</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>for event in run</code></td>
+<td>最原始的协议级事件，保留精确到达顺序</td>
+</tr>
+<tr>
+<td><code>run.messages</code></td>
+<td>按每次 LLM 调用切分的消息流</td>
+</tr>
+<tr>
+<td><code>message.text</code></td>
+<td>某条消息的文本增量 + 最终文本</td>
+</tr>
+<tr>
+<td><code>message.reasoning</code></td>
+<td>思维链/推理增量（如果模型支持）</td>
+</tr>
+<tr>
+<td><code>message.tool_calls</code></td>
+<td>工具调用参数的生成过程（流式 JSON）+ 最终解析结果</td>
+</tr>
+<tr>
+<td><code>message.output</code></td>
+<td>这条消息完成后的完整对象</td>
+</tr>
+<tr>
+<td><code>message.usage</code></td>
+<td>token 用量</td>
+</tr>
+<tr>
+<td><code>run.tool_calls</code></td>
+<td>工具<strong>执行</strong>的生命周期（开始、输出增量、最终结果、报错）</td>
+</tr>
+<tr>
+<td><code>run.values</code></td>
+<td>agent 状态快照</td>
+</tr>
+<tr>
+<td><code>run.output</code></td>
+<td>最终 agent 状态</td>
+</tr>
+<tr>
+<td><code>run.extensions</code></td>
+<td>自定义 transformer 投影（高级扩展点）</td>
+</tr>
+</tbody>
+</table>
+<p>关键变化是：你不再需要自己拼接 token，也不需要靠 <code>if chunk["type"]</code> 判断分支——<code>message.text</code> 本身就是"这条消息的文本增量序列"，<code>message.output</code> 本身就是"这条消息的完整对象"，框架替你做完了重组。</p>
+<h2 id="run">底层逻辑：怎么理解 run 对象</h2>
+<p>可以这样建立心智模型：</p>
+<p>LangChain agent 执行时，底层是一个 LangGraph 图在 model 节点和 tools 节点之间反复横跳（这部分你之前研究 LangChain/DeepSeek 工具调用机制时应该已经摸到一点）。这个图在执行过程中，每一步都会往外吐"原始事件"——<code>for event in run</code> 拿到的就是这个最底层、按时间顺序排列的事件流，所有更高级的投影都是基于它派生出来的。</p>
+<p><code>run.messages</code> 不是一次性返回，而是<strong>惰性的（lazy）</strong>——只有当你真正开始 <code>for message in run.messages:</code> 迭代时，agent 才会被驱动执行。每迭代到一次新的 LLM 调用，就会产出一个新的 <code>ChatModelStream</code> 对象（也就是 <code>message</code>）。这个对象本身又是一组并行的子投影：<code>.text</code>、<code>.reasoning</code>、<code>.tool_calls</code>、<code>.output</code>、<code>.usage</code>——它们共享同一次 LLM 调用的底层数据，只是按字段切了不同的视角给你。</p>
+<h2 id="_4">具体案例：一步步走一遍运行流程</h2>
+<p>用文档里的天气案例，逐步拆解执行顺序：</p>
+<pre><code class="language-python">from langchain.agents import create_agent
+
+def get_weather(city: str) -&gt; str:
+    &quot;&quot;&quot;Get weather for a city.&quot;&quot;&quot;
+    return f&quot;It's always sunny in {city}!&quot;
+
+agent = create_agent(model=&quot;gpt-5-nano&quot;, tools=[get_weather])
+
+run = agent.stream_events(
+    {&quot;messages&quot;: [{&quot;role&quot;: &quot;user&quot;, &quot;content&quot;: &quot;What is the weather in SF?&quot;}]},
+    version=&quot;v3&quot;,
+)
+</code></pre>
+<p>到这一步，<code>run</code> 只是一个"句柄"，agent 还没开始真正执行（惰性）。</p>
+<pre><code class="language-python">for message in run.messages:
+</code></pre>
+<p>这一行开始驱动执行。第一次进入循环，对应 agent 的<strong>第一次 model 节点调用</strong>：模型读到用户问题"SF 天气如何"，判断需要调用 <code>get_weather</code> 工具，于是开始生成一个 tool_call（而不是直接文本）。</p>
+<pre><code class="language-python">    for delta in message.text:
+        print(delta, end=&quot;&quot;, flush=True)
+</code></pre>
+<p>由于这条消息主要内容是工具调用参数（JSON），<code>message.text</code> 这时基本是空的或很少——文本增量为空说明这条消息不是在"说话"，而是在"决定调用工具"。如果你想看工具调用的生成过程，应该换成 <code>message.tool_calls</code>（下面会讲）。</p>
+<p>这次 model 调用结束后，LangGraph 内部自动跳转到 <strong>tools 节点</strong>，真正执行 <code>get_weather("San Francisco")</code>，产出一条 <code>ToolMessage</code>。这一步不会触发你的 <code>run.messages</code> 循环（因为它不是 LLM 调用），但你可以通过 <code>run.tool_calls</code> 投影单独观察到它。</p>
+<p>接着图跳回 <strong>model 节点</strong>，进行<strong>第二次 LLM 调用</strong>：这次模型拿到工具返回的结果，开始生成最终的自然语言回答。<code>for message in run.messages</code> 的循环走到第二轮，这次 <code>message.text</code> 才会真正一个字一个字地往外吐字。</p>
+<pre><code class="language-python">final_state = run.output
+</code></pre>
+<p>整个循环结束后，<code>run.output</code> 给你最终的 agent 状态（相当于 <code>invoke()</code> 的返回值），包含完整的消息历史。</p>
+<p>整个流程的本质：<strong>一次用户提问触发了两次 LLM 调用 + 一次工具执行</strong>，<code>run.messages</code> 把这两次 LLM 调用分别作为两个独立的 <code>message</code> 对象呈现给你，中间夹的工具执行通过 <code>run.tool_calls</code> 单独可见。</p>
+<h2 id="_5">常规使用方式</h2>
+<p>打印流式文字 + 拿 token 用量：</p>
+<pre><code class="language-python">run = agent.stream_events(input, version=&quot;v3&quot;)
+
+for message in run.messages:
+    print(f&quot;[{message.node}] &quot;, end=&quot;&quot;)   # 标明这条消息来自图里的哪个节点
+    for delta in message.text:
+        print(delta, end=&quot;&quot;, flush=True)
+
+    full_message = message.output
+    if full_message.usage_metadata:
+        print(full_message.usage_metadata)
+</code></pre>
+<p><code>message.node</code> 在多 agent / 多节点场景特别有用——可以替代旧方式里手动判断 <code>source</code> 字符串。</p>
+<p>看状态快照和最终结果：</p>
+<pre><code class="language-python">run = agent.stream_events(input, version=&quot;v3&quot;)
+
+for snapshot in run.values:
+    print(snapshot)
+
+final_state = run.output
+</code></pre>
+<h2 id="_6">高级使用方式</h2>
+<p><strong>区分"生成阶段"和"执行阶段"的工具调用</strong>，这是这套 API 里最值得记住的设计点：</p>
+<pre><code class="language-python">run = agent.stream_events(input, version=&quot;v3&quot;)
+
+for message in run.messages:
+    for chunk in message.tool_calls:           # 模型正在&quot;吐&quot;参数 JSON 的过程
+        print(f&quot;tool call chunk: {chunk}&quot;)
+    finalized = message.tool_calls.get()        # 拿到解析完成的最终 tool_calls
+    if finalized:
+        print(f&quot;finalized tool calls: {finalized}&quot;)
+
+for call in run.tool_calls:                     # 工具真正执行的生命周期
+    print(f&quot;{call.tool_name}({call.input})&quot;)
+    for delta in call.output_deltas:            # 如果工具本身支持流式输出
+        print(delta, end=&quot;&quot;, flush=True)
+    print(call.output, call.error)              # 最终结果或报错
+</code></pre>
+<p><code>message.tool_calls</code> 关心的是"模型在想什么、参数怎么一点点拼出来的"；<code>run.tool_calls</code> 关心的是"工具调用之后，真正执行情况如何、有没有报错"。这两者对应的正是旧方式里你必须手动靠节点名字（<code>model</code> vs <code>tools</code>）区分的两件事，现在框架直接给你拆成两个独立投影。</p>
+<p><code>run.extensions</code> 是留给高级用户的扩展点：你可以注册自定义的 transformer，把原始事件流转换成你自己定义的视图（比如只关心某种自定义业务事件），文档没给具体代码，但这是它可扩展性的体现，适合做前端推送协议的定制层。</p>
+<h2 id="_7">怎么理解、怎么学</h2>
+<p>建议的学习/验证顺序，每一步都跑一遍代码感受差异，比单纯看文档有效得多：</p>
+<ol>
+<li>先把案例里最简单的 <code>run.messages</code> + <code>message.text</code> 跑通，体会"流"是什么感觉。</li>
+<li>把工具加进去，对比同一个 <code>message</code> 里 <code>message.text</code> 为空、<code>message.tool_calls</code> 有内容的情况，理解一条 <code>message</code> 不一定是在"说话"。</li>
+<li>加一行 <code>run.tool_calls</code>，对照着看工具执行和工具调用生成是两个独立的时间线。</li>
+<li>回头把这篇文档开头那个 Streaming 页面里 v1 的写法（<code>stream_mode=["messages","updates"]</code> + 手动拼 <code>AIMessageChunk</code>）跑一遍，再对比 v3 的写法，会更直观地体会到"框架帮你做了什么"。</li>
+<li>如果你后续要接前端，再去看 <code>message.node</code>（多节点/多 agent 场景区分来源）和 <code>run.extensions</code>（自定义协议）。</li>
+</ol>
+<p>这套 API 是 LangChain v1.3 才引入的，文档明确建议新项目直接用它，不再推荐手写 <code>stream_mode</code> 元组分流的旧写法。如果你想我现在帮你写一个带工具调用、能在终端里实时打印的完整可运行 demo（比如换成你常用的 DeepSeek 模型），可以直接说一声，我给你写出来跑一遍。</p>
+<h2 id="user_1">User:</h2>
+<blockquote>
+<p>6/21/2026 8:28:38</p>
+</blockquote>
+<p>想要</p>
+<h2 id="assistant_1">Assistant:</h2>
+<blockquote>
+<p>6/21/2026 8:29:51</p>
+<p>想要补充说明和验证指导。</p>
+<ul>
+<li>User wants a complete runnable demo, using DeepSeek model (based on their memory of using DeepSeek). Let me write a Python script demonstrating Event Streaming with create_agent, tools, and DeepSeek model via langchain. Given their background, they use <code>uv</code> for package management, and have connected DeepSeek via Anthropic-compatible API endpoint for Claude Code, but for LangChain itself they probably use langchain_deepseek or OpenAI-compatible interface via init_chat_model with "deepseek:deepseek-chat" or similar provider string.</li>
+</ul>
+<p>Let me think about how DeepSeek integrates with LangChain. There's langchain-deepseek integration package, or you can use ChatOpenAI with base_url for DeepSeek's OpenAI-compatible API. Let me check current docs to be accurate, since I shouldn't rely on possibly outdated knowledge. Let me check product-self-knowledge skill? No, that's for Anthropic products. But this is about LangChain/DeepSeek integration, which isn't Anthropic product self-knowledge, so I can just search if needed, or rely on web doc already fetched. Let me search briefly for the correct way to set up DeepSeek with langchain init_chat_model, since the user explicitly works with DeepSeek and want accuracy.</p>
+<p>Actually I recall: langchain has "deepseek" provider integration via <code>langchain-deepseek</code> package, model string like "deepseep:deepseek-chat". Let me quickly verify via web search/fetch since this matters for correctness and the user explicitly uses DeepSeek.
+- langchain init_chat_model deepseek provider langchain-deepseek
+- Good, confirmed: <code>langchain-deepseek</code> package, <code>ChatDeepSeek</code> class, model="deepseek-chat" for tool calling support (deepseek-reasoner does NOT support tool calling). Need DEEPSEEK_API_KEY env var.</p>
+<p>Now let me write a complete runnable demo using create_agent with ChatDeepSeek model, a tool, and stream_events v3, demonstrating run.messages, message.text, message.tool_calls, run.tool_calls, run.output.</p>
+<p>Given the user uses <code>uv</code> for package management, I'll give pip/uv install instructions.</p>
+<p>Let me write the script directly inline as a code block since it's short (~60-80 lines) — under 100 lines, so I could just present it as code in chat per &lt;100 lines rule, or maybe create a file. Given file_creation_advice: "code files" trigger; "&gt;10 lines of code → create files". This is a runnable demo script, more than 10 lines, likely should be created as a file. Let me create it as a .py file in /mnt/user-data/outputs and present it, plus explain in chat. Also it's a "script" which is a standalone artifact the user wants to run locally (not just paste into chat) — definitely file-worthy.</p>
+<p>Let me write the script with:
+  1. tool: get_weather (keep simple, maybe add a second tool for more interesting demo, e.g. get_population) - keep simple, one tool consistent with the docs example for clarity, plus maybe an additional tool to show multiple tool_calls.</p>
+<p>I'll build it with two tools to make run.tool_calls more interesting (showing multiple parallel tool calls), but maybe keep simple with one tool to match the doc and not overcomplicate. I'll do one main tool (get_weather) and add a quick second decoration for richness — actually let's keep close to the doctrine, single tool, but show full each projection used.</p>
+<p>Plan for script:
+  - imports: os, from langchain_deepseek import ChatDeepSeek, from langchain.agents import create_agent
+  - tool function get_weather
+  …
+- 创建一个使用 LangChain Event Streaming + DeepSeek 的可运行示例脚本
+- Presenting file(s)...
+- Now I should add a short explanation in chat, including a note that I haven't run it (no DeepSeek API access in this sandbox), instructions, and a note about expected output shape so the user can verify behavior.
+- <strong>Done</strong></p>
+</blockquote>
+<p>几点说明，跑之前先看一眼：</p>
+<p><strong>安装与运行</strong></p>
+<pre><code class="language-bash">uv add langchain langchain-deepseek
+export DEEPSEEK_API_KEY=&quot;sk-你的key&quot;
+python event_streaming_deepseek_demo.py
+</code></pre>
+<p><strong>关于这个脚本的设计</strong></p>
+<p>只发起了一次 <code>agent.stream_events(...)</code>，在同一个 <code>run</code> 上依次走完三个投影,这样能完整看到"一次提问 → 几次 LLM 调用 → 调用了哪些工具 → 最终答案"这条链路,而不是每次演示一个功能就重新调一次 API（既费钱也看不出前后关联）。问题故意设计成需要查两个城市天气 + 比较人口,这样模型大概率会触发多个并行 tool_call,你能在 <code>run.tool_calls</code> 那一段看到不止一次工具执行。</p>
+<p><strong>一个我要提前说明的地方</strong>：这个沙盒环境访问不了 DeepSeek 的 API（网络白名单里没有这个域名），所以我没法替你实际跑一遍验证输出。脚本是严格按文档里给出的 API 形状写的（<code>message.node</code>、<code>message.text</code>、<code>message.tool_calls.get()</code>、<code>run.tool_calls</code>、<code>run.output</code>），但 DeepSeek 模型在工具调用的 chunk 粒度上和 OpenAI/Anthropic 可能略有差异，如果跑起来某个字段为空或报错,大概率是 DeepSeek 返回的 tool_call_chunk 切分方式不一样,把对应那一段换成打印 <code>message.output</code> 看完整对象，能更快定位到底是哪个字段不一致。</p>
+<p>跑完之后如果输出和预期不一样，把报错或异常输出贴给我，我帮你一起改。</p>
+<blockquote>
+<p>File: <a href="https://claude.ai/api/organizations/737fdee5-04a2-4560-9498-636d26177b24/conversations/008debad-0b28-4b37-b2ac-0abf285f1d35/wiggle/download-file?path=%2Fmnt%2Fuser-data%2Foutputs%2Fevent_streaming_deepseek_demo.py">/mnt/user-data/outputs/event_streaming_deepseek_demo.py</a></p>
+</blockquote>
+<hr />
+<p><strong>Sources:</strong></p>
+<ul>
+<li><a href="https://docs.langchain.com/oss/python/integrations/chat/deepseek">ChatDeepSeek integration - Docs by LangChain</a></li>
+<li><a href="https://reference.langchain.com/python/langchain-deepseek/chat_models/ChatDeepSeek">ChatDeepSeek | langchain_deepseek | LangChain Reference</a></li>
+<li><a href="https://github.com/SyJarvis/langchain-deepseek">GitHub - SyJarvis/langchain-deepseek: Using the deepseek model in langchain · GitHub</a></li>
+<li><a href="https://python.langchain.com/api_reference/deepseek/chat_models/langchain_deepseek.chat_models.ChatDeepSeek.html">LangChain Reference Docs</a></li>
+<li><a href="https://reference.langchain.com/python/integrations/langchain_deepseek/">langchain_deepseek | LangChain Reference</a></li>
+<li><a href="https://www.npmjs.com/package/@langchain/deepseek">langchain/deepseek</a></li>
+<li><a href="https://reference.langchain.com/python/langchain/chat_models/base/init_chat_model">init_chat_model | langchain | LangChain Reference</a></li>
+<li><a href="https://python.langchain.com/api_reference/_modules/langchain_deepseek/chat_models.html">Source code for langchain_deepseek.chat_models</a></li>
+<li><a href="https://reference.langchain.com/v0.3/python/deepseek/chat_models/langchain_deepseek.chat_models.ChatDeepSeek.html">ChatDeepSeek — 🦜🔗 LangChain documentation</a></li>
+<li><a href="https://changelog.langchain.com/announcements/deepseek-integration-in-langchain">LangChain - Changelog | DeepSeek integration in LangChain</a></li>
+</ul>
+<h2 id="user_2">User:</h2>
+<blockquote>
+<p>6/21/2026 8:41:37</p>
+</blockquote>
+<p>返回的run对象和流式输出agent.stream()返回的流式输出迭代器对象有什么区别?</p>
+<h2 id="assistant_2">Assistant:</h2>
+<blockquote>
+<p>6/21/2026 8:42:31</p>
+<p>对比分析了run对象与stream迭代器的结构、消费模式和语义差异。</p>
+<ul>
+<li>The user is asking about the difference between the <code>run</code> object returned by <code>agent.stream_events()</code> (Event Streaming API) versus the streaming iterator object returned by <code>agent.stream()</code> (the older/lower-level Pregel-based streaming API). This is a technical/conceptual question building on our prior discussion.</li>
+</ul>
+<p>Let me think through this carefully based on what I've read from the two docs (event-streaming.mdx and streaming.mdx).</p>
+<p>Key differences:</p>
+<ol>
+<li>
+<p><strong>What <code>agent.stream()</code> returns</strong>: A generator/iterator that yields <code>StreamPart</code> dicts (v2 format: <code>{type, ns, data}</code>) or <code>(mode, chunk)</code> tuples (v1 format). This is a <strong>single flat iterator</strong> — every event you've subscribed to via <code>stream_mode</code> comes through this one iterator, interleaved in arrival order. You consume it once, in a single for loop, and have to branch on <code>chunk["type"]</code> to figure out what kind of event it is.</p>
+</li>
+<li>
+<p><strong>What <code>agent.stream_events(..., version="v3")</code> returns</strong>: A <code>run</code> object — NOT a single iterator, but a container/handle that exposes <strong>multiple independent projections</strong> (<code>run.messages</code>, <code>run.values</code>, <code>run.tool_calls</code>, <code>run.extensions</code>, plus <code>for event in run</code> for raw events). Each projection is itself a separate iterable. You can iterate <code>run.messages</code> to drive execution and get message-level chunks; within that, each <code>message</code> is itself a <code>ChatModelStream</code> object exposing <code>.text</code>, <code>.reasoning</code>, <code>.tool_calls</code>, <code>.output</code>, <code>.usage</code> — sub-projections of that single message.</p>
+</li>
+<li>
+<p><strong>Underlying relationship</strong>: <code>run</code> is built on top of the same underlying LangGraph event protocol that powers <code>agent.stream()</code>. The raw event stream is the same substrate; <code>agent.stream()</code> exposes it via <code>stream_mode</code>-filtered tuples/dicts, while <code>stream_events()</code> wraps it in a <code>run</code> object that does the semantic parsing/projection job for you. So <code>run</code> is a higher-level abstraction over the same underlying events — not a totally different transport.</p>
+</li>
+<li>
+<p>…</p>
+</li>
+<li><strong>Done</strong></li>
+</ol>
+</blockquote>
+<p>两者最核心的区别是：<strong><code>agent.stream()</code> 返回的是一个"单一扁平迭代器"，而 <code>agent.stream_events()</code> 返回的 <code>run</code> 是一个"多视图容器对象"</strong>。具体拆开说：</p>
+<h2 id="1-vs">1. 结构上：一条流 vs 多个独立投影</h2>
+<p><code>agent.stream(input, stream_mode=[...])</code> 返回的就是一个标准 Python 生成器——你提前声明好要哪些 <code>stream_mode</code>，之后所有事件（不管是 token、状态更新还是自定义数据）都混在<strong>同一条流</strong>里按到达顺序吐给你，你只能用一个 <code>for</code> 循环去消费它，靠 <code>chunk["type"]</code> 做运行时判断来分流。</p>
+<p><code>run = agent.stream_events(input, version="v3")</code> 拿到的不是迭代器本身，而是一个对象，这个对象身上挂着多个<strong>互相独立的属性</strong>：<code>run.messages</code>、<code>run.values</code>、<code>run.tool_calls</code>、<code>run.extensions</code>，外加一个 <code>for event in run</code> 的原始事件视图。每个属性自己才是可迭代对象。你不是被迫处理一条混合流，而是按需选你想看的那个视图。</p>
+<pre><code class="language-python"># stream()：一个循环，里面靠 type 分流
+for chunk in agent.stream(input, stream_mode=[&quot;messages&quot;, &quot;updates&quot;], version=&quot;v2&quot;):
+    if chunk[&quot;type&quot;] == &quot;messages&quot;:
+        ...
+    elif chunk[&quot;type&quot;] == &quot;updates&quot;:
+        ...
+
+# stream_events()：多个独立循环，各看各的
+run = agent.stream_events(input, version=&quot;v3&quot;)
+for message in run.messages:
+    ...
+for call in run.tool_calls:
+    ...
+final = run.output
+</code></pre>
+<h2 id="2-vs">2. 消费方式：一次性单遍 vs 可以分别回看</h2>
+<p><code>agent.stream()</code> 的生成器是一次性的——遍历完就空了，你能看到什么完全取决于一开始声明的 <code>stream_mode</code>，没法"先看一遍文字，再回头单独看一遍工具调用",因为流只过一次。</p>
+<p><code>run</code> 对象支持"先驱动一遍执行,再分别看不同侧面"的用法——就像我们上一版 demo 里那样,先用 <code>for message in run.messages</code> 把整个 agent 执行驱动完,然后再单独 <code>for call in run.tool_calls</code> 去看工具执行细节,最后再取 <code>run.output</code>。这意味着 <code>run</code> 内部把底层事件做了缓存/回放,而不是像 <code>stream()</code> 那样"过了这村没这店"。</p>
+<h2 id="3-chunk-vs">3. 粒度：裸 chunk vs 已经拼装好的语义对象</h2>
+<p><code>stream()</code> 给你的是更底层的东西——<code>stream_mode="messages"</code> 吐出来的是 <code>(token, metadata)</code>，包括散碎的 <code>tool_call_chunk</code>，要拼出一条完整消息得自己用 <code>AIMessageChunk</code> 相加、自己判断 <code>chunk_position == "last"</code>。</p>
+<p><code>run.messages</code> 里每个 <code>message</code> 本身是一个 <code>ChatModelStream</code> 对象，已经按"一次 LLM 调用"的边界切好了；<code>message.output</code> 直接给你拼装完成的完整消息，不需要手动 <code>+=</code>。</p>
+<h2 id="4-vs">4. 类型判断：运行时判断 vs 天然类型安全</h2>
+<p><code>stream()</code> 不管你订阅几种 <code>stream_mode</code>，拿到的容器形状始终是同一种（v1 是 <code>(mode, chunk)</code> 元组，v2 是 <code>{type, ns, data}</code> 字典），每次都要写 <code>if chunk["type"] == "xxx"</code>。</p>
+<p><code>run</code> 的每个投影天然只产出一种语义内容——<code>message.text</code> 只可能是文本增量，<code>message.tool_calls</code> 只可能是工具调用相关数据，不需要判断类型，IDE 类型提示也更准。</p>
+<h2 id="5">5. 底层关系：不是两套机制，是同一套协议的两层封装</h2>
+<p><code>run</code> 上保留了 <code>for event in run</code> 这个最原始的逃生舱口，等价于 <code>stream()</code> 给你的裸事件流，顺序也完全一致。可以理解成：两者共享同一套 LangGraph 底层事件协议，<code>stream()</code> 是直接把这条协议流（按 <code>stream_mode</code> 过滤）扔给你；<code>stream_events()</code> 是在这条协议流之上又包了一层"语义投影"，自动帮你做了你原本要手写的分类和拼接工作。</p>
+<p>简单总结一句话：<code>agent.stream()</code> 的返回值回答的是"事件按什么顺序发生"，而 <code>run</code> 对象回答的是"我想从哪个角度看这次执行"——前者是流的视角，后者是视图的视角。</p>
+<p>Powered by Claude Exporter (https://www.ai-chat-exporter.net)</p>
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+  <script>var tabs=__md_get("__tabs");if(Array.isArray(tabs))e:for(var set of document.querySelectorAll(".tabbed-set")){var labels=set.querySelector(".tabbed-labels");for(var tab of tabs)for(var label of labels.getElementsByTagName("label"))if(label.innerText.trim()===tab){var input=document.getElementById(label.htmlFor);input.checked=!0;continue e}}</script>
+
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+          <button type="button" class="md-top md-icon" data-md-component="top" hidden>
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8z"/></svg>
+  Back to top
+</button>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+    
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+      <div class="md-progress" data-md-component="progress" role="progressbar"></div>
+    
+    
+    
+      
+      
+      <script id="__config" type="application/json">{"annotate": null, "base": "../..", "features": ["announce.dismiss", "content.action.edit", "content.action.view", "content.code.annotate", "content.code.copy", "content.code.select", "content.tabs.link", "content.tooltips", "navigation.footer", "navigation.indexes", "navigation.instant.prefetch", "navigation.instant.progress", "navigation.path", "navigation.sections", "navigation.tabs", "navigation.tabs.sticky", "navigation.top", "navigation.tracking", "search.highlight", "search.share", "search.suggest", "toc.follow"], "search": "../../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+    
+    
+      <script src="../../assets/javascripts/bundle.79ae519e.min.js"></script>
+      
+    
+  </body>
+</html>

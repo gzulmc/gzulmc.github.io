@@ -1,0 +1,2036 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+      
+      
+      
+      
+      
+        
+      
+      
+      <link rel="icon" href="../../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.6">
+    
+    
+      
+        <title>开源框架Pig介绍 - gzulmc's 随笔记录</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../assets/stylesheets/main.484c7ddc.min.css">
+      
+        
+        <link rel="stylesheet" href="../../assets/stylesheets/palette.ab4e12ef.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+    <script>__md_scope=new URL("../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+  </head>
+  
+  
+    
+    
+      
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#pig" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow md-header--lifted" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href="../.." title="gzulmc&#39;s 随笔记录" class="md-header__button md-logo" aria-label="gzulmc's 随笔记录" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            gzulmc's 随笔记录
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              开源框架Pig介绍
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+        <form class="md-header__option" data-md-component="palette">
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo"  aria-label="Switch to dark mode"  type="radio" name="__palette" id="__palette_0">
+    
+      <label class="md-header__button md-icon" title="Switch to dark mode" for="__palette_1" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a4 4 0 0 0-4 4 4 4 0 0 0 4 4 4 4 0 0 0 4-4 4 4 0 0 0-4-4m0 10a6 6 0 0 1-6-6 6 6 0 0 1 6-6 6 6 0 0 1 6 6 6 6 0 0 1-6 6m8-9.31V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12z"/></svg>
+      </label>
+    
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="slate" data-md-color-primary="indigo" data-md-color-accent="indigo"  aria-label="Switch to light mode"  type="radio" name="__palette" id="__palette_1">
+    
+      <label class="md-header__button md-icon" title="Switch to light mode" for="__palette_0" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 18c-.89 0-1.74-.2-2.5-.55C11.56 16.5 13 14.42 13 12s-1.44-4.5-3.5-5.45C10.26 6.2 11.11 6 12 6a6 6 0 0 1 6 6 6 6 0 0 1-6 6m8-9.31V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12z"/></svg>
+      </label>
+    
+  
+</form>
+      
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+          <a href="javascript:void(0)" class="md-search__icon md-icon" title="Share" aria-label="Share" data-clipboard data-clipboard-text="" data-md-component="search-share" tabindex="-1">
+            
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M18 16.08c-.76 0-1.44.3-1.96.77L8.91 12.7c.05-.23.09-.46.09-.7s-.04-.47-.09-.7l7.05-4.11c.54.5 1.25.81 2.04.81a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3c0 .24.04.47.09.7L8.04 9.81C7.5 9.31 6.79 9 6 9a3 3 0 0 0-3 3 3 3 0 0 0 3 3c.79 0 1.5-.31 2.04-.81l7.12 4.15c-.05.21-.08.43-.08.66 0 1.61 1.31 2.91 2.92 2.91s2.92-1.3 2.92-2.91A2.92 2.92 0 0 0 18 16.08"/></svg>
+          </a>
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+        <div class="md-search__suggest" data-md-component="search-suggest"></div>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      
+    
+    
+  </nav>
+  
+    
+      
+<nav class="md-tabs" aria-label="Tabs" data-md-component="tabs">
+  <div class="md-grid">
+    <ul class="md-tabs__list">
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../Python/%E9%9D%A2%E5%90%91%E5%AF%B9%E8%B1%A1%E5%9F%BA%E7%A1%80/" class="md-tabs__link">
+          
+  
+  
+    
+  
+  Python
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../Django/Django%E5%9F%BA%E7%A1%80/" class="md-tabs__link">
+          
+  
+  
+    
+  
+  Django
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../Docker/Docker%E8%AF%A6%E8%A7%A3/" class="md-tabs__link">
+          
+  
+  
+    
+  
+  Docker
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../.." class="md-tabs__link">
+          
+  
+  
+    
+  
+  Java
+
+        </a>
+      </li>
+    
+  
+
+      
+    </ul>
+  </div>
+</nav>
+    
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+  
+
+
+<nav class="md-nav md-nav--primary md-nav--lifted" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../.." title="gzulmc&#39;s 随笔记录" class="md-nav__button md-logo" aria-label="gzulmc's 随笔记录" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    gzulmc's 随笔记录
+  </label>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_1" >
+        
+          
+          <label class="md-nav__link" for="__nav_1" id="__nav_1_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Python
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_1_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_1">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Python
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../Python/%E9%9D%A2%E5%90%91%E5%AF%B9%E8%B1%A1%E5%9F%BA%E7%A1%80/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    面向对象基础
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../Python/%E9%9D%A2%E5%90%91%E5%AF%B9%E8%B1%A1%E8%BF%9B%E9%98%B6/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    面向对象进阶
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../Python/%E8%BF%9B%E7%A8%8B%E5%92%8C%E7%BA%BF%E7%A8%8B/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    进程和线程
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../Python/%E5%9B%BE%E5%83%8F%E5%92%8C%E6%96%87%E6%A1%A3%E5%A4%84%E7%90%86/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    图像和文档处理
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../Python/%E7%BD%91%E7%BB%9C%E7%BC%96%E7%A8%8B%E5%BA%94%E7%94%A8/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    网络编程应用
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../Python/%E6%96%87%E4%BB%B6%E5%92%8C%E5%BC%82%E5%B8%B8/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    文件和异常
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2" >
+        
+          
+          <label class="md-nav__link" for="__nav_2" id="__nav_2_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Django
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_2_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Django
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../Django/Django%E5%9F%BA%E7%A1%80/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Django基础
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../Django/%E6%95%B0%E6%8D%AE%E6%A8%A1%E5%9E%8B/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    数据模型
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+      
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3" >
+        
+          
+          <label class="md-nav__link" for="__nav_3" id="__nav_3_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Docker
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_3">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Docker
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../Docker/Docker%E8%AF%A6%E8%A7%A3/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Docker详解
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4" >
+        
+          
+          <div class="md-nav__link md-nav__container">
+            <a href="../.." class="md-nav__link ">
+              
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Java
+  
+
+    
+  </span>
+  
+  
+
+            </a>
+            
+          </div>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_4_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Java
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#prompt" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Prompt:
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#response" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Response:
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        核心定位
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_2" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        技术栈
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_3" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        主要特性
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_4" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        版本情况
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_5" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        适用场景
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#prompt_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Prompt:
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#response_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Response:
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_6" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        纠正一个误解：不是"先后"关系
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_7" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        完整流程拆解
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="完整流程拆解">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#1-spring-security" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        ① 认证阶段（Spring Security 的工作）
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#2-oauth2-token" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        ② OAuth2 颁发 Token
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#3-gateway" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        ③ 网关层校验（Gateway 的工作）
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#4-resource-server" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        ④ 各微服务做授权（Resource Server）
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#spring-security-oauth2" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Spring Security 提供什么，OAuth2 需要什么
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#prompt_2" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Prompt:
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#response_2" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Response:
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#token" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        你拿到的那个 Token 是什么
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_8" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        你登录时请求的接口是什么
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#bearer-token" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        为什么 Bearer &lt;token&gt; 就能调通接口
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#refresh-token" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        还有个 Refresh Token，是干什么的
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#prompt_3" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Prompt:
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#response_3" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Response:
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#sas" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        第一层：过滤器链入口（SAS 原生）
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#pig_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        第二层：PIG 的核心扩展（最重要）
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="第二层：PIG 的核心扩展（最重要）">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#passwordauthenticationconverter" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        PasswordAuthenticationConverter
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#passwordauthenticationprovider" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        PasswordAuthenticationProvider
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#jwt-sas" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        第三层：JWT 签发（SAS 原生）
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_9" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        整体关键点总结
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#prompt_4" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Prompt:
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#response_4" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Response:
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#maven" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        一、Maven 依赖（最直接的证明）
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#spring-security-pig-auth" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        二、Spring Security 在 pig-auth 里做什么
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="二、Spring Security 在 pig-auth 里做什么">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#1-securityfilterchain" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1. SecurityFilterChain 配置（两条链并存）
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#2-userdetailsservicespring-security-pig" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2. UserDetailsService（Spring Security 接口，pig 自己实现）
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#3-passwordencoderspring-security" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3. PasswordEncoder（Spring Security 提供）
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#spring-authorization-server-pig-auth" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        三、Spring Authorization Server 在 pig-auth 里做什么
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="三、Spring Authorization Server 在 pig-auth 里做什么">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#1-pig-passwordauthenticationconverter" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1. pig 自定义的 PasswordAuthenticationConverter
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#2-pig-passwordauthenticationprovider" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2. pig 自定义的 PasswordAuthenticationProvider
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#3-pig-jwt-sas" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3. pig 的 JWT 自定义字段注入（SAS 的扩展点）
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_10" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        四、两个框架分工总结
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              
+                
+
+
+
+
+              
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+
+<h1 id="pig">开源框架Pig介绍</h1>
+<p><strong>Created:</strong> 5/13/2026 14:48:13<br />
+<strong>Updated:</strong> 5/13/2026 15:02:11<br />
+<strong>Exported:</strong> 5/13/2026 22:02:42<br />
+<strong>Link:</strong> <a href="https://claude.ai/chat/d62d64e1-1d32-4b69-985b-67bb7dc4758c">https://claude.ai/chat/d62d64e1-1d32-4b69-985b-67bb7dc4758c</a>  </p>
+<h2 id="prompt">Prompt:</h2>
+<p>2026/5/13 14:48:14</p>
+<p>你了解开源框架pig吗</p>
+<h2 id="response">Response:</h2>
+<p>2026/5/13 14:48:24</p>
+<p>了解！<strong>PIG</strong> 是一个基于 Spring Boot + Spring Cloud 的微服务开发框架，在国内开源社区很有名气。</p>
+<h2 id="_1">核心定位</h2>
+<p>PIG 是一个<strong>企业级微服务权限管理系统</strong>，主打"开箱即用"的后台管理脚手架，适合快速搭建中后台项目。</p>
+<h2 id="_2">技术栈</h2>
+<ul>
+<li><strong>后端</strong>：Spring Boot 3.x、Spring Cloud、Spring Security OAuth2（或 Spring Authorization Server）</li>
+<li><strong>注册/配置中心</strong>：Nacos</li>
+<li><strong>网关</strong>：Spring Cloud Gateway</li>
+<li><strong>缓存</strong>：Redis</li>
+<li><strong>数据库</strong>：MySQL + MyBatis-Plus</li>
+<li><strong>前端</strong>：Vue 3 + Element Plus（配套项目 pig-ui）</li>
+</ul>
+<h2 id="_3">主要特性</h2>
+<ul>
+<li><strong>基于 OAuth2 的统一认证授权</strong>，支持多种登录方式（密码、短信、社交登录等）</li>
+<li><strong>RBAC 权限模型</strong>，角色/菜单/数据权限细粒度控制</li>
+<li><strong>多租户支持</strong>（商业版更完善）</li>
+<li><strong>日志追踪</strong>，基于 SkyWalking 或 Skylog</li>
+<li><strong>代码生成器</strong>，根据表结构自动生成前后端代码</li>
+<li><strong>Docker / K8s</strong> 友好，支持容器化部署</li>
+</ul>
+<h2 id="_4">版本情况</h2>
+<table>
+<thead>
+<tr>
+<th>版本</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>开源版</td>
+<td>核心功能免费，GitHub/Gitee 可获取</td>
+</tr>
+<tr>
+<td>商业版（pigX）</td>
+<td>更多企业特性，如工作流、多租户增强等</td>
+</tr>
+</tbody>
+</table>
+<h2 id="_5">适用场景</h2>
+<p>适合需要快速交付的<strong>中后台管理系统</strong>、<strong>微服务入门学习</strong>，以及有权限管理需求的企业项目。</p>
+<hr />
+<p>你是想用 PIG 做项目开发、学习源码，还是有具体的技术问题？可以告诉我方向，我来针对性地帮你。</p>
+<h2 id="prompt_1">Prompt:</h2>
+<p>2026/5/13 14:50:44</p>
+<p>spring security cloud oauth2 在分布式微服务系统是怎么应用的？spring security负责认证，然后认证完了之后oauth2在负责授权吗？oauth2需要获取什么东西，spring security负责提供什么东西，这个完整的流程是怎么样的？</p>
+<h2 id="response_1">Response:</h2>
+<p>2026/5/13 14:51:41</p>
+<p>很好的问题！你的理解方向是对的，但细节上需要纠正一下——Spring Security 和 OAuth2 的关系不是"先后"关系，而是<strong>包含关系</strong>。让我画一张完整的流程图来解释。</p>
+<pre><code class="language-plaintext">Tool: read_me
+</code></pre>
+<pre><code class="language-plaintext">Tool: show_widget
+</code></pre>
+<p>好，结合这张图，我来详细解释每个阶段。</p>
+<hr />
+<h2 id="_6">纠正一个误解：不是"先后"关系</h2>
+<p>你说的"Spring Security 负责认证，OAuth2 负责授权"这个方向是对的，但<strong>不是两个独立系统先后工作</strong>。正确的理解是：</p>
+<blockquote>
+<p><strong>OAuth2 是一套协议规范，Spring Security 是实现它的框架。</strong> OAuth2 运行在 Spring Security 之上，就像 HTTPS 运行在 TCP 之上一样。</p>
+</blockquote>
+<hr />
+<h2 id="_7">完整流程拆解</h2>
+<h3 id="1-spring-security">① 认证阶段（Spring Security 的工作）</h3>
+<p>用户提交用户名+密码，Spring Security 内部做这些事：</p>
+<ul>
+<li><code>UsernamePasswordAuthenticationFilter</code> 拦截请求</li>
+<li>调用你实现的 <code>UserDetailsService.loadUserByUsername()</code> 查数据库</li>
+<li>用 <code>BCryptPasswordEncoder</code> 比对密码</li>
+<li>认证通过后，构建 <code>Authentication</code> 对象（包含用户信息和权限列表）</li>
+</ul>
+<h3 id="2-oauth2-token">② OAuth2 颁发 Token</h3>
+<p>认证成功后，Spring Authorization Server（OAuth2 实现）做这些事：</p>
+<ul>
+<li>按照 OAuth2 协议，将用户信息 + 权限（roles/scopes）打包进 <strong>JWT</strong></li>
+<li>JWT Payload 大概长这样：
+  <code>json
+  { "sub": "user123", "roles": ["ROLE_ADMIN"], "scope": "order:read", "exp": 1700000000 }</code></li>
+<li>用私钥签名，返回给客户端</li>
+</ul>
+<h3 id="3-gateway">③ 网关层校验（Gateway 的工作）</h3>
+<p>之后每次请求，客户端都带着这个 Token。网关负责：</p>
+<ul>
+<li>用<strong>公钥</strong>验证签名是否合法</li>
+<li>检查是否过期</li>
+<li>解析出用户信息，注入到请求 Header（<code>X-User-Id</code>、<code>X-User-Roles</code>）</li>
+<li><strong>转发给后端微服务</strong>——所以各微服务不需要再去联系认证服务器</li>
+</ul>
+<h3 id="4-resource-server">④ 各微服务做授权（Resource Server）</h3>
+<p>每个微服务配置为 <strong>OAuth2 Resource Server</strong>，只需：</p>
+<ul>
+<li>从 Header 或 Token 中拿到 roles/scopes</li>
+<li>用 <code>@PreAuthorize("hasRole('ADMIN')")</code> 等注解做方法级权限校验</li>
+</ul>
+<hr />
+<h2 id="spring-security-oauth2">Spring Security 提供什么，OAuth2 需要什么</h2>
+<table>
+<thead>
+<tr>
+<th>组件</th>
+<th>提供方</th>
+<th>作用</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>认证过滤器链</td>
+<td>Spring Security</td>
+<td>拦截登录请求，验证用户名密码</td>
+</tr>
+<tr>
+<td>UserDetails / UserDetailsService</td>
+<td>Spring Security（你实现）</td>
+<td>从数据库加载用户信息</td>
+</tr>
+<tr>
+<td>PasswordEncoder</td>
+<td>Spring Security</td>
+<td>密码加密比对</td>
+</tr>
+<tr>
+<td>Token 颁发</td>
+<td>Spring Authorization Server（OAuth2）</td>
+<td>生成 JWT，包含用户权限</td>
+</tr>
+<tr>
+<td>Token 校验</td>
+<td>Spring Security Resource Server</td>
+<td>各微服务验签、解析权限</td>
+</tr>
+<tr>
+<td><code>@PreAuthorize</code></td>
+<td>Spring Security</td>
+<td>方法级权限拦截</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<p>点击图中各节点可以继续深入了解某个具体组件。有哪一块想深入说说？比如 JWT 的结构、网关怎么配，还是 <code>@PreAuthorize</code> 怎么用？</p>
+<h2 id="prompt_2">Prompt:</h2>
+<p>2026/5/13 14:52:09</p>
+<p>我在使用开源项目pig的时候，我的登录认证流程是 使用用户名和密码请求一次后台，然后后台会给我返回一个token，我不知道这个token是不是aceess token 还是什么token。但是后面我调用微服务接口的时候会带上这个toekn，bearar token：返回来的token，去返回接口就能调用了。请问这个流程是什么？</p>
+<h2 id="response_2">Response:</h2>
+<p>2026/5/13 14:53:03</p>
+<p>你描述的就是标准的 <strong>OAuth2 密码模式（Password Grant）</strong> 流程，而且那个 token <strong>就是 Access Token</strong>，格式是 JWT。让我结合 PIG 的具体实现来解释。</p>
+<pre><code class="language-plaintext">Tool: read_me
+</code></pre>
+<pre><code class="language-plaintext">Tool: show_widget
+</code></pre>
+<p>结合你的具体场景，逐步解释。</p>
+<hr />
+<h2 id="token">你拿到的那个 Token 是什么</h2>
+<p>就是 <strong>OAuth2 Access Token</strong>，PIG 里用的是 JWT 格式。你可以把它粘贴到 <a href="https://jwt.io">jwt.io</a> 解码，能看到里面的内容大概是：</p>
+<pre><code class="language-json">{
+  &quot;sub&quot;: &quot;admin&quot;,
+  &quot;userId&quot;: 1,
+  &quot;username&quot;: &quot;admin&quot;,
+  &quot;authorities&quot;: [&quot;ROLE_ADMIN&quot;, &quot;order:read&quot;],
+  &quot;client_id&quot;: &quot;pig&quot;,
+  &quot;exp&quot;: 1700000000
+}
+</code></pre>
+<hr />
+<h2 id="_8">你登录时请求的接口是什么</h2>
+<p>PIG 登录接口遵循 OAuth2 标准，实际上你 POST 的是：</p>
+<pre><code>POST /auth/oauth2/token
+Content-Type: application/x-www-form-urlencoded
+
+grant_type=password
+&amp;username=admin
+&amp;password=admin123
+&amp;scope=server
+</code></pre>
+<p>Header 里还要带 <code>Authorization: Basic cGlnOnBpZw==</code>（这是 client_id:client_secret 的 Base64，pig 默认是 <code>pig:pig</code>）。</p>
+<p>返回的数据结构是：</p>
+<pre><code class="language-json">{
+  &quot;access_token&quot;: &quot;eyJhbGci...&quot;,
+  &quot;token_type&quot;: &quot;Bearer&quot;,
+  &quot;refresh_token&quot;: &quot;eyJhbGci...&quot;,
+  &quot;expires_in&quot;: 43199
+}
+</code></pre>
+<p>你用的就是 <code>access_token</code>。</p>
+<hr />
+<h2 id="bearer-token">为什么 <code>Bearer &lt;token&gt;</code> 就能调通接口</h2>
+<p>流程是：</p>
+<ol>
+<li>你带着 <code>Authorization: Bearer eyJ...</code> 发请求到 Gateway</li>
+<li>Gateway 里的 <code>TokenAuthenticationFilter</code> 用<strong>公钥</strong>验证 JWT 签名，解析出用户信息</li>
+<li>把用户 id、用户名注入请求 Header（<code>X-User-Id</code>、<code>X-Username</code>）</li>
+<li>转发给具体微服务</li>
+<li>微服务作为 <strong>Resource Server</strong>，读取 Header 或 Token 里的 roles，执行 <code>@PreAuthorize</code> 校验</li>
+</ol>
+<p>全程<strong>不需要再联系 Auth Server</strong>，因为 JWT 是自包含的，签名验证本地就能完成。</p>
+<hr />
+<h2 id="refresh-token">还有个 Refresh Token，是干什么的</h2>
+<p>Access Token 有过期时间（PIG 默认 12 小时）。过期之后不需要重新登录，而是用 <code>refresh_token</code> 换一个新的 <code>access_token</code>：</p>
+<pre><code>POST /auth/oauth2/token
+grant_type=refresh_token
+&amp;refresh_token=eyJ...（refresh_token 的值）
+</code></pre>
+<hr />
+<p>需要深入某个环节吗？比如 PIG 里怎么自定义登录逻辑、怎么加自定义字段到 Token、或者权限注解怎么配？</p>
+<h2 id="prompt_3">Prompt:</h2>
+<p>2026/5/13 14:54:17</p>
+<p>pig的pig-auth模块内部认证逻辑是什么？</p>
+<h2 id="response_3">Response:</h2>
+<p>2026/5/13 14:55:11</p>
+<p>好，我来详细拆解 PIG 的 <code>pig-auth</code> 模块内部认证逻辑。PIG 使用的是 <strong>Spring Authorization Server</strong>（简称 SAS），在它的标准流程上做了大量定制扩展。</p>
+<pre><code class="language-plaintext">Tool: show_widget
+</code></pre>
+<p>下面按层次逐一解释每个关键节点。</p>
+<hr />
+<h2 id="sas">第一层：过滤器链入口（SAS 原生）</h2>
+<p>请求进来后先经过两个 Spring Authorization Server 的标准过滤器：</p>
+<p><code>OAuth2TokenEndpointFilter</code> 负责拦截所有 <code>/oauth2/token</code> 请求，把 HTTP 表单参数（<code>grant_type</code>、<code>username</code>、<code>password</code> 等）提取出来，交给后续的 Converter 处理。</p>
+<p><code>ClientSecretAuthenticationFilter</code> 验证客户端身份，也就是校验你请求 Header 里的 <code>Authorization: Basic cGlnOnBpZw==</code>，解码后确认 <code>client_id=pig</code>、<code>client_secret=pig</code> 在数据库 <code>sys_oauth_client_details</code> 表中是否存在且合法。</p>
+<hr />
+<h2 id="pig_1">第二层：PIG 的核心扩展（最重要）</h2>
+<p>这是 PIG 相比标准 SAS 做定制的地方：</p>
+<h3 id="passwordauthenticationconverter"><code>PasswordAuthenticationConverter</code></h3>
+<p>SAS 原生只支持授权码模式，不支持用户名密码直接登录。PIG 自己实现了这个 Converter，从请求里解析出 <code>username</code>、<code>password</code>，还有 PIG 特有的<strong>图形验证码</strong>（<code>code</code> + <code>randomStr</code>）参数，组装成 <code>PasswordAuthenticationToken</code> 传给 Provider。</p>
+<h3 id="passwordauthenticationprovider"><code>PasswordAuthenticationProvider</code></h3>
+<p>这是整个认证的核心，内部串联了三步：</p>
+<p><strong>第一步 — <code>PigUserDetailsServiceImpl</code> 加载用户</strong></p>
+<p>不是查本地数据库，而是通过 Feign 远程调用 <code>pig-upms-biz</code>（用户权限管理服务），根据用户名查回完整的用户信息，包括角色列表、权限列表、部门、租户 ID 等，封装成 <code>PigUser</code>（继承自 <code>UserDetails</code>）。</p>
+<p><strong>第二步 — <code>BCryptPasswordEncoder</code> 比对密码</strong></p>
+<p>拿用户输入的明文密码和数据库里存的 BCrypt 密文做比对。PIG 还在这一步前加了验证码校验（查 Redis，验证图形验证码是否正确）。</p>
+<p><strong>第三步 — <code>PigOAuth2TokenCustomizer</code> 定制 JWT</strong></p>
+<p>密码比对通过后，在生成 JWT 之前，<code>PigOAuth2TokenCustomizer</code> 会把额外信息写进 JWT 的 Payload：</p>
+<pre><code class="language-json">{
+  &quot;sub&quot;: &quot;admin&quot;,
+  &quot;userId&quot;: 1,
+  &quot;username&quot;: &quot;admin&quot;,
+  &quot;deptId&quot;: 1,
+  &quot;tenantId&quot;: &quot;000000&quot;,
+  &quot;authorities&quot;: [&quot;ROLE_ADMIN&quot;, &quot;sys_user_add&quot;],
+  &quot;exp&quot;: 1700000000
+}
+</code></pre>
+<p>这就是为什么后续微服务里能直接从 Token 里拿到 <code>userId</code> 和 <code>deptId</code>，不用再查数据库。</p>
+<hr />
+<h2 id="jwt-sas">第三层：JWT 签发（SAS 原生）</h2>
+<p><code>OAuth2TokenGenerator</code> 调用内部的 <code>JwtGenerator</code>，用 <strong>RSA 私钥</strong>对 Payload 签名，生成最终的 JWT 字符串。同时生成一个 <code>refresh_token</code> 存入 Redis（或数据库），用于后续无感刷新。</p>
+<hr />
+<h2 id="_9">整体关键点总结</h2>
+<table>
+<thead>
+<tr>
+<th>扩展点</th>
+<th>作用</th>
+<th>PIG 特有？</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>PasswordAuthenticationConverter</code></td>
+<td>支持用户名密码登录模式</td>
+<td>是</td>
+</tr>
+<tr>
+<td><code>PasswordAuthenticationProvider</code></td>
+<td>串联验证码+用户加载+密码比对</td>
+<td>是</td>
+</tr>
+<tr>
+<td><code>PigUserDetailsServiceImpl</code></td>
+<td>通过 Feign 远程加载用户</td>
+<td>是</td>
+</tr>
+<tr>
+<td><code>PigOAuth2TokenCustomizer</code></td>
+<td>向 JWT 注入业务字段</td>
+<td>是</td>
+</tr>
+<tr>
+<td><code>BCryptPasswordEncoder</code></td>
+<td>密码加密比对</td>
+<td>否（Spring Security 原生）</td>
+</tr>
+<tr>
+<td><code>JwtGenerator</code></td>
+<td>RSA 签名生成 JWT</td>
+<td>否（SAS 原生）</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<p>想继续深入哪个点？比如验证码校验的具体实现、<code>PigUserDetailsServiceImpl</code> 怎么扩展自定义登录方式（手机号登录、第三方登录），还是 JWT 的 RSA 公私钥是怎么配置的？</p>
+<h2 id="prompt_4">Prompt:</h2>
+<p>2026/5/13 15:01:07</p>
+<p>我想知道pig用的Spring Authorization Server 具体是哪一个项目？是spring security吗还是单独的一个项目通过maven单独引用？它和spring security是怎么配合的？两个框架spring security和Spring Authorization Server分别在那个阶段发挥作用的，都被集成在pig-auth这个模块吗？具体的代码帮我罗列出来</p>
+<h2 id="response_4">Response:</h2>
+<p>2026/5/13 15:02:11</p>
+<p>很好的问题！先直接回答核心疑问，再看代码。</p>
+<pre><code class="language-plaintext">Tool: show_widget
+</code></pre>
+<p><strong>Spring Authorization Server 是完全独立的项目</strong>，不是 Spring Security 的子模块，通过 Maven 单独引入。两者关系是：SAS 构建在 Spring Security 之上，大量复用其过滤器链和认证体系，但 OAuth2 协议逻辑（Token 端点、客户端管理、JWT 签发）全由 SAS 自己实现。pig-auth 模块同时引入两者并做扩展。</p>
+<p>下面逐层看代码。</p>
+<hr />
+<h2 id="maven">一、Maven 依赖（最直接的证明）</h2>
+<p><code>pig-auth/pom.xml</code>：</p>
+<pre><code class="language-xml">&lt;dependencies&gt;
+    &lt;!-- Spring Authorization Server：独立坐标，不是 spring-security-* 子模块 --&gt;
+    &lt;dependency&gt;
+        &lt;groupId&gt;org.springframework.security&lt;/groupId&gt;
+        &lt;artifactId&gt;spring-security-oauth2-authorization-server&lt;/artifactId&gt;
+        &lt;!-- 版本由 Spring Boot 父 pom 统一管理，pig 用 1.1.x / 1.2.x --&gt;
+    &lt;/dependency&gt;
+
+    &lt;!-- Spring Security Web（过滤器链、密码加密等基础能力） --&gt;
+    &lt;!-- 不需要显式写，SAS 已经传递依赖了它 --&gt;
+
+    &lt;!-- pig 自己封装的 security 公共模块（给各微服务用的 Resource Server 配置） --&gt;
+    &lt;dependency&gt;
+        &lt;groupId&gt;com.pig4cloud&lt;/groupId&gt;
+        &lt;artifactId&gt;pig-common-security&lt;/artifactId&gt;
+    &lt;/dependency&gt;
+
+    &lt;!-- upms feign 客户端，用于远程查用户 --&gt;
+    &lt;dependency&gt;
+        &lt;groupId&gt;com.pig4cloud&lt;/groupId&gt;
+        &lt;artifactId&gt;pig-upms-api&lt;/artifactId&gt;
+    &lt;/dependency&gt;
+&lt;/dependencies&gt;
+</code></pre>
+<hr />
+<h2 id="spring-security-pig-auth">二、Spring Security 在 pig-auth 里做什么</h2>
+<p>Spring Security 提供最底层的安全基础设施，pig-auth 里直接用到的主要是这几块：</p>
+<h3 id="1-securityfilterchain">1. SecurityFilterChain 配置（两条链并存）</h3>
+<p><code>AuthorizationServerConfiguration.java</code>：</p>
+<pre><code class="language-java">@Configuration
+@RequiredArgsConstructor
+public class AuthorizationServerConfiguration {
+
+    // ① 这条链专门服务 OAuth2 端点（/oauth2/token、/oauth2/authorize 等）
+    //    由 SAS 提供，内部挂了一堆 OAuth2 专用 Filter
+    @Bean
+    @Order(Ordered.HIGHEST_PRECEDENCE)
+    public SecurityFilterChain authorizationServerSecurityFilterChain(HttpSecurity http) throws Exception {
+
+        // 这一行是 SAS 的入口：把所有 OAuth2 端点的 Filter 注册进来
+        OAuth2AuthorizationServerConfigurer authorizationServerConfigurer =
+                new OAuth2AuthorizationServerConfigurer();
+
+        // PIG 在这里注册自定义的 Converter 和 Provider（用户名密码模式）
+        authorizationServerConfigurer
+            .tokenEndpoint(tokenEndpoint -&gt; tokenEndpoint
+                .accessTokenRequestConverter(new PasswordAuthenticationConverter())   // 解析参数
+                .authenticationProvider(new PasswordAuthenticationProvider(...))      // 核心认证
+            );
+
+        http.apply(authorizationServerConfigurer);
+        return http.build();
+    }
+
+    // ② 这条链服务普通接口（如 /actuator），Spring Security 原生管
+    @Bean
+    public SecurityFilterChain defaultSecurityFilterChain(HttpSecurity http) throws Exception {
+        http
+            .authorizeHttpRequests(auth -&gt; auth.anyRequest().authenticated())
+            .formLogin(Customizer.withDefaults());
+        return http.build();
+    }
+}
+</code></pre>
+<h3 id="2-userdetailsservicespring-security-pig">2. UserDetailsService（Spring Security 接口，pig 自己实现）</h3>
+<p><code>PigUserDetailsServiceImpl.java</code>：</p>
+<pre><code class="language-java">@Service
+@RequiredArgsConstructor
+public class PigUserDetailsServiceImpl implements UserDetailsService {
+
+    private final RemoteUserService remoteUserService; // Feign 客户端
+
+    @Override
+    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+        // 注意：这里不查本地库，通过 Feign 调用 pig-upms-biz 微服务
+        R&lt;UserInfo&gt; result = remoteUserService.info(username, SecurityConstants.FROM_IN);
+
+        return getUserDetails(result); // 封装成 PigUser（UserDetails 实现类）
+    }
+
+    private UserDetails getUserDetails(R&lt;UserInfo&gt; result) {
+        UserInfo info = result.getData();
+
+        // 把角色列表转成 Spring Security 的 GrantedAuthority
+        Set&lt;String&gt; dbAuthsSet = new HashSet&lt;&gt;();
+        if (ArrayUtil.isNotEmpty(info.getRoles())) {
+            Arrays.stream(info.getRoles()).forEach(role -&gt; dbAuthsSet.add(SecurityConstants.ROLE + role));
+        }
+        // 细粒度权限（菜单权限标识，如 sys_user_add）
+        if (ArrayUtil.isNotEmpty(info.getPermissions())) {
+            Arrays.stream(info.getPermissions()).forEach(dbAuthsSet::add);
+        }
+
+        Collection&lt;GrantedAuthority&gt; authorities =
+            AuthorityUtils.createAuthorityList(dbAuthsSet.toArray(new String[0]));
+
+        SysUser user = info.getSysUser();
+        // PigUser 继承 Spring Security 的 User，额外携带 deptId、tenantId 等业务字段
+        return new PigUser(user.getUserId(), user.getDeptId(), user.getTenantId(),
+                user.getUsername(), user.getPassword(),
+                true, true, true, !LOCK_FLAG.equals(user.getLockFlag()),
+                authorities);
+    }
+}
+</code></pre>
+<h3 id="3-passwordencoderspring-security">3. PasswordEncoder（Spring Security 提供）</h3>
+<pre><code class="language-java">@Bean
+public PasswordEncoder passwordEncoder() {
+    // Spring Security 原生的 BCrypt 实现，SAS 和 pig 都直接用
+    return new BCryptPasswordEncoder();
+}
+</code></pre>
+<hr />
+<h2 id="spring-authorization-server-pig-auth">三、Spring Authorization Server 在 pig-auth 里做什么</h2>
+<p>SAS 提供 OAuth2 协议层，pig 在它的扩展点上做定制。</p>
+<h3 id="1-pig-passwordauthenticationconverter">1. pig 自定义的 PasswordAuthenticationConverter</h3>
+<p>SAS 原生不支持 password grant（OAuth 2.1 已废弃），pig 自己补上：</p>
+<pre><code class="language-java">// 作用：从 HttpServletRequest 里解析参数，组装成 Token 对象交给 Provider
+public class PasswordAuthenticationConverter implements AuthenticationConverter {
+
+    @Override
+    public Authentication convert(HttpServletRequest request) {
+        // 只处理 grant_type=password 的请求
+        String grantType = request.getParameter(OAuth2ParameterNames.GRANT_TYPE);
+        if (!AuthorizationGrantType.PASSWORD.getValue().equals(grantType)) {
+            return null;
+        }
+
+        String username = request.getParameter(OAuth2ParameterNames.USERNAME);
+        String password = request.getParameter(OAuth2ParameterNames.PASSWORD);
+
+        // 组装成 pig 自定义的 Token 对象（SAS 的 AbstractAuthenticationToken 子类）
+        return new PasswordAuthenticationToken(
+            getGrantType(),
+            clientPrincipal,   // 已验证的客户端信息（来自前一个 Filter）
+            username, password,
+            requestedScopes
+        );
+    }
+}
+</code></pre>
+<h3 id="2-pig-passwordauthenticationprovider">2. pig 自定义的 PasswordAuthenticationProvider</h3>
+<pre><code class="language-java">// 作用：拿到 Converter 组装的 Token，执行真正的认证逻辑
+public class PasswordAuthenticationProvider implements AuthenticationProvider {
+
+    private final UserDetailsService userDetailsService;
+    private final PasswordEncoder passwordEncoder;
+    private final OAuth2TokenGenerator&lt;?&gt; tokenGenerator; // SAS 提供的 Token 生成器
+
+    @Override
+    public Authentication authenticate(Authentication authentication) {
+        PasswordAuthenticationToken authToken = (PasswordAuthenticationToken) authentication;
+
+        // ① 调用 UserDetailsService 加载用户（走 Feign 查 upms）
+        UserDetails userDetails = userDetailsService.loadUserByUsername(
+            authToken.getUsername()
+        );
+
+        // ② Spring Security 的 BCrypt 比对密码
+        if (!passwordEncoder.matches(authToken.getPassword(), userDetails.getPassword())) {
+            throw new OAuth2AuthenticationException(&quot;用户名或密码错误&quot;);
+        }
+
+        // ③ 构造 principal，传给 SAS 的 tokenGenerator 生成 JWT
+        UsernamePasswordAuthenticationToken principal =
+            new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities());
+
+        // ④ 调用 SAS 的标准流程生成 access_token + refresh_token
+        OAuth2TokenContext tokenContext = buildTokenContext(authToken, principal);
+        OAuth2AccessToken accessToken = tokenGenerator.generate(tokenContext); // SAS 负责签名
+
+        return new OAuth2AccessTokenAuthenticationToken(
+            registeredClient, principal, accessToken, refreshToken
+        );
+    }
+}
+</code></pre>
+<h3 id="3-pig-jwt-sas">3. pig 的 JWT 自定义字段注入（SAS 的扩展点）</h3>
+<pre><code class="language-java">// 作用：在 JWT Payload 里塞入业务字段，SAS 原生只放标准字段
+@Bean
+public OAuth2TokenCustomizer&lt;JwtEncodingContext&gt; tokenCustomizer() {
+    return context -&gt; {
+        // 只在生成 access_token 时扩展
+        if (OAuth2TokenType.ACCESS_TOKEN.equals(context.getTokenType())) {
+            OAuth2Authentication auth2Authentication = context.getPrincipal();
+            Collection&lt;? extends GrantedAuthority&gt; authorities = auth2Authentication.getAuthorities();
+
+            // 把权限列表写进 JWT
+            context.getClaims().claim(SecurityConstants.AUTHORITIES_KEY,
+                authorities.stream().map(GrantedAuthority::getAuthority).collect(Collectors.toSet())
+            );
+
+            // 把 PigUser 里的业务字段写进 JWT
+            if (auth2Authentication.getPrincipal() instanceof PigUser pigUser) {
+                context.getClaims().claim(SecurityConstants.USER_ID_KEY, pigUser.getId());
+                context.getClaims().claim(SecurityConstants.DEPT_ID_KEY, pigUser.getDeptId());
+                context.getClaims().claim(SecurityConstants.USERNAME, pigUser.getUsername());
+                context.getClaims().claim(SecurityConstants.TENANT_ID, pigUser.getTenantId());
+            }
+        }
+    };
+}
+</code></pre>
+<hr />
+<h2 id="_10">四、两个框架分工总结</h2>
+<table>
+<thead>
+<tr>
+<th>阶段</th>
+<th>谁负责</th>
+<th>具体类</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>过滤器链基础设施</td>
+<td>Spring Security</td>
+<td><code>SecurityFilterChain</code>、<code>HttpSecurity</code></td>
+</tr>
+<tr>
+<td>客户端身份验证</td>
+<td>SAS</td>
+<td><code>ClientSecretAuthenticationFilter</code></td>
+</tr>
+<tr>
+<td>请求参数解析</td>
+<td>pig 扩展 SAS</td>
+<td><code>PasswordAuthenticationConverter</code></td>
+</tr>
+<tr>
+<td>用户加载</td>
+<td>pig 实现 SS 接口</td>
+<td><code>PigUserDetailsServiceImpl</code> → Feign</td>
+</tr>
+<tr>
+<td>密码比对</td>
+<td>Spring Security</td>
+<td><code>BCryptPasswordEncoder</code></td>
+</tr>
+<tr>
+<td>认证编排</td>
+<td>pig 扩展 SAS</td>
+<td><code>PasswordAuthenticationProvider</code></td>
+</tr>
+<tr>
+<td>JWT 签发（RSA 签名）</td>
+<td>SAS</td>
+<td><code>JwtGenerator</code>、<code>NimbusJwtEncoder</code></td>
+</tr>
+<tr>
+<td>JWT 字段扩展</td>
+<td>pig 扩展 SAS</td>
+<td><code>PigOAuth2TokenCustomizer</code></td>
+</tr>
+<tr>
+<td>微服务侧 Token 解析</td>
+<td>SAS + SS</td>
+<td><code>BearerTokenAuthenticationFilter</code></td>
+</tr>
+<tr>
+<td>方法级权限 <code>@PreAuthorize</code></td>
+<td>Spring Security</td>
+<td><code>MethodSecurityInterceptor</code></td>
+</tr>
+</tbody>
+</table>
+<p>一句话总结：<strong>Spring Security 是地基，SAS 是盖在上面的 OAuth2 协议楼，pig-auth 是在这栋楼里做的装修定制</strong>。两者都在 pig-auth 模块里，缺一不可。</p>
+<hr />
+<p>Powered by <a href="https://www.ai-chat-exporter.net">Claude Exporter</a></p>
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+  <script>var tabs=__md_get("__tabs");if(Array.isArray(tabs))e:for(var set of document.querySelectorAll(".tabbed-set")){var labels=set.querySelector(".tabbed-labels");for(var tab of tabs)for(var label of labels.getElementsByTagName("label"))if(label.innerText.trim()===tab){var input=document.getElementById(label.htmlFor);input.checked=!0;continue e}}</script>
+
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+          <button type="button" class="md-top md-icon" data-md-component="top" hidden>
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8z"/></svg>
+  Back to top
+</button>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+    
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+      <div class="md-progress" data-md-component="progress" role="progressbar"></div>
+    
+    
+    
+      
+      
+      <script id="__config" type="application/json">{"annotate": null, "base": "../..", "features": ["announce.dismiss", "content.action.edit", "content.action.view", "content.code.annotate", "content.code.copy", "content.code.select", "content.tabs.link", "content.tooltips", "navigation.footer", "navigation.indexes", "navigation.instant.prefetch", "navigation.instant.progress", "navigation.path", "navigation.sections", "navigation.tabs", "navigation.tabs.sticky", "navigation.top", "navigation.tracking", "search.highlight", "search.share", "search.suggest", "toc.follow"], "search": "../../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+    
+    
+      <script src="../../assets/javascripts/bundle.79ae519e.min.js"></script>
+      
+    
+  </body>
+</html>

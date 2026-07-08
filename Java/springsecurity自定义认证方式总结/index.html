@@ -1,0 +1,2241 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+      
+      
+      
+      
+      
+        
+      
+      
+      <link rel="icon" href="../../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.6">
+    
+    
+      
+        <title>Spring Security SMS Login Implementation - gzulmc's 随笔记录</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../assets/stylesheets/main.484c7ddc.min.css">
+      
+        
+        <link rel="stylesheet" href="../../assets/stylesheets/palette.ab4e12ef.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+    <script>__md_scope=new URL("../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+  </head>
+  
+  
+    
+    
+      
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#spring-security-sms-login-implementation" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow md-header--lifted" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href="../.." title="gzulmc&#39;s 随笔记录" class="md-header__button md-logo" aria-label="gzulmc's 随笔记录" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            gzulmc's 随笔记录
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              Spring Security SMS Login Implementation
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+        <form class="md-header__option" data-md-component="palette">
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo"  aria-label="Switch to dark mode"  type="radio" name="__palette" id="__palette_0">
+    
+      <label class="md-header__button md-icon" title="Switch to dark mode" for="__palette_1" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a4 4 0 0 0-4 4 4 4 0 0 0 4 4 4 4 0 0 0 4-4 4 4 0 0 0-4-4m0 10a6 6 0 0 1-6-6 6 6 0 0 1 6-6 6 6 0 0 1 6 6 6 6 0 0 1-6 6m8-9.31V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12z"/></svg>
+      </label>
+    
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="slate" data-md-color-primary="indigo" data-md-color-accent="indigo"  aria-label="Switch to light mode"  type="radio" name="__palette" id="__palette_1">
+    
+      <label class="md-header__button md-icon" title="Switch to light mode" for="__palette_0" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 18c-.89 0-1.74-.2-2.5-.55C11.56 16.5 13 14.42 13 12s-1.44-4.5-3.5-5.45C10.26 6.2 11.11 6 12 6a6 6 0 0 1 6 6 6 6 0 0 1-6 6m8-9.31V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12z"/></svg>
+      </label>
+    
+  
+</form>
+      
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+          <a href="javascript:void(0)" class="md-search__icon md-icon" title="Share" aria-label="Share" data-clipboard data-clipboard-text="" data-md-component="search-share" tabindex="-1">
+            
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M18 16.08c-.76 0-1.44.3-1.96.77L8.91 12.7c.05-.23.09-.46.09-.7s-.04-.47-.09-.7l7.05-4.11c.54.5 1.25.81 2.04.81a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3c0 .24.04.47.09.7L8.04 9.81C7.5 9.31 6.79 9 6 9a3 3 0 0 0-3 3 3 3 0 0 0 3 3c.79 0 1.5-.31 2.04-.81l7.12 4.15c-.05.21-.08.43-.08.66 0 1.61 1.31 2.91 2.92 2.91s2.92-1.3 2.92-2.91A2.92 2.92 0 0 0 18 16.08"/></svg>
+          </a>
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+        <div class="md-search__suggest" data-md-component="search-suggest"></div>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      
+    
+    
+  </nav>
+  
+    
+      
+<nav class="md-tabs" aria-label="Tabs" data-md-component="tabs">
+  <div class="md-grid">
+    <ul class="md-tabs__list">
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../Python/%E9%9D%A2%E5%90%91%E5%AF%B9%E8%B1%A1%E5%9F%BA%E7%A1%80/" class="md-tabs__link">
+          
+  
+  
+    
+  
+  Python
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../Django/Django%E5%9F%BA%E7%A1%80/" class="md-tabs__link">
+          
+  
+  
+    
+  
+  Django
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../Docker/Docker%E8%AF%A6%E8%A7%A3/" class="md-tabs__link">
+          
+  
+  
+    
+  
+  Docker
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../.." class="md-tabs__link">
+          
+  
+  
+    
+  
+  Java
+
+        </a>
+      </li>
+    
+  
+
+      
+    </ul>
+  </div>
+</nav>
+    
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+  
+
+
+<nav class="md-nav md-nav--primary md-nav--lifted" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../.." title="gzulmc&#39;s 随笔记录" class="md-nav__button md-logo" aria-label="gzulmc's 随笔记录" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    gzulmc's 随笔记录
+  </label>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_1" >
+        
+          
+          <label class="md-nav__link" for="__nav_1" id="__nav_1_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Python
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_1_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_1">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Python
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../Python/%E9%9D%A2%E5%90%91%E5%AF%B9%E8%B1%A1%E5%9F%BA%E7%A1%80/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    面向对象基础
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../Python/%E9%9D%A2%E5%90%91%E5%AF%B9%E8%B1%A1%E8%BF%9B%E9%98%B6/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    面向对象进阶
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../Python/%E8%BF%9B%E7%A8%8B%E5%92%8C%E7%BA%BF%E7%A8%8B/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    进程和线程
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../Python/%E5%9B%BE%E5%83%8F%E5%92%8C%E6%96%87%E6%A1%A3%E5%A4%84%E7%90%86/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    图像和文档处理
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../Python/%E7%BD%91%E7%BB%9C%E7%BC%96%E7%A8%8B%E5%BA%94%E7%94%A8/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    网络编程应用
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../Python/%E6%96%87%E4%BB%B6%E5%92%8C%E5%BC%82%E5%B8%B8/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    文件和异常
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2" >
+        
+          
+          <label class="md-nav__link" for="__nav_2" id="__nav_2_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Django
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_2_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Django
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../Django/Django%E5%9F%BA%E7%A1%80/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Django基础
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../Django/%E6%95%B0%E6%8D%AE%E6%A8%A1%E5%9E%8B/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    数据模型
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+      
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3" >
+        
+          
+          <label class="md-nav__link" for="__nav_3" id="__nav_3_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Docker
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_3">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Docker
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../Docker/Docker%E8%AF%A6%E8%A7%A3/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Docker详解
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4" >
+        
+          
+          <div class="md-nav__link md-nav__container">
+            <a href="../.." class="md-nav__link ">
+              
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Java
+  
+
+    
+  </span>
+  
+  
+
+            </a>
+            
+          </div>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_4_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Java
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#prompt" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Prompt:
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#response" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Response:
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#1" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1. 模块化和职责分离
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#2" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2. 配置的内聚性
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#3" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3. 可重用性
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#4" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4. 更好的扩展性
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        为什么推荐使用配置类的方式？
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="为什么推荐使用配置类的方式？">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#1-securityconfig" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1. 避免SecurityConfig变得臃肿
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#2_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2. 便于单元测试
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#3_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3. 条件化配置
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#4_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4. 更好的错误处理
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_2" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        实际开发建议
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#prompt_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Prompt:
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#response_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Response:
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#spring-securityauthenticationprovider" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        核心问题：Spring Security的AuthenticationProvider机制
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="核心问题：Spring Security的AuthenticationProvider机制">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#1-authenticationprovider" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1. AuthenticationProvider的工作原理
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#2-provider" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2. 默认情况下的Provider
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#spring" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        为什么不能仅仅依靠Spring容器注入？
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="为什么不能仅仅依靠Spring容器注入？">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#1-authenticationmanagerprovider" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1. AuthenticationManager的Provider列表不是自动发现的
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#2_2" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2. 执行顺序很重要
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#3_2" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3. 配置的灵活性
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#provider" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        三种配置Provider的方式
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="三种配置Provider的方式">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#1securityconfig" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        方式1：在SecurityConfig中直接配置（推荐）
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#2authenticationmanagerbuilder" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        方式2：通过AuthenticationManagerBuilder配置
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#3authenticationmanager-bean" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        方式3：创建AuthenticationManager Bean
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_3" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        如果不显式添加会发生什么？
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_4" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        最佳实践建议
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#prompt_2" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Prompt:
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#response_2" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Response:
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Response:">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#2_3" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2. 自定义认证过滤器（必须）
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#3_3" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3. 自定义认证提供者（必须）
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#4_2" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4. 自定义用户详情服务（通常需要）
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#5" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        5. 自定义认证配置（推荐）
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_5" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        可选组件
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="可选组件">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#6" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        6. 自定义异常类（可选但推荐）
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#7" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        7. 凭证验证服务（通常需要）
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#8" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        8. 认证成功/失败处理器（可选）
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_6" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        最终配置整合
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="最终配置整合">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#security" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Security主配置
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_7" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        关键实现要点总结
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="关键实现要点总结">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#_8" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        必须重写的方法
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_9" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        关键配置步骤
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_10" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        执行流程
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_11" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        ⚡ 关键配置点
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_12" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        🎨 常见认证方式示例
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              
+                
+
+
+
+
+              
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+
+<h1 id="spring-security-sms-login-implementation">Spring Security SMS Login Implementation</h1>
+<p><strong>Created:</strong> 2025/7/8 1:56<br />
+<strong>Updated:</strong> 2025/7/9 5:25<br />
+<strong>Exported:</strong> 2025/7/9 5:28<br />
+<strong>Link:</strong> <a href="https://claude.ai/chat/036e3dc2-565e-404f-8120-d8519632db84">https://claude.ai/chat/036e3dc2-565e-404f-8120-d8519632db84</a>  </p>
+<h2 id="prompt">Prompt:</h2>
+<p>已经有了<em>SmsCodeAuthenticationFilter为什么还要定义SmsCodeAuthenticationSecurityConfig这个配置类呢？直接在SecurityConfig配置类加上SmsCodeAuthenticationFilter过滤器不就好了吗？</em></p>
+<h2 id="response">Response:</h2>
+<p>您提出了一个非常好的问题！确实可以直接在 <code>SecurityConfig</code> 中配置 <code>SmsCodeAuthenticationFilter</code>，但使用 <code>SmsCodeAuthenticationSecurityConfig</code> 有以下重要原因：</p>
+<h2 id="1">1. <strong>模块化和职责分离</strong></h2>
+<ul>
+<li><code>SecurityConfig</code> 负责整体的安全配置</li>
+<li><code>SmsCodeAuthenticationSecurityConfig</code> 专门负责短信验证码认证的配置</li>
+<li>符合单一职责原则，每个类只负责一个功能模块</li>
+</ul>
+<h2 id="2">2. <strong>配置的内聚性</strong></h2>
+<p>短信验证码认证需要配置多个相关组件：
+- <code>SmsCodeAuthenticationFilter</code> (过滤器)
+- <code>SmsCodeAuthenticationProvider</code> (认证提供者)
+- 成功/失败处理器的绑定
+- 各种参数的设置</p>
+<p>将这些相关配置集中在一个地方，便于管理和维护。</p>
+<h2 id="3">3. <strong>可重用性</strong></h2>
+<p>如果您有多个Spring Boot应用需要短信验证码功能，可以直接复用这个配置类，而不需要重复编写配置代码。</p>
+<h2 id="4">4. <strong>更好的扩展性</strong></h2>
+<p>当需要添加更多短信相关的配置时（如限流、多渠道短信等），只需要在这个配置类中添加即可。</p>
+<p>让我演示两种写法的对比：</p>
+<p><strong>undefined</strong></p>
+<pre><code class="language-plaintext">// 13. Spring Security配置 - 方式1：使用配置类（推荐）
+@Configuration
+@EnableWebSecurity
+public class SecurityConfig {
+
+    @Autowired
+    private SmsCodeAuthenticationSecurityConfig smsCodeAuthenticationSecurityConfig;
+
+    @Bean
+    public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
+        http
+            .authorizeHttpRequests(authz -&gt; authz
+                .requestMatchers(&quot;/sms/send&quot;, &quot;/login/sms&quot;).permitAll()
+                .anyRequest().authenticated()
+            )
+            .csrf().disable()
+            .apply(smsCodeAuthenticationSecurityConfig); // 应用短信验证码配置
+
+        return http.build();
+    }
+}
+
+// 方式2：直接在SecurityConfig中配置（不推荐，但可以实现）
+/*
+@Configuration
+@EnableWebSecurity
+public class SecurityConfigDirect {
+
+    @Autowired
+    private AuthenticationSuccessHandler authenticationSuccessHandler;
+
+    @Autowired
+    private AuthenticationFailureHandler authenticationFailureHandler;
+
+    @Autowired
+    private UserDetailsService userDetailsService;
+
+    @Autowired
+    private SmsCodeService smsCodeService;
+
+    @Bean
+    public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
+
+        // 创建短信验证码过滤器
+        SmsCodeAuthenticationFilter smsCodeAuthenticationFilter = new SmsCodeAuthenticationFilter();
+        smsCodeAuthenticationFilter.setAuthenticationSuccessHandler(authenticationSuccessHandler);
+        smsCodeAuthenticationFilter.setAuthenticationFailureHandler(authenticationFailureHandler);
+
+        // 创建短信验证码认证提供者
+        SmsCodeAuthenticationProvider smsCodeAuthenticationProvider = new SmsCodeAuthenticationProvider();
+        smsCodeAuthenticationProvider.setUserDetailsService(userDetailsService);
+        smsCodeAuthenticationProvider.setSmsCodeService(smsCodeService);
+
+        http
+            .authorizeHttpRequests(authz -&gt; authz
+                .requestMatchers(&quot;/sms/send&quot;, &quot;/login/sms&quot;).permitAll()
+                .anyRequest().authenticated()
+            )
+            .csrf().disable()
+            .authenticationProvider(smsCodeAuthenticationProvider) // 添加认证提供者
+            .addFilterAfter(smsCodeAuthenticationFilter, UsernamePasswordAuthenticationFilter.class); // 添加过滤器
+
+        return http.build();
+    }
+}
+*/
+</code></pre>
+<h2 id="_1">为什么推荐使用配置类的方式？</h2>
+<h3 id="1-securityconfig">1. <strong>避免SecurityConfig变得臃肿</strong></h3>
+<p>如果您的应用还需要支持其他认证方式（如OAuth2、JWT、微信登录等），直接在SecurityConfig中配置会让这个类变得非常复杂。</p>
+<h3 id="2_1">2. <strong>便于单元测试</strong></h3>
+<p>可以单独测试短信验证码的配置逻辑，而不需要加载整个安全配置。</p>
+<h3 id="3_1">3. <strong>条件化配置</strong></h3>
+<p>可以根据配置属性决定是否启用短信验证码功能：</p>
+<pre><code class="language-java">@ConditionalOnProperty(name = &quot;app.sms.enabled&quot;, havingValue = &quot;true&quot;)
+@Component
+public class SmsCodeAuthenticationSecurityConfig extends SecurityConfigurerAdapter&lt;DefaultSecurityFilterChain, HttpSecurity&gt; {
+    // ...
+}
+</code></pre>
+<h3 id="4_1">4. <strong>更好的错误处理</strong></h3>
+<p>如果短信相关的配置出现问题，错误信息会更清晰地指向具体的配置类。</p>
+<h2 id="_2">实际开发建议</h2>
+<ul>
+<li><strong>小型项目</strong>：如果只有短信验证码一种自定义认证方式，直接在SecurityConfig中配置也是可以的</li>
+<li><strong>中大型项目</strong>：推荐使用配置类的方式，便于维护和扩展</li>
+<li><strong>框架/组件开发</strong>：必须使用配置类的方式，提供更好的封装性</li>
+</ul>
+<p>所以虽然两种方式都可以实现功能，但从软件工程的角度来看，使用独立的配置类是更好的选择。</p>
+<h2 id="prompt_1">Prompt:</h2>
+<p>在securityconfig这个类还需要<em>.authenticationProvider(smsCodeAuthenticationProvider) // 添加认证提供者。 这样添加认证提供者吗？直接注入spring容器不行吗</em></p>
+<h2 id="response_1">Response:</h2>
+<p>您的观察很敏锐！这确实是一个很好的问题。让我详细解释一下为什么需要显式添加认证提供者，而不能仅仅依靠Spring容器的自动注入。</p>
+<h2 id="spring-securityauthenticationprovider">核心问题：Spring Security的AuthenticationProvider机制</h2>
+<h3 id="1-authenticationprovider">1. <strong>AuthenticationProvider的工作原理</strong></h3>
+<p>Spring Security的<code>AuthenticationManager</code>需要知道有哪些<code>AuthenticationProvider</code>可用。它不是通过Spring容器自动发现所有的Provider，而是需要显式配置。</p>
+<h3 id="2-provider">2. <strong>默认情况下的Provider</strong></h3>
+<p>如果不显式配置，Spring Security只会使用默认的Provider（主要是<code>DaoAuthenticationProvider</code>用于用户名密码认证）。</p>
+<p>让我修改代码来展示这个问题：</p>
+<p><strong>undefined</strong> ∙ Version 2</p>
+<pre><code class="language-plaintext">// 13. Spring Security配置 - 方式1：使用配置类（推荐）
+@Configuration
+@EnableWebSecurity
+public class SecurityConfig {
+
+    @Autowired
+    private SmsCodeAuthenticationSecurityConfig smsCodeAuthenticationSecurityConfig;
+
+    @Bean
+    public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
+        http
+            .authorizeHttpRequests(authz -&gt; authz
+                .requestMatchers(&quot;/sms/send&quot;, &quot;/login/sms&quot;).permitAll()
+                .anyRequest().authenticated()
+            )
+            .csrf().disable()
+            .apply(smsCodeAuthenticationSecurityConfig); // 应用短信验证码配置
+
+        return http.build();
+    }
+}
+
+// 方式2：直接在SecurityConfig中配置（不推荐，但可以实现）
+/*
+@Configuration
+@EnableWebSecurity
+public class SecurityConfigDirect {
+
+    @Autowired
+    private AuthenticationSuccessHandler authenticationSuccessHandler;
+
+    @Autowired
+    private AuthenticationFailureHandler authenticationFailureHandler;
+
+    @Autowired
+    private UserDetailsService userDetailsService;
+
+    @Autowired
+    private SmsCodeService smsCodeService;
+
+    @Bean
+    public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
+
+        // 创建短信验证码过滤器
+        SmsCodeAuthenticationFilter smsCodeAuthenticationFilter = new SmsCodeAuthenticationFilter();
+        smsCodeAuthenticationFilter.setAuthenticationSuccessHandler(authenticationSuccessHandler);
+        smsCodeAuthenticationFilter.setAuthenticationFailureHandler(authenticationFailureHandler);
+
+        // 创建短信验证码认证提供者
+        SmsCodeAuthenticationProvider smsCodeAuthenticationProvider = new SmsCodeAuthenticationProvider();
+        smsCodeAuthenticationProvider.setUserDetailsService(userDetailsService);
+        smsCodeAuthenticationProvider.setSmsCodeService(smsCodeService);
+
+        http
+            .authorizeHttpRequests(authz -&gt; authz
+                .requestMatchers(&quot;/sms/send&quot;, &quot;/login/sms&quot;).permitAll()
+                .anyRequest().authenticated()
+            )
+            .csrf().disable()
+            .authenticationProvider(smsCodeAuthenticationProvider) // 添加认证提供者
+            .addFilterAfter(smsCodeAuthenticationFilter, UsernamePasswordAuthenticationFilter.class); // 添加过滤器
+
+        return http.build();
+    }
+}
+*/
+</code></pre>
+<p><strong>undefined</strong> ∙ Version 3</p>
+<pre><code class="language-plaintext">// 13. Spring Security配置 - 方式1：使用配置类（推荐）
+@Configuration
+@EnableWebSecurity
+public class SecurityConfig {
+
+    @Autowired
+    private SmsCodeAuthenticationSecurityConfig smsCodeAuthenticationSecurityConfig;
+
+    @Bean
+    public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
+        http
+            .authorizeHttpRequests(authz -&gt; authz
+                .requestMatchers(&quot;/sms/send&quot;, &quot;/login/sms&quot;).permitAll()
+                .anyRequest().authenticated()
+            )
+            .csrf().disable()
+            .apply(smsCodeAuthenticationSecurityConfig); // 应用短信验证码配置
+
+        return http.build();
+    }
+}
+
+// 方式2：直接在SecurityConfig中配置（不推荐，但可以实现）
+/*
+@Configuration
+@EnableWebSecurity
+public class SecurityConfigDirect {
+
+    @Autowired
+    private AuthenticationSuccessHandler authenticationSuccessHandler;
+
+    @Autowired
+    private AuthenticationFailureHandler authenticationFailureHandler;
+
+    @Autowired
+    private UserDetailsService userDetailsService;
+
+    @Autowired
+    private SmsCodeService smsCodeService;
+
+    @Bean
+    public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
+
+        // 创建短信验证码过滤器
+        SmsCodeAuthenticationFilter smsCodeAuthenticationFilter = new SmsCodeAuthenticationFilter();
+        smsCodeAuthenticationFilter.setAuthenticationSuccessHandler(authenticationSuccessHandler);
+        smsCodeAuthenticationFilter.setAuthenticationFailureHandler(authenticationFailureHandler);
+
+        // 创建短信验证码认证提供者
+        SmsCodeAuthenticationProvider smsCodeAuthenticationProvider = new SmsCodeAuthenticationProvider();
+        smsCodeAuthenticationProvider.setUserDetailsService(userDetailsService);
+        smsCodeAuthenticationProvider.setSmsCodeService(smsCodeService);
+
+        http
+            .authorizeHttpRequests(authz -&gt; authz
+                .requestMatchers(&quot;/sms/send&quot;, &quot;/login/sms&quot;).permitAll()
+                .anyRequest().authenticated()
+            )
+            .csrf().disable()
+            .authenticationProvider(smsCodeAuthenticationProvider) // 添加认证提供者
+            .addFilterAfter(smsCodeAuthenticationFilter, UsernamePasswordAuthenticationFilter.class); // 添加过滤器
+
+        return http.build();
+    }
+}
+*/
+</code></pre>
+<p>现在让我详细解释为什么需要显式添加认证提供者：</p>
+<h2 id="spring">为什么不能仅仅依靠Spring容器注入？</h2>
+<h3 id="1-authenticationmanagerprovider">1. <strong>AuthenticationManager的Provider列表不是自动发现的</strong></h3>
+<p>Spring Security的<code>AuthenticationManager</code>维护一个<code>AuthenticationProvider</code>列表，这个列表需要显式配置，不是通过Spring容器自动扫描获得的。</p>
+<h3 id="2_2">2. <strong>执行顺序很重要</strong></h3>
+<p>认证提供者的执行顺序很重要。Spring Security会按照配置的顺序依次尝试每个Provider，直到找到一个支持当前认证类型的Provider。</p>
+<h3 id="3_2">3. <strong>配置的灵活性</strong></h3>
+<p>有时候您可能需要：
+- 禁用某个Provider
+- 调整Provider的顺序
+- 为不同的安全配置使用不同的Provider</p>
+<h2 id="provider">三种配置Provider的方式</h2>
+<h3 id="1securityconfig">方式1：在SecurityConfig中直接配置（推荐）</h3>
+<pre><code class="language-java">@Configuration
+@EnableWebSecurity
+public class SecurityConfig {
+
+    @Autowired
+    private SmsCodeAuthenticationProvider smsCodeAuthenticationProvider;
+
+    @Bean
+    public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
+        http
+            .authenticationProvider(smsCodeAuthenticationProvider) // 显式添加
+            .authorizeHttpRequests(authz -&gt; authz
+                .requestMatchers(&quot;/sms/send&quot;, &quot;/login/sms&quot;).permitAll()
+                .anyRequest().authenticated()
+            )
+            .csrf().disable();
+
+        return http.build();
+    }
+}
+</code></pre>
+<h3 id="2authenticationmanagerbuilder">方式2：通过AuthenticationManagerBuilder配置</h3>
+<pre><code class="language-java">@Configuration
+@EnableWebSecurity
+public class SecurityConfig {
+
+    @Autowired
+    private SmsCodeAuthenticationProvider smsCodeAuthenticationProvider;
+
+    @Bean
+    public AuthenticationManager authenticationManager(AuthenticationConfiguration config) throws Exception {
+        return config.getAuthenticationManager();
+    }
+
+    @Autowired
+    public void configureGlobal(AuthenticationManagerBuilder auth) throws Exception {
+        auth.authenticationProvider(smsCodeAuthenticationProvider);
+    }
+}
+</code></pre>
+<h3 id="3authenticationmanager-bean">方式3：创建AuthenticationManager Bean</h3>
+<pre><code class="language-java">@Configuration
+@EnableWebSecurity
+public class SecurityConfig {
+
+    @Autowired
+    private SmsCodeAuthenticationProvider smsCodeAuthenticationProvider;
+
+    @Bean
+    public AuthenticationManager authenticationManager() {
+        return new ProviderManager(Arrays.asList(smsCodeAuthenticationProvider));
+    }
+}
+</code></pre>
+<h2 id="_3">如果不显式添加会发生什么？</h2>
+<p>如果您只是将<code>SmsCodeAuthenticationProvider</code>标记为<code>@Component</code>但不显式添加到配置中：</p>
+<ol>
+<li>Provider会被Spring容器创建</li>
+<li>但<code>AuthenticationManager</code>不知道它的存在</li>
+<li>当<code>SmsCodeAuthenticationFilter</code>尝试认证时，会找不到支持<code>SmsCodeAuthenticationToken</code>的Provider</li>
+<li>认证会失败，抛出类似 "No AuthenticationProvider found" 的异常</li>
+</ol>
+<h2 id="_4">最佳实践建议</h2>
+<pre><code class="language-java">// 推荐的做法：Provider作为Bean，但显式注册
+@Component
+public class SmsCodeAuthenticationProvider implements AuthenticationProvider {
+    // ... 实现代码
+}
+
+@Configuration
+@EnableWebSecurity
+public class SecurityConfig {
+
+    @Autowired
+    private SmsCodeAuthenticationProvider smsCodeAuthenticationProvider;
+
+    @Bean
+    public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
+        return http
+            .authenticationProvider(smsCodeAuthenticationProvider) // 必须显式添加
+            // ... 其他配置
+            .build();
+    }
+}
+</code></pre>
+<p>这样做的好处是：
+- Provider可以享受Spring的依赖注入
+- 配置仍然是显式的，便于理解和维护
+- 可以在不同的安全配置中重用同一个Provider</p>
+<p>所以答案是：<strong>仅仅注入Spring容器是不够的，必须显式添加到Spring Security的配置中</strong>。</p>
+<h2 id="prompt_2">Prompt:</h2>
+<p>总结一下，如果我们要自定义一种认证方式登录系统的关键点是什么？比如要重写的类，要提供那些实现，那些新的组件要准备，那些方法要重写覆盖，涉及到那些组件，总结一下整个流程和涉及的组件</p>
+<h2 id="response_2">Response:</h2>
+<p>很好的问题！让我总结一下自定义认证方式的完整流程和关键组件。</p>
+<p><strong>Spring Security自定义认证方式完整指南</strong></p>
+<pre><code class="language-markdown"># Spring Security自定义认证方式完整指南
+
+## 核心概念和流程
+
+### 认证流程概述
+</code></pre>
+<p>用户请求 → 认证过滤器 → 认证管理器 → 认证提供者 → 用户详情服务 → 认证结果处理</p>
+<pre><code>
+## 必须实现的5个核心组件
+
+### 1. 自定义认证Token（必须）
+**继承**: `AbstractAuthenticationToken`
+**作用**: 存储认证信息和认证状态
+
+```java
+public class CustomAuthenticationToken extends AbstractAuthenticationToken {
+    private final Object principal;    // 用户标识（如手机号、邮箱等）
+    private Object credentials;        // 认证凭证（如验证码、密码等）
+
+    // 未认证构造函数
+    public CustomAuthenticationToken(Object principal, Object credentials) {
+        super(null);
+        this.principal = principal;
+        this.credentials = credentials;
+        setAuthenticated(false);
+    }
+
+    // 已认证构造函数
+    public CustomAuthenticationToken(Object principal, Object credentials, 
+                                   Collection&lt;? extends GrantedAuthority&gt; authorities) {
+        super(authorities);
+        this.principal = principal;
+        this.credentials = credentials;
+        super.setAuthenticated(true);
+    }
+
+    // 必须重写的方法
+    @Override
+    public Object getCredentials() { return this.credentials; }
+
+    @Override
+    public Object getPrincipal() { return this.principal; }
+
+    @Override
+    public void setAuthenticated(boolean isAuthenticated) throws IllegalArgumentException {
+        if (isAuthenticated) {
+            throw new IllegalArgumentException(&quot;Cannot set this token to trusted&quot;);
+        }
+        super.setAuthenticated(false);
+    }
+}
+</code></pre>
+<h3 id="2_3">2. 自定义认证过滤器（必须）</h3>
+<p><strong>继承</strong>: <code>AbstractAuthenticationProcessingFilter</code>
+<strong>作用</strong>: 拦截认证请求，提取认证信息</p>
+<pre><code class="language-java">public class CustomAuthenticationFilter extends AbstractAuthenticationProcessingFilter {
+
+    public CustomAuthenticationFilter() {
+        super(new AntPathRequestMatcher(&quot;/login/custom&quot;, &quot;POST&quot;));
+    }
+
+    // 核心方法：必须重写
+    @Override
+    public Authentication attemptAuthentication(HttpServletRequest request, 
+                                              HttpServletResponse response) 
+            throws AuthenticationException {
+
+        // 1. 验证请求方法
+        if (!request.getMethod().equals(&quot;POST&quot;)) {
+            throw new AuthenticationServiceException(&quot;Authentication method not supported&quot;);
+        }
+
+        // 2. 提取认证参数
+        String principal = obtainPrincipal(request);
+        String credentials = obtainCredentials(request);
+
+        // 3. 创建未认证的Token
+        CustomAuthenticationToken authRequest = 
+            new CustomAuthenticationToken(principal, credentials);
+
+        // 4. 设置详细信息
+        setDetails(request, authRequest);
+
+        // 5. 交给AuthenticationManager处理
+        return this.getAuthenticationManager().authenticate(authRequest);
+    }
+
+    // 提取认证信息的方法
+    protected String obtainPrincipal(HttpServletRequest request) {
+        return request.getParameter(&quot;principal&quot;);
+    }
+
+    protected String obtainCredentials(HttpServletRequest request) {
+        return request.getParameter(&quot;credentials&quot;);
+    }
+}
+</code></pre>
+<h3 id="3_3">3. 自定义认证提供者（必须）</h3>
+<p><strong>实现</strong>: <code>AuthenticationProvider</code>
+<strong>作用</strong>: 执行具体的认证逻辑</p>
+<pre><code class="language-java">@Component
+public class CustomAuthenticationProvider implements AuthenticationProvider {
+
+    @Autowired
+    private UserDetailsService userDetailsService;
+
+    @Autowired
+    private CustomCredentialsService credentialsService; // 自定义的凭证验证服务
+
+    // 核心方法：必须实现
+    @Override
+    public Authentication authenticate(Authentication authentication) 
+            throws AuthenticationException {
+
+        CustomAuthenticationToken authToken = (CustomAuthenticationToken) authentication;
+
+        String principal = (String) authToken.getPrincipal();
+        String credentials = (String) authToken.getCredentials();
+
+        // 1. 验证凭证（如验证码、密码等）
+        credentialsService.validateCredentials(principal, credentials);
+
+        // 2. 获取用户详情
+        UserDetails userDetails = userDetailsService.loadUserByUsername(principal);
+
+        // 3. 创建已认证的Token
+        CustomAuthenticationToken result = new CustomAuthenticationToken(
+            userDetails, credentials, userDetails.getAuthorities());
+
+        result.setDetails(authToken.getDetails());
+        return result;
+    }
+
+    // 指定支持的认证类型：必须实现
+    @Override
+    public boolean supports(Class&lt;?&gt; authentication) {
+        return CustomAuthenticationToken.class.isAssignableFrom(authentication);
+    }
+}
+</code></pre>
+<h3 id="4_2">4. 自定义用户详情服务（通常需要）</h3>
+<p><strong>实现</strong>: <code>UserDetailsService</code>
+<strong>作用</strong>: 根据用户标识获取用户信息</p>
+<pre><code class="language-java">@Service
+public class CustomUserDetailsService implements UserDetailsService {
+
+    @Autowired
+    private UserRepository userRepository;
+
+    @Override
+    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+        // 根据用户标识查询用户信息
+        User user = userRepository.findByUsername(username)
+            .orElseThrow(() -&gt; new UsernameNotFoundException(&quot;用户不存在: &quot; + username));
+
+        // 转换为UserDetails
+        return User.builder()
+            .username(user.getUsername())
+            .password(user.getPassword())
+            .authorities(user.getAuthorities())
+            .build();
+    }
+}
+</code></pre>
+<h3 id="5">5. 自定义认证配置（推荐）</h3>
+<p><strong>继承</strong>: <code>SecurityConfigurerAdapter</code>
+<strong>作用</strong>: 组装所有组件</p>
+<pre><code class="language-java">@Component
+public class CustomAuthenticationSecurityConfig 
+        extends SecurityConfigurerAdapter&lt;DefaultSecurityFilterChain, HttpSecurity&gt; {
+
+    @Autowired
+    private AuthenticationSuccessHandler successHandler;
+
+    @Autowired
+    private AuthenticationFailureHandler failureHandler;
+
+    @Autowired
+    private CustomAuthenticationProvider customAuthenticationProvider;
+
+    @Override
+    public void configure(HttpSecurity http) throws Exception {
+        // 1. 创建和配置过滤器
+        CustomAuthenticationFilter customFilter = new CustomAuthenticationFilter();
+        customFilter.setAuthenticationManager(http.getSharedObject(AuthenticationManager.class));
+        customFilter.setAuthenticationSuccessHandler(successHandler);
+        customFilter.setAuthenticationFailureHandler(failureHandler);
+
+        // 2. 添加认证提供者和过滤器
+        http.authenticationProvider(customAuthenticationProvider)
+            .addFilterAfter(customFilter, UsernamePasswordAuthenticationFilter.class);
+    }
+}
+</code></pre>
+<h2 id="_5">可选组件</h2>
+<h3 id="6">6. 自定义异常类（可选但推荐）</h3>
+<pre><code class="language-java">public class CustomAuthenticationException extends AuthenticationException {
+    public CustomAuthenticationException(String message) {
+        super(message);
+    }
+
+    public CustomAuthenticationException(String message, Throwable cause) {
+        super(message, cause);
+    }
+}
+</code></pre>
+<h3 id="7">7. 凭证验证服务（通常需要）</h3>
+<pre><code class="language-java">@Service
+public class CustomCredentialsService {
+
+    public void validateCredentials(String principal, String credentials) 
+            throws CustomAuthenticationException {
+        // 实现具体的凭证验证逻辑
+        // 如：验证短信验证码、邮箱验证码、图形验证码等
+    }
+}
+</code></pre>
+<h3 id="8">8. 认证成功/失败处理器（可选）</h3>
+<pre><code class="language-java">@Component
+public class CustomAuthenticationSuccessHandler implements AuthenticationSuccessHandler {
+    @Override
+    public void onAuthenticationSuccess(HttpServletRequest request, 
+                                      HttpServletResponse response, 
+                                      Authentication authentication) 
+            throws IOException, ServletException {
+        // 自定义成功处理逻辑
+    }
+}
+
+@Component
+public class CustomAuthenticationFailureHandler implements AuthenticationFailureHandler {
+    @Override
+    public void onAuthenticationFailure(HttpServletRequest request, 
+                                      HttpServletResponse response, 
+                                      AuthenticationException exception) 
+            throws IOException, ServletException {
+        // 自定义失败处理逻辑
+    }
+}
+</code></pre>
+<h2 id="_6">最终配置整合</h2>
+<h3 id="security">Security主配置</h3>
+<pre><code class="language-java">@Configuration
+@EnableWebSecurity
+public class SecurityConfig {
+
+    @Autowired
+    private CustomAuthenticationSecurityConfig customAuthConfig;
+
+    @Bean
+    public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
+        return http
+            .authorizeHttpRequests(authz -&gt; authz
+                .requestMatchers(&quot;/login/custom&quot;).permitAll()
+                .anyRequest().authenticated()
+            )
+            .csrf().disable()
+            .apply(customAuthConfig)  // 应用自定义认证配置
+            .build();
+    }
+}
+</code></pre>
+<h2 id="_7">关键实现要点总结</h2>
+<h3 id="_8">必须重写的方法</h3>
+<ol>
+<li><strong>Token类</strong>:</li>
+<li><code>getCredentials()</code> - 返回认证凭证</li>
+<li><code>getPrincipal()</code> - 返回用户标识</li>
+<li>
+<p><code>setAuthenticated()</code> - 设置认证状态</p>
+</li>
+<li>
+<p><strong>过滤器类</strong>:</p>
+</li>
+<li>
+<p><code>attemptAuthentication()</code> - 执行认证尝试</p>
+</li>
+<li>
+<p><strong>提供者类</strong>:</p>
+</li>
+<li><code>authenticate()</code> - 执行认证逻辑</li>
+<li>
+<p><code>supports()</code> - 指定支持的认证类型</p>
+</li>
+<li>
+<p><strong>用户详情服务</strong>:</p>
+</li>
+<li><code>loadUserByUsername()</code> - 加载用户详情</li>
+</ol>
+<h3 id="_9">关键配置步骤</h3>
+<ol>
+<li>创建自定义Token存储认证信息</li>
+<li>创建过滤器拦截认证请求</li>
+<li>创建提供者实现认证逻辑</li>
+<li>实现用户详情服务</li>
+<li>在Security配置中注册提供者和过滤器</li>
+</ol>
+<h3 id="_10">执行流程</h3>
+<ol>
+<li>用户发起认证请求</li>
+<li>过滤器拦截请求，提取认证信息</li>
+<li>过滤器创建未认证Token</li>
+<li>AuthenticationManager查找支持该Token的Provider</li>
+<li>Provider执行认证逻辑（验证凭证、获取用户信息）</li>
+<li>Provider返回已认证Token或抛出异常</li>
+<li>过滤器处理认证结果（成功/失败）</li>
+</ol>
+<p>这个模式是Spring Security的核心设计，所有自定义认证方式都遵循这个流程！</p>
+<pre><code>
+## 核心总结
+
+自定义Spring Security认证方式需要实现**5个核心组件**：
+
+### 🎯 **必须实现的组件**
+
+1. **认证Token** (`AbstractAuthenticationToken`)
+   - 存储认证信息和状态
+   - 必须重写：`getCredentials()`, `getPrincipal()`, `setAuthenticated()`
+
+2. **认证过滤器** (`AbstractAuthenticationProcessingFilter`)
+   - 拦截认证请求，提取认证信息
+   - 必须重写：`attemptAuthentication()`
+
+3. **认证提供者** (`AuthenticationProvider`)
+   - 执行具体的认证逻辑
+   - 必须实现：`authenticate()`, `supports()`
+
+4. **用户详情服务** (`UserDetailsService`)
+   - 根据用户标识获取用户信息
+   - 必须实现：`loadUserByUsername()`
+
+5. **认证配置** (`SecurityConfigurerAdapter`)
+   - 组装所有组件到Spring Security中
+   - 必须重写：`configure()`
+
+### 🔄 **执行流程**
+
+</code></pre>
+<p>请求 → 过滤器(提取信息) → AuthenticationManager → 
+认证提供者(验证逻辑) → 用户详情服务 → 返回认证结果
+```</p>
+<h3 id="_11">⚡ <strong>关键配置点</strong></h3>
+<ol>
+<li><strong>Token设计</strong>：定义认证信息的结构</li>
+<li><strong>过滤器配置</strong>：指定拦截的URL和请求方法</li>
+<li><strong>Provider注册</strong>：必须在SecurityConfig中显式添加</li>
+<li><strong>用户加载</strong>：实现根据自定义标识获取用户的逻辑</li>
+</ol>
+<h3 id="_12">🎨 <strong>常见认证方式示例</strong></h3>
+<ul>
+<li><strong>短信验证码</strong>：principal=手机号, credentials=验证码</li>
+<li><strong>邮箱验证码</strong>：principal=邮箱, credentials=验证码  </li>
+<li><strong>扫码登录</strong>：principal=二维码ID, credentials=扫码结果</li>
+<li><strong>第三方登录</strong>：principal=第三方用户ID, credentials=授权码</li>
+</ul>
+<p>这个模式是Spring Security的核心设计思想，掌握了这5个组件，就能实现任何自定义认证方式！</p>
+<hr />
+<p>Powered by <a href="https://www.claudexporter.com">Claude Exporter</a></p>
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+  <script>var tabs=__md_get("__tabs");if(Array.isArray(tabs))e:for(var set of document.querySelectorAll(".tabbed-set")){var labels=set.querySelector(".tabbed-labels");for(var tab of tabs)for(var label of labels.getElementsByTagName("label"))if(label.innerText.trim()===tab){var input=document.getElementById(label.htmlFor);input.checked=!0;continue e}}</script>
+
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+          <button type="button" class="md-top md-icon" data-md-component="top" hidden>
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8z"/></svg>
+  Back to top
+</button>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+    
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+      <div class="md-progress" data-md-component="progress" role="progressbar"></div>
+    
+    
+    
+      
+      
+      <script id="__config" type="application/json">{"annotate": null, "base": "../..", "features": ["announce.dismiss", "content.action.edit", "content.action.view", "content.code.annotate", "content.code.copy", "content.code.select", "content.tabs.link", "content.tooltips", "navigation.footer", "navigation.indexes", "navigation.instant.prefetch", "navigation.instant.progress", "navigation.path", "navigation.sections", "navigation.tabs", "navigation.tabs.sticky", "navigation.top", "navigation.tracking", "search.highlight", "search.share", "search.suggest", "toc.follow"], "search": "../../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+    
+    
+      <script src="../../assets/javascripts/bundle.79ae519e.min.js"></script>
+      
+    
+  </body>
+</html>

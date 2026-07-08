@@ -1,0 +1,1677 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+      
+      
+      
+      
+      
+        
+      
+      
+      <link rel="icon" href="../../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.6">
+    
+    
+      
+        <title>Spring Security SMS Login Implementation - gzulmc's 随笔记录</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../assets/stylesheets/main.484c7ddc.min.css">
+      
+        
+        <link rel="stylesheet" href="../../assets/stylesheets/palette.ab4e12ef.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+    <script>__md_scope=new URL("../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+  </head>
+  
+  
+    
+    
+      
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#spring-security-sms-login-implementation" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow md-header--lifted" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href="../.." title="gzulmc&#39;s 随笔记录" class="md-header__button md-logo" aria-label="gzulmc's 随笔记录" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            gzulmc's 随笔记录
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              Spring Security SMS Login Implementation
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+        <form class="md-header__option" data-md-component="palette">
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo"  aria-label="Switch to dark mode"  type="radio" name="__palette" id="__palette_0">
+    
+      <label class="md-header__button md-icon" title="Switch to dark mode" for="__palette_1" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a4 4 0 0 0-4 4 4 4 0 0 0 4 4 4 4 0 0 0 4-4 4 4 0 0 0-4-4m0 10a6 6 0 0 1-6-6 6 6 0 0 1 6-6 6 6 0 0 1 6 6 6 6 0 0 1-6 6m8-9.31V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12z"/></svg>
+      </label>
+    
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="slate" data-md-color-primary="indigo" data-md-color-accent="indigo"  aria-label="Switch to light mode"  type="radio" name="__palette" id="__palette_1">
+    
+      <label class="md-header__button md-icon" title="Switch to light mode" for="__palette_0" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 18c-.89 0-1.74-.2-2.5-.55C11.56 16.5 13 14.42 13 12s-1.44-4.5-3.5-5.45C10.26 6.2 11.11 6 12 6a6 6 0 0 1 6 6 6 6 0 0 1-6 6m8-9.31V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12z"/></svg>
+      </label>
+    
+  
+</form>
+      
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+          <a href="javascript:void(0)" class="md-search__icon md-icon" title="Share" aria-label="Share" data-clipboard data-clipboard-text="" data-md-component="search-share" tabindex="-1">
+            
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M18 16.08c-.76 0-1.44.3-1.96.77L8.91 12.7c.05-.23.09-.46.09-.7s-.04-.47-.09-.7l7.05-4.11c.54.5 1.25.81 2.04.81a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3c0 .24.04.47.09.7L8.04 9.81C7.5 9.31 6.79 9 6 9a3 3 0 0 0-3 3 3 3 0 0 0 3 3c.79 0 1.5-.31 2.04-.81l7.12 4.15c-.05.21-.08.43-.08.66 0 1.61 1.31 2.91 2.92 2.91s2.92-1.3 2.92-2.91A2.92 2.92 0 0 0 18 16.08"/></svg>
+          </a>
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+        <div class="md-search__suggest" data-md-component="search-suggest"></div>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      
+    
+    
+  </nav>
+  
+    
+      
+<nav class="md-tabs" aria-label="Tabs" data-md-component="tabs">
+  <div class="md-grid">
+    <ul class="md-tabs__list">
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../Python/%E9%9D%A2%E5%90%91%E5%AF%B9%E8%B1%A1%E5%9F%BA%E7%A1%80/" class="md-tabs__link">
+          
+  
+  
+    
+  
+  Python
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../Django/Django%E5%9F%BA%E7%A1%80/" class="md-tabs__link">
+          
+  
+  
+    
+  
+  Django
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../Docker/Docker%E8%AF%A6%E8%A7%A3/" class="md-tabs__link">
+          
+  
+  
+    
+  
+  Docker
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../.." class="md-tabs__link">
+          
+  
+  
+    
+  
+  Java
+
+        </a>
+      </li>
+    
+  
+
+      
+    </ul>
+  </div>
+</nav>
+    
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+  
+
+
+<nav class="md-nav md-nav--primary md-nav--lifted" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../.." title="gzulmc&#39;s 随笔记录" class="md-nav__button md-logo" aria-label="gzulmc's 随笔记录" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    gzulmc's 随笔记录
+  </label>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_1" >
+        
+          
+          <label class="md-nav__link" for="__nav_1" id="__nav_1_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Python
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_1_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_1">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Python
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../Python/%E9%9D%A2%E5%90%91%E5%AF%B9%E8%B1%A1%E5%9F%BA%E7%A1%80/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    面向对象基础
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../Python/%E9%9D%A2%E5%90%91%E5%AF%B9%E8%B1%A1%E8%BF%9B%E9%98%B6/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    面向对象进阶
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../Python/%E8%BF%9B%E7%A8%8B%E5%92%8C%E7%BA%BF%E7%A8%8B/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    进程和线程
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../Python/%E5%9B%BE%E5%83%8F%E5%92%8C%E6%96%87%E6%A1%A3%E5%A4%84%E7%90%86/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    图像和文档处理
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../Python/%E7%BD%91%E7%BB%9C%E7%BC%96%E7%A8%8B%E5%BA%94%E7%94%A8/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    网络编程应用
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../Python/%E6%96%87%E4%BB%B6%E5%92%8C%E5%BC%82%E5%B8%B8/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    文件和异常
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2" >
+        
+          
+          <label class="md-nav__link" for="__nav_2" id="__nav_2_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Django
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_2_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Django
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../Django/Django%E5%9F%BA%E7%A1%80/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Django基础
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../Django/%E6%95%B0%E6%8D%AE%E6%A8%A1%E5%9E%8B/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    数据模型
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+      
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3" >
+        
+          
+          <label class="md-nav__link" for="__nav_3" id="__nav_3_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Docker
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_3">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Docker
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../Docker/Docker%E8%AF%A6%E8%A7%A3/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Docker详解
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4" >
+        
+          
+          <div class="md-nav__link md-nav__container">
+            <a href="../.." class="md-nav__link ">
+              
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Java
+  
+
+    
+  </span>
+  
+  
+
+            </a>
+            
+          </div>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_4_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Java
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#prompt" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Prompt:
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#response" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Response:
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        核心接口和类的设计原理
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="核心接口和类的设计原理">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#1-smscodeauthenticationtoken-abstractauthenticationtoken" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1. SmsCodeAuthenticationToken 继承 AbstractAuthenticationToken
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#2-smscodeauthenticationfilter-abstractauthenticationprocessingfilter" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2. SmsCodeAuthenticationFilter 继承 AbstractAuthenticationProcessingFilter
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#3-smscodeauthenticationprovider-authenticationprovider" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3. SmsCodeAuthenticationProvider 实现 AuthenticationProvider
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#4-customuserdetailsservice-userdetailsservice" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4. CustomUserDetailsService 实现 UserDetailsService
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_2" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        完整的执行流程
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="完整的执行流程">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#1" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        阶段1: 发送验证码
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#2" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        阶段2: 验证码登录
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_3" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        关键设计模式
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="关键设计模式">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#1_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1. 策略模式
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#2_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2. 责任链模式
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#3" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3. 工厂模式
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_4" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        测试使用方法
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              
+                
+
+
+
+
+              
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+
+<h1 id="spring-security-sms-login-implementation">Spring Security SMS Login Implementation</h1>
+<p><strong>Created:</strong> 2025/7/8 1:56<br />
+<strong>Updated:</strong> 2025/7/8 1:58<br />
+<strong>Exported:</strong> 2025/7/8 1:59<br />
+<strong>Link:</strong> <a href="https://claude.ai/chat/036e3dc2-565e-404f-8120-d8519632db84">https://claude.ai/chat/036e3dc2-565e-404f-8120-d8519632db84</a>  </p>
+<h2 id="prompt">Prompt:</h2>
+<p>请帮我写一个基于spring security实现手机短信验证码登录某系统的代码，并解释每一个步骤和要继承或实现的接口，即为什么要实现某个接口或某个类他们的背后逻辑，说明整个执行流程。不需要前端代码只需要实现后端代码</p>
+<h2 id="response">Response:</h2>
+<p>我来帮您实现一个基于Spring Security的手机短信验证码登录系统。这是一个完整的实现，包括所有必要的组件和详细的执行流程说明。</p>
+<p><strong>Spring Security 手机短信验证码登录系统</strong></p>
+<pre><code class="language-java">// 1. 短信验证码实体类
+public class SmsCode {
+    private String code;
+    private LocalDateTime expireTime;
+
+    public SmsCode(String code, int expireIn) {
+        this.code = code;
+        this.expireTime = LocalDateTime.now().plusSeconds(expireIn);
+    }
+
+    public SmsCode(String code, LocalDateTime expireTime) {
+        this.code = code;
+        this.expireTime = expireTime;
+    }
+
+    public boolean isExpired() {
+        return LocalDateTime.now().isAfter(expireTime);
+    }
+
+    // getters and setters
+    public String getCode() { return code; }
+    public void setCode(String code) { this.code = code; }
+    public LocalDateTime getExpireTime() { return expireTime; }
+    public void setExpireTime(LocalDateTime expireTime) { this.expireTime = expireTime; }
+}
+
+// 2. 短信验证码异常类
+public class SmsCodeException extends AuthenticationException {
+    public SmsCodeException(String message) {
+        super(message);
+    }
+}
+
+// 3. 短信验证码服务接口
+public interface SmsCodeService {
+    void sendSmsCode(String mobile);
+    void validateSmsCode(String mobile, String code);
+}
+
+// 4. 短信验证码服务实现类
+@Service
+public class SmsCodeServiceImpl implements SmsCodeService {
+
+    // 使用Redis存储验证码，这里用Map模拟
+    private final Map&lt;String, SmsCode&gt; smsCodeStore = new ConcurrentHashMap&lt;&gt;();
+
+    @Override
+    public void sendSmsCode(String mobile) {
+        // 生成6位数字验证码
+        String code = String.valueOf((int)((Math.random() * 9 + 1) * 100000));
+
+        // 验证码有效期5分钟
+        SmsCode smsCode = new SmsCode(code, 300);
+        smsCodeStore.put(mobile, smsCode);
+
+        // 这里应该调用短信服务商API发送短信
+        System.out.println(&quot;发送短信验证码到手机号: &quot; + mobile + &quot;, 验证码: &quot; + code);
+    }
+
+    @Override
+    public void validateSmsCode(String mobile, String code) {
+        SmsCode smsCode = smsCodeStore.get(mobile);
+
+        if (smsCode == null) {
+            throw new SmsCodeException(&quot;验证码不存在&quot;);
+        }
+
+        if (smsCode.isExpired()) {
+            smsCodeStore.remove(mobile);
+            throw new SmsCodeException(&quot;验证码已过期&quot;);
+        }
+
+        if (!smsCode.getCode().equals(code)) {
+            throw new SmsCodeException(&quot;验证码错误&quot;);
+        }
+
+        // 验证通过后删除验证码
+        smsCodeStore.remove(mobile);
+    }
+}
+
+// 5. 短信验证码认证Token
+// 继承AbstractAuthenticationToken是因为它实现了Authentication接口
+// 并提供了基础的认证信息存储功能
+public class SmsCodeAuthenticationToken extends AbstractAuthenticationToken {
+
+    private final Object principal; // 存储手机号
+    private Object credentials; // 存储验证码
+
+    // 未认证的构造函数
+    public SmsCodeAuthenticationToken(String mobile, String smsCode) {
+        super(null);
+        this.principal = mobile;
+        this.credentials = smsCode;
+        setAuthenticated(false);
+    }
+
+    // 已认证的构造函数
+    public SmsCodeAuthenticationToken(Object principal, Object credentials, 
+                                     Collection&lt;? extends GrantedAuthority&gt; authorities) {
+        super(authorities);
+        this.principal = principal;
+        this.credentials = credentials;
+        super.setAuthenticated(true);
+    }
+
+    @Override
+    public Object getCredentials() {
+        return this.credentials;
+    }
+
+    @Override
+    public Object getPrincipal() {
+        return this.principal;
+    }
+
+    @Override
+    public void setAuthenticated(boolean isAuthenticated) throws IllegalArgumentException {
+        if (isAuthenticated) {
+            throw new IllegalArgumentException(
+                &quot;Cannot set this token to trusted - use constructor which takes a GrantedAuthority list instead&quot;);
+        }
+        super.setAuthenticated(false);
+    }
+
+    @Override
+    public void eraseCredentials() {
+        super.eraseCredentials();
+        credentials = null;
+    }
+}
+
+// 6. 短信验证码认证过滤器
+// 继承AbstractAuthenticationProcessingFilter是因为它提供了认证处理的基础框架
+// 包括认证成功/失败处理、会话管理等
+public class SmsCodeAuthenticationFilter extends AbstractAuthenticationProcessingFilter {
+
+    public static final String SPRING_SECURITY_FORM_MOBILE_KEY = &quot;mobile&quot;;
+    public static final String SPRING_SECURITY_FORM_SMSCODE_KEY = &quot;smsCode&quot;;
+
+    private String mobileParameter = SPRING_SECURITY_FORM_MOBILE_KEY;
+    private String smsCodeParameter = SPRING_SECURITY_FORM_SMSCODE_KEY;
+    private boolean postOnly = true;
+
+    public SmsCodeAuthenticationFilter() {
+        super(new AntPathRequestMatcher(&quot;/login/sms&quot;, &quot;POST&quot;));
+    }
+
+    @Override
+    public Authentication attemptAuthentication(HttpServletRequest request, 
+                                              HttpServletResponse response) 
+            throws AuthenticationException, IOException, ServletException {
+
+        if (postOnly &amp;&amp; !request.getMethod().equals(&quot;POST&quot;)) {
+            throw new AuthenticationServiceException(&quot;Authentication method not supported: &quot; + request.getMethod());
+        }
+
+        String mobile = obtainMobile(request);
+        String smsCode = obtainSmsCode(request);
+
+        if (mobile == null) {
+            mobile = &quot;&quot;;
+        }
+
+        if (smsCode == null) {
+            smsCode = &quot;&quot;;
+        }
+
+        mobile = mobile.trim();
+
+        SmsCodeAuthenticationToken authRequest = new SmsCodeAuthenticationToken(mobile, smsCode);
+
+        // 设置详细信息
+        setDetails(request, authRequest);
+
+        return this.getAuthenticationManager().authenticate(authRequest);
+    }
+
+    protected String obtainMobile(HttpServletRequest request) {
+        return request.getParameter(mobileParameter);
+    }
+
+    protected String obtainSmsCode(HttpServletRequest request) {
+        return request.getParameter(smsCodeParameter);
+    }
+
+    protected void setDetails(HttpServletRequest request, SmsCodeAuthenticationToken authRequest) {
+        authRequest.setDetails(authenticationDetailsSource.buildDetails(request));
+    }
+
+    // getters and setters
+    public void setMobileParameter(String mobileParameter) {
+        this.mobileParameter = mobileParameter;
+    }
+
+    public void setSmsCodeParameter(String smsCodeParameter) {
+        this.smsCodeParameter = smsCodeParameter;
+    }
+
+    public void setPostOnly(boolean postOnly) {
+        this.postOnly = postOnly;
+    }
+}
+
+// 7. 短信验证码认证提供者
+// 实现AuthenticationProvider接口是因为它定义了认证逻辑的核心方法
+// Spring Security会遍历所有的AuthenticationProvider来处理不同类型的认证
+public class SmsCodeAuthenticationProvider implements AuthenticationProvider {
+
+    private UserDetailsService userDetailsService;
+    private SmsCodeService smsCodeService;
+
+    @Override
+    public Authentication authenticate(Authentication authentication) throws AuthenticationException {
+        SmsCodeAuthenticationToken authenticationToken = (SmsCodeAuthenticationToken) authentication;
+
+        String mobile = (String) authenticationToken.getPrincipal();
+        String smsCode = (String) authenticationToken.getCredentials();
+
+        // 验证短信验证码
+        smsCodeService.validateSmsCode(mobile, smsCode);
+
+        // 根据手机号获取用户信息
+        UserDetails userDetails = userDetailsService.loadUserByUsername(mobile);
+
+        // 创建已认证的token
+        SmsCodeAuthenticationToken authenticationResult = 
+            new SmsCodeAuthenticationToken(userDetails, smsCode, userDetails.getAuthorities());
+
+        authenticationResult.setDetails(authenticationToken.getDetails());
+
+        return authenticationResult;
+    }
+
+    @Override
+    public boolean supports(Class&lt;?&gt; authentication) {
+        // 指定该Provider支持的认证类型
+        return SmsCodeAuthenticationToken.class.isAssignableFrom(authentication);
+    }
+
+    // getters and setters
+    public void setUserDetailsService(UserDetailsService userDetailsService) {
+        this.userDetailsService = userDetailsService;
+    }
+
+    public void setSmsCodeService(SmsCodeService smsCodeService) {
+        this.smsCodeService = smsCodeService;
+    }
+}
+
+// 8. 用户详情服务实现
+@Service
+public class CustomUserDetailsService implements UserDetailsService {
+
+    // 这里模拟数据库查询，实际应该注入UserRepository
+    private final Map&lt;String, User&gt; users = new HashMap&lt;&gt;();
+
+    @PostConstruct
+    public void init() {
+        // 初始化一些测试用户
+        users.put(&quot;13800138000&quot;, User.builder()
+            .username(&quot;13800138000&quot;)
+            .password(&quot;{noop}password&quot;) // {noop}表示不加密
+            .authorities(&quot;ROLE_USER&quot;)
+            .build());
+    }
+
+    @Override
+    public UserDetails loadUserByUsername(String mobile) throws UsernameNotFoundException {
+        User user = users.get(mobile);
+        if (user == null) {
+            throw new UsernameNotFoundException(&quot;手机号不存在: &quot; + mobile);
+        }
+        return user;
+    }
+}
+
+// 9. 短信验证码配置类
+@Component
+public class SmsCodeAuthenticationSecurityConfig extends SecurityConfigurerAdapter&lt;DefaultSecurityFilterChain, HttpSecurity&gt; {
+
+    @Autowired
+    private AuthenticationSuccessHandler authenticationSuccessHandler;
+
+    @Autowired
+    private AuthenticationFailureHandler authenticationFailureHandler;
+
+    @Autowired
+    private UserDetailsService userDetailsService;
+
+    @Autowired
+    private SmsCodeService smsCodeService;
+
+    @Override
+    public void configure(HttpSecurity http) throws Exception {
+        // 创建过滤器
+        SmsCodeAuthenticationFilter smsCodeAuthenticationFilter = new SmsCodeAuthenticationFilter();
+        smsCodeAuthenticationFilter.setAuthenticationManager(http.getSharedObject(AuthenticationManager.class));
+        smsCodeAuthenticationFilter.setAuthenticationSuccessHandler(authenticationSuccessHandler);
+        smsCodeAuthenticationFilter.setAuthenticationFailureHandler(authenticationFailureHandler);
+
+        // 创建认证提供者
+        SmsCodeAuthenticationProvider smsCodeAuthenticationProvider = new SmsCodeAuthenticationProvider();
+        smsCodeAuthenticationProvider.setUserDetailsService(userDetailsService);
+        smsCodeAuthenticationProvider.setSmsCodeService(smsCodeService);
+
+        // 将认证提供者添加到系统中
+        http.authenticationProvider(smsCodeAuthenticationProvider)
+            .addFilterAfter(smsCodeAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);
+    }
+}
+
+// 10. 短信验证码控制器
+@RestController
+@RequestMapping(&quot;/sms&quot;)
+public class SmsCodeController {
+
+    @Autowired
+    private SmsCodeService smsCodeService;
+
+    @PostMapping(&quot;/send&quot;)
+    public ResponseEntity&lt;String&gt; sendSmsCode(@RequestParam String mobile) {
+        try {
+            smsCodeService.sendSmsCode(mobile);
+            return ResponseEntity.ok(&quot;短信验证码发送成功&quot;);
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body(&quot;短信验证码发送失败: &quot; + e.getMessage());
+        }
+    }
+}
+
+// 11. 认证成功处理器
+@Component
+public class CustomAuthenticationSuccessHandler implements AuthenticationSuccessHandler {
+
+    private ObjectMapper objectMapper = new ObjectMapper();
+
+    @Override
+    public void onAuthenticationSuccess(HttpServletRequest request, 
+                                      HttpServletResponse response, 
+                                      Authentication authentication) throws IOException, ServletException {
+
+        response.setContentType(&quot;application/json;charset=UTF-8&quot;);
+        response.setStatus(HttpStatus.OK.value());
+
+        Map&lt;String, Object&gt; result = new HashMap&lt;&gt;();
+        result.put(&quot;code&quot;, 200);
+        result.put(&quot;message&quot;, &quot;登录成功&quot;);
+        result.put(&quot;data&quot;, authentication.getPrincipal());
+
+        response.getWriter().write(objectMapper.writeValueAsString(result));
+    }
+}
+
+// 12. 认证失败处理器
+@Component
+public class CustomAuthenticationFailureHandler implements AuthenticationFailureHandler {
+
+    private ObjectMapper objectMapper = new ObjectMapper();
+
+    @Override
+    public void onAuthenticationFailure(HttpServletRequest request, 
+                                      HttpServletResponse response, 
+                                      AuthenticationException exception) throws IOException, ServletException {
+
+        response.setContentType(&quot;application/json;charset=UTF-8&quot;);
+        response.setStatus(HttpStatus.UNAUTHORIZED.value());
+
+        Map&lt;String, Object&gt; result = new HashMap&lt;&gt;();
+        result.put(&quot;code&quot;, 401);
+        result.put(&quot;message&quot;, &quot;登录失败: &quot; + exception.getMessage());
+
+        response.getWriter().write(objectMapper.writeValueAsString(result));
+    }
+}
+
+// 13. Spring Security配置
+@Configuration
+@EnableWebSecurity
+public class SecurityConfig {
+
+    @Autowired
+    private SmsCodeAuthenticationSecurityConfig smsCodeAuthenticationSecurityConfig;
+
+    @Bean
+    public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
+        http
+            .authorizeHttpRequests(authz -&gt; authz
+                .requestMatchers(&quot;/sms/send&quot;, &quot;/login/sms&quot;).permitAll()
+                .anyRequest().authenticated()
+            )
+            .csrf().disable()
+            .apply(smsCodeAuthenticationSecurityConfig); // 应用短信验证码配置
+
+        return http.build();
+    }
+}
+
+// 14. 主要的依赖项（pom.xml中需要添加）
+/*
+&lt;dependency&gt;
+    &lt;groupId&gt;org.springframework.boot&lt;/groupId&gt;
+    &lt;artifactId&gt;spring-boot-starter-security&lt;/artifactId&gt;
+&lt;/dependency&gt;
+&lt;dependency&gt;
+    &lt;groupId&gt;org.springframework.boot&lt;/groupId&gt;
+    &lt;artifactId&gt;spring-boot-starter-web&lt;/artifactId&gt;
+&lt;/dependency&gt;
+&lt;dependency&gt;
+    &lt;groupId&gt;com.fasterxml.jackson.core&lt;/groupId&gt;
+    &lt;artifactId&gt;jackson-databind&lt;/artifactId&gt;
+&lt;/dependency&gt;
+*/
+</code></pre>
+<p>现在让我详细解释整个系统的设计思路和执行流程：</p>
+<h2 id="_1">核心接口和类的设计原理</h2>
+<h3 id="1-smscodeauthenticationtoken-abstractauthenticationtoken">1. <strong>SmsCodeAuthenticationToken 继承 AbstractAuthenticationToken</strong></h3>
+<ul>
+<li><strong>原因</strong>: <code>AbstractAuthenticationToken</code> 实现了 <code>Authentication</code> 接口，提供了认证信息的基础存储功能</li>
+<li><strong>作用</strong>: 存储手机号(principal)和验证码(credentials)，以及认证状态</li>
+<li><strong>设计</strong>: 提供两个构造函数，一个用于未认证状态，一个用于已认证状态</li>
+</ul>
+<h3 id="2-smscodeauthenticationfilter-abstractauthenticationprocessingfilter">2. <strong>SmsCodeAuthenticationFilter 继承 AbstractAuthenticationProcessingFilter</strong></h3>
+<ul>
+<li><strong>原因</strong>: <code>AbstractAuthenticationProcessingFilter</code> 提供了认证处理的完整框架</li>
+<li><strong>作用</strong>: 拦截 <code>/login/sms</code> 请求，提取手机号和验证码，创建认证Token</li>
+<li><strong>核心方法</strong>: <code>attemptAuthentication()</code> 方法负责从请求中提取认证信息</li>
+</ul>
+<h3 id="3-smscodeauthenticationprovider-authenticationprovider">3. <strong>SmsCodeAuthenticationProvider 实现 AuthenticationProvider</strong></h3>
+<ul>
+<li><strong>原因</strong>: Spring Security 通过 <code>AuthenticationProvider</code> 接口实现认证逻辑的插件化</li>
+<li><strong>作用</strong>: 处理短信验证码的认证逻辑，包括验证码校验和用户信息加载</li>
+<li><strong>核心方法</strong>: </li>
+<li><code>authenticate()</code>: 执行认证逻辑</li>
+<li><code>supports()</code>: 指定支持的认证类型</li>
+</ul>
+<h3 id="4-customuserdetailsservice-userdetailsservice">4. <strong>CustomUserDetailsService 实现 UserDetailsService</strong></h3>
+<ul>
+<li><strong>原因</strong>: Spring Security 需要通过此接口获取用户详细信息</li>
+<li><strong>作用</strong>: 根据手机号查询用户信息，返回 <code>UserDetails</code> 对象</li>
+</ul>
+<h2 id="_2">完整的执行流程</h2>
+<h3 id="1">阶段1: 发送验证码</h3>
+<ol>
+<li>用户调用 <code>/sms/send</code> 接口，传入手机号</li>
+<li><code>SmsCodeController.sendSmsCode()</code> 方法被调用</li>
+<li><code>SmsCodeService.sendSmsCode()</code> 生成验证码并存储（这里用Map模拟，实际应该用Redis）</li>
+<li>调用短信服务商API发送验证码到用户手机</li>
+</ol>
+<h3 id="2">阶段2: 验证码登录</h3>
+<ol>
+<li>用户提交手机号和验证码到 <code>/login/sms</code> 接口</li>
+<li><code>SmsCodeAuthenticationFilter</code> 拦截请求：</li>
+<li>检查是否为POST请求</li>
+<li>提取手机号和验证码参数</li>
+<li>创建未认证的 <code>SmsCodeAuthenticationToken</code></li>
+<li>
+<p>调用 <code>AuthenticationManager.authenticate()</code></p>
+</li>
+<li>
+<p><code>AuthenticationManager</code> 遍历所有 <code>AuthenticationProvider</code>：</p>
+</li>
+<li>找到支持 <code>SmsCodeAuthenticationToken</code> 的Provider</li>
+<li>
+<p>调用 <code>SmsCodeAuthenticationProvider.authenticate()</code></p>
+</li>
+<li>
+<p><code>SmsCodeAuthenticationProvider</code> 执行认证：</p>
+</li>
+<li>调用 <code>SmsCodeService.validateSmsCode()</code> 验证验证码</li>
+<li>调用 <code>UserDetailsService.loadUserByUsername()</code> 获取用户信息</li>
+<li>
+<p>创建已认证的 <code>SmsCodeAuthenticationToken</code></p>
+</li>
+<li>
+<p>认证成功/失败处理：</p>
+</li>
+<li>成功：调用 <code>AuthenticationSuccessHandler</code></li>
+<li>失败：调用 <code>AuthenticationFailureHandler</code></li>
+</ol>
+<h2 id="_3">关键设计模式</h2>
+<h3 id="1_1">1. <strong>策略模式</strong></h3>
+<ul>
+<li>不同的认证方式（用户名密码、短信验证码）通过不同的 <code>AuthenticationProvider</code> 实现</li>
+<li>Spring Security 在运行时选择合适的Provider</li>
+</ul>
+<h3 id="2_1">2. <strong>责任链模式</strong></h3>
+<ul>
+<li>过滤器链：请求依次经过多个过滤器处理</li>
+<li>AuthenticationProvider链：多个Provider按顺序尝试认证</li>
+</ul>
+<h3 id="3">3. <strong>工厂模式</strong></h3>
+<ul>
+<li><code>AbstractAuthenticationProcessingFilter</code> 作为模板，具体的认证方式继承并实现特定逻辑</li>
+</ul>
+<h2 id="_4">测试使用方法</h2>
+<ol>
+<li><strong>发送验证码</strong>：</li>
+</ol>
+<pre><code class="language-bash">POST /sms/send
+Content-Type: application/x-www-form-urlencoded
+
+mobile=13800138000
+</code></pre>
+<ol>
+<li><strong>验证码登录</strong>：</li>
+</ol>
+<pre><code class="language-bash">POST /login/sms
+Content-Type: application/x-www-form-urlencoded
+
+mobile=13800138000&amp;smsCode=123456
+</code></pre>
+<p>这个实现提供了完整的短信验证码登录功能，包括验证码生成、存储、校验，以及与Spring Security的完美集成。代码结构清晰，易于扩展和维护。</p>
+<hr />
+<p>Powered by <a href="https://www.claudexporter.com">Claude Exporter</a></p>
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+  <script>var tabs=__md_get("__tabs");if(Array.isArray(tabs))e:for(var set of document.querySelectorAll(".tabbed-set")){var labels=set.querySelector(".tabbed-labels");for(var tab of tabs)for(var label of labels.getElementsByTagName("label"))if(label.innerText.trim()===tab){var input=document.getElementById(label.htmlFor);input.checked=!0;continue e}}</script>
+
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+          <button type="button" class="md-top md-icon" data-md-component="top" hidden>
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8z"/></svg>
+  Back to top
+</button>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+    
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+      <div class="md-progress" data-md-component="progress" role="progressbar"></div>
+    
+    
+    
+      
+      
+      <script id="__config" type="application/json">{"annotate": null, "base": "../..", "features": ["announce.dismiss", "content.action.edit", "content.action.view", "content.code.annotate", "content.code.copy", "content.code.select", "content.tabs.link", "content.tooltips", "navigation.footer", "navigation.indexes", "navigation.instant.prefetch", "navigation.instant.progress", "navigation.path", "navigation.sections", "navigation.tabs", "navigation.tabs.sticky", "navigation.top", "navigation.tracking", "search.highlight", "search.share", "search.suggest", "toc.follow"], "search": "../../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+    
+    
+      <script src="../../assets/javascripts/bundle.79ae519e.min.js"></script>
+      
+    
+  </body>
+</html>

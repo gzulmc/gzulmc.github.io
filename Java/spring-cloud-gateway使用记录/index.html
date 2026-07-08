@@ -1,0 +1,1381 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+      
+      
+      
+      
+      
+        
+      
+      
+      <link rel="icon" href="../../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.6">
+    
+    
+      
+        <title>Spring cloud gateway使用记录 - gzulmc's 随笔记录</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../assets/stylesheets/main.484c7ddc.min.css">
+      
+        
+        <link rel="stylesheet" href="../../assets/stylesheets/palette.ab4e12ef.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+    <script>__md_scope=new URL("../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+  </head>
+  
+  
+    
+    
+      
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#_1" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow md-header--lifted" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href="../.." title="gzulmc&#39;s 随笔记录" class="md-header__button md-logo" aria-label="gzulmc's 随笔记录" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            gzulmc's 随笔记录
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              Spring cloud gateway使用记录
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+        <form class="md-header__option" data-md-component="palette">
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo"  aria-label="Switch to dark mode"  type="radio" name="__palette" id="__palette_0">
+    
+      <label class="md-header__button md-icon" title="Switch to dark mode" for="__palette_1" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a4 4 0 0 0-4 4 4 4 0 0 0 4 4 4 4 0 0 0 4-4 4 4 0 0 0-4-4m0 10a6 6 0 0 1-6-6 6 6 0 0 1 6-6 6 6 0 0 1 6 6 6 6 0 0 1-6 6m8-9.31V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12z"/></svg>
+      </label>
+    
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="slate" data-md-color-primary="indigo" data-md-color-accent="indigo"  aria-label="Switch to light mode"  type="radio" name="__palette" id="__palette_1">
+    
+      <label class="md-header__button md-icon" title="Switch to light mode" for="__palette_0" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 18c-.89 0-1.74-.2-2.5-.55C11.56 16.5 13 14.42 13 12s-1.44-4.5-3.5-5.45C10.26 6.2 11.11 6 12 6a6 6 0 0 1 6 6 6 6 0 0 1-6 6m8-9.31V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12z"/></svg>
+      </label>
+    
+  
+</form>
+      
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+          <a href="javascript:void(0)" class="md-search__icon md-icon" title="Share" aria-label="Share" data-clipboard data-clipboard-text="" data-md-component="search-share" tabindex="-1">
+            
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M18 16.08c-.76 0-1.44.3-1.96.77L8.91 12.7c.05-.23.09-.46.09-.7s-.04-.47-.09-.7l7.05-4.11c.54.5 1.25.81 2.04.81a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3c0 .24.04.47.09.7L8.04 9.81C7.5 9.31 6.79 9 6 9a3 3 0 0 0-3 3 3 3 0 0 0 3 3c.79 0 1.5-.31 2.04-.81l7.12 4.15c-.05.21-.08.43-.08.66 0 1.61 1.31 2.91 2.92 2.91s2.92-1.3 2.92-2.91A2.92 2.92 0 0 0 18 16.08"/></svg>
+          </a>
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+        <div class="md-search__suggest" data-md-component="search-suggest"></div>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      
+    
+    
+  </nav>
+  
+    
+      
+<nav class="md-tabs" aria-label="Tabs" data-md-component="tabs">
+  <div class="md-grid">
+    <ul class="md-tabs__list">
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../Python/%E9%9D%A2%E5%90%91%E5%AF%B9%E8%B1%A1%E5%9F%BA%E7%A1%80/" class="md-tabs__link">
+          
+  
+  
+    
+  
+  Python
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../Django/Django%E5%9F%BA%E7%A1%80/" class="md-tabs__link">
+          
+  
+  
+    
+  
+  Django
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../Docker/Docker%E8%AF%A6%E8%A7%A3/" class="md-tabs__link">
+          
+  
+  
+    
+  
+  Docker
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../.." class="md-tabs__link">
+          
+  
+  
+    
+  
+  Java
+
+        </a>
+      </li>
+    
+  
+
+      
+    </ul>
+  </div>
+</nav>
+    
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+  
+
+
+<nav class="md-nav md-nav--primary md-nav--lifted" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../.." title="gzulmc&#39;s 随笔记录" class="md-nav__button md-logo" aria-label="gzulmc's 随笔记录" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    gzulmc's 随笔记录
+  </label>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_1" >
+        
+          
+          <label class="md-nav__link" for="__nav_1" id="__nav_1_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Python
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_1_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_1">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Python
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../Python/%E9%9D%A2%E5%90%91%E5%AF%B9%E8%B1%A1%E5%9F%BA%E7%A1%80/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    面向对象基础
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../Python/%E9%9D%A2%E5%90%91%E5%AF%B9%E8%B1%A1%E8%BF%9B%E9%98%B6/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    面向对象进阶
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../Python/%E8%BF%9B%E7%A8%8B%E5%92%8C%E7%BA%BF%E7%A8%8B/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    进程和线程
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../Python/%E5%9B%BE%E5%83%8F%E5%92%8C%E6%96%87%E6%A1%A3%E5%A4%84%E7%90%86/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    图像和文档处理
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../Python/%E7%BD%91%E7%BB%9C%E7%BC%96%E7%A8%8B%E5%BA%94%E7%94%A8/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    网络编程应用
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../Python/%E6%96%87%E4%BB%B6%E5%92%8C%E5%BC%82%E5%B8%B8/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    文件和异常
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2" >
+        
+          
+          <label class="md-nav__link" for="__nav_2" id="__nav_2_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Django
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_2_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Django
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../Django/Django%E5%9F%BA%E7%A1%80/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Django基础
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../Django/%E6%95%B0%E6%8D%AE%E6%A8%A1%E5%9E%8B/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    数据模型
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+      
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3" >
+        
+          
+          <label class="md-nav__link" for="__nav_3" id="__nav_3_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Docker
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_3">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Docker
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../Docker/Docker%E8%AF%A6%E8%A7%A3/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Docker详解
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4" >
+        
+          
+          <div class="md-nav__link md-nav__container">
+            <a href="../.." class="md-nav__link ">
+              
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Java
+  
+
+    
+  </span>
+  
+  
+
+            </a>
+            
+          </div>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_4_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Java
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        路由定位器：
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_2" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        动态路由：
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="动态路由：">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#spring-cloud-gateway-api-api-gateway" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        在日常开发中，Spring Cloud Gateway 主要用于作为API 网关（API Gateway），它在微服务架构中扮演“请求入口”的角色，主要用于请求路由、权限校验、限流、服务熔断、监控、统一处理跨域等功能。以下是它在实际开发中解决的几个核心问题：
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#1" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        🔧 1. 请求路由和转发
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#2" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        🔐 2. 统一的安全认证与鉴权
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#3" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        📈 3. 限流、防刷、熔断降级
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#4-cors" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        🌍 4. 统一处理跨域（CORS）
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#5" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        📊 5. 日志记录与请求追踪
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#6" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        🎨 6. 请求/响应统一处理
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#7" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        ☁️ 7. 隐藏微服务细节
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#spring-cloud-gateway" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        ✅ 总结：Spring Cloud Gateway 的主要作用
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="✅ 总结：Spring Cloud Gateway 的主要作用">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#1_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1.请求的路由和转发
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              
+                
+
+
+
+
+              
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+
+  <h1>Spring cloud gateway使用记录</h1>
+
+<pre><code class="language-java">请求处理流程：
+| 场景                                      | 处理组件                           |
+| --------------------------------------- | ------------------------------ |
+| Spring Cloud Gateway 匹配 `/api/**` 后转发请求 | `RoutePredicateHandlerMapping` |
+| 用 `@RestController` 编写业务接口              | `RequestMappingHandlerMapping` |
+| 用函数式 `RouterFunction` 定义路由              | `RouterFunctionMapping`        |
+| 请求静态资源、WebSocket、favicon                | `SimpleUrlHandlerMapping`      |
+
+
+</code></pre>
+<pre><code>    @Nullable
+    private List&lt;HandlerMapping&gt; handlerMappings;
+    @Nullable
+    private List&lt;HandlerAdapter&gt; handlerAdapters;
+    @Nullable
+    private List&lt;HandlerResultHandler&gt; resultHandlers;
+</code></pre>
+<p>HandlerMapping:</p>
+<table>
+<thead>
+<tr>
+<th style="text-align: left;">场景</th>
+<th style="text-align: center;">处理组件</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;">Spring Cloud Gateway 匹配 <code>/api/**</code> 后转发请求</td>
+<td style="text-align: center;">RoutePredicateHandlerMapping</td>
+</tr>
+<tr>
+<td style="text-align: left;">用 @RequestController编写业务接口</td>
+<td style="text-align: center;">RequestMappingHandlerMapping</td>
+</tr>
+<tr>
+<td style="text-align: left;">用函数式 RouteFunction 定义的路由</td>
+<td style="text-align: center;">RouterFunctionMapping</td>
+</tr>
+<tr>
+<td style="text-align: left;">请求静态资源、WebSocket、favicon</td>
+<td style="text-align: center;">SimpleUrlHandlerMapping</td>
+</tr>
+</tbody>
+</table>
+<pre><code class="language-yaml">1.gateway中的两种过滤器：全局过滤器GlobalFilter和路由绑定过滤器GatewayFilter
+2.WebFlux应用的过滤器：WebFilter和servlet中普通过滤器一样，是与springsecurityfilterchain同级的过滤器
+3.WebFilter会在GlobalFilter和GatewayFilter之前执行,无论是否匹配到路由，他的执行和路由无关
+4.GlobalFilter和GatewayFilter都是围绕路由执行的过滤器，不同的是GlobalFilter会在GatewayFilter之前执行，且GlobalFilter只需要匹配到至少一个路由后就会被调用,而GatewayFilter是绑定到具体路由的过滤器，只有具体的某一个路由被匹配后这个绑定的gatewayfilter才会被调用。
+5.默认的predicates是AND逻辑,即所有的谓词都被匹配后这个路由才会被生效，然后执行具体的动作。当请求匹配到当前路由（即所有 predicates 条件都满足）时，Spring Cloud Gateway 会将这个请求 转发到 https://example.org 这个地址。
+6.uri 可以是：
+        http://...（普通 HTTP 服务）
+        https://...（SSL 服务）
+        lb://...（注册中心中的服务名，使用负载均衡）
+        forward:/local/path（本地控制器转发）转发到当前服务内部的 Controller（不发出 HTTP 请求）
+        ws://localhost:3001 
+7.Spring Cloud Gateway 的路由不是“多个路由都可以生效”的概念，而是：
+    🧠 &quot;路由是单一匹配模式，匹配成功一个即停止&quot;，按照他们的顺序进行匹配
+    gateway:
+      server:
+        webflux:
+          routes:
+            - id: after_route
+              uri: https://example.org
+              predicates:
+                # 默认是AND与逻辑
+                - After=2017-01-20T17:42:47.789-07:00[America/Denver]
+                - Header=X-Request-Id, \d+
+                - Host=**.somehost.org,**.anotherhost.org
+                # 或逻辑
+                - OR=
+                    - HOST=**.abc.com
+                    - HOST=**.xyz.com
+                # 非逻辑
+                - NOT=HOST=**.forbidden.com
+                - NOT=Method=PUT
+</code></pre>
+<h2 id="_1">路由定位器：</h2>
+<p>当 Gateway 启动时，需要“加载所有的路由配置”，比如：</p>
+<ul>
+<li>
+<p>配置文件中的 <code>spring.cloud.gateway.routes</code></p>
+</li>
+<li>
+<p>数据库中动态加载的路由</p>
+</li>
+<li>
+<p>Nacos、Consul、Apollo 等注册中心</p>
+</li>
+<li>
+<p>Java 代码中手动注册的路由</p>
+</li>
+<li>
+<p>```java
+  @Component
+  public class MyDbRouteDefinitionLocator implements RouteDefinitionLocator {</p>
+<p>@Override
+  public Flux<RouteDefinition> getRouteDefinitions() {
+      // 查询数据库返回 List<RouteDefinition>
+      List<RouteDefinition> routes = myRouteService.loadFromDb();
+      return Flux.fromIterable(routes);
+  }
+  }</p>
+</li>
+</ul>
+<p>```</p>
+<table>
+<thead>
+<tr>
+<th>实现类</th>
+<th>来源</th>
+<th>用途</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>PropertiesRouteDefinitionLocator</code></td>
+<td><code>application.yml</code> 中的 <code>spring.cloud.gateway.routes</code> 配置</td>
+<td>这是你最常用的</td>
+</tr>
+<tr>
+<td><code>DiscoveryClientRouteDefinitionLocator</code></td>
+<td>微服务注册中心（Nacos、Eureka 等）</td>
+<td>自动为每个服务创建一条路由</td>
+</tr>
+<tr>
+<td><code>InMemoryRouteDefinitionRepository</code></td>
+<td>内存中的定义，可动态添加</td>
+<td>通常配合 API 添加/删除路由用</td>
+</tr>
+<tr>
+<td><code>CompositeRouteDefinitionLocator</code></td>
+<td>组合所有 Locator，返回聚合结果</td>
+<td>内部用于合并上述结果</td>
+</tr>
+<tr>
+<td>自定义实现</td>
+<td>你可以从数据库或第三方系统动态加载</td>
+<td>常见于后台路由动态配置平台</td>
+</tr>
+</tbody>
+</table>
+<pre><code class="language-java">启动时：
+   所有 RouteDefinitionLocator → getRouteDefinitions()
+       ↓
+   加载成 RouteDefinition 对象
+       ↓
+   RouteDefinitionRouteLocator → 转换为 Route（带谓词 + 过滤器）
+       ↓
+   保存到 InMemory 中，后续请求匹配就靠它了
+</code></pre>
+<h2 id="_2">动态路由：</h2>
+<table>
+<thead>
+<tr>
+<th>类</th>
+<th>用途</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>RouteDefinitionWriter</code></td>
+<td>用于写入/修改/删除路由定义</td>
+</tr>
+<tr>
+<td><code>RouteLocator</code></td>
+<td>把 RouteDefinition 转换为 Route（真正可用的）</td>
+</tr>
+<tr>
+<td><code>CachingRouteLocator</code></td>
+<td>缓存路由结果，提高性能</td>
+</tr>
+<tr>
+<td><code>RefreshRoutesEvent</code></td>
+<td>发布事件，触发 Gateway 重新加载路由</td>
+</tr>
+</tbody>
+</table>
+<h3 id="spring-cloud-gateway-api-api-gateway">在日常开发中，<strong>Spring Cloud Gateway</strong> 主要用于作为<strong>API 网关（API Gateway）</strong>，它在微服务架构中扮演“请求入口”的角色，主要用于<strong>请求路由、权限校验、限流、服务熔断、监控、统一处理跨域等功能</strong>。以下是它在实际开发中解决的几个核心问题：</h3>
+<h3 id="1">🔧 <strong>1. 请求路由和转发</strong></h3>
+<p><strong>最核心的作用</strong>：将外部请求路由到内部对应的微服务上。</p>
+<ul>
+<li>例如，客户端请求 <code>https://api.example.com/user/123</code>，Gateway 会根据配置把它路由到 <code>user-service</code> 的对应接口，如 <code>http://user-service/api/users/123</code>。</li>
+<li>支持多种路由方式：基于路径、主机名、Header、Query 参数等。</li>
+</ul>
+<hr />
+<h3 id="2">🔐 <strong>2. 统一的安全认证与鉴权</strong></h3>
+<ul>
+<li>在请求进入后端服务前，先经过 Gateway 统一校验，如：</li>
+<li><strong>Token 校验</strong>（JWT、OAuth2）；</li>
+<li><strong>IP 黑白名单</strong>；</li>
+<li><strong>权限控制</strong>（比如与 Spring Security 集成）；</li>
+<li>一旦认证失败就可以在 Gateway 层拦截并返回，保护后端服务不暴露给非法访问者。</li>
+</ul>
+<hr />
+<h3 id="3">📈 <strong>3. 限流、防刷、熔断降级</strong></h3>
+<ul>
+<li><strong>限流</strong>：控制访问频率，防止接口被恶意刷爆。</li>
+<li><strong>熔断</strong>：某个服务不稳定时，快速失败，防止拖垮系统。</li>
+<li><strong>降级</strong>：目标服务不可用时返回默认响应，提升用户体验。</li>
+<li>Spring Cloud Gateway 可以通过集成如 Resilience4j、Sentinel 实现这些功能。</li>
+</ul>
+<hr />
+<h3 id="4-cors">🌍 <strong>4. 统一处理跨域（CORS）</strong></h3>
+<ul>
+<li>Gateway 可统一设置跨域策略，避免每个服务单独配置。</li>
+</ul>
+<hr />
+<h3 id="5">📊 <strong>5. 日志记录与请求追踪</strong></h3>
+<ul>
+<li>可统一在 Gateway 层记录访问日志、请求链路信息（TraceId）等；</li>
+<li>为后续监控、排查、统计提供基础数据。</li>
+</ul>
+<hr />
+<h3 id="6">🎨 <strong>6. 请求/响应统一处理</strong></h3>
+<ul>
+<li>统一修改请求头、添加参数；</li>
+<li>统一修改响应格式、响应头；</li>
+<li>统一返回结构，比如将所有接口返回封装为 <code>{ code, msg, data }</code> 结构。</li>
+</ul>
+<hr />
+<h3 id="7">☁️ <strong>7. 隐藏微服务细节</strong></h3>
+<ul>
+<li>客户端只接触 Gateway，不知道后端微服务部署在哪，防止直接访问，提高安全性；</li>
+<li>便于版本管理，例如 <code>/api/v1/user</code> 和 <code>/api/v2/user</code> 分别路由到不同版本的服务。</li>
+</ul>
+<hr />
+<h2 id="spring-cloud-gateway">✅ 总结：Spring Cloud Gateway 的主要作用</h2>
+<table>
+<thead>
+<tr>
+<th>功能</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>请求路由</td>
+<td>根据规则将请求转发到具体微服务</td>
+</tr>
+<tr>
+<td>权限认证与校验</td>
+<td>JWT、OAuth2 鉴权</td>
+</tr>
+<tr>
+<td>限流熔断降级</td>
+<td>提高系统稳定性</td>
+</tr>
+<tr>
+<td>日志与监控</td>
+<td>请求日志、链路追踪、指标统计</td>
+</tr>
+<tr>
+<td>CORS 统一处理</td>
+<td>解决浏览器跨域问题</td>
+</tr>
+<tr>
+<td>请求/响应统一改写</td>
+<td>统一数据结构和参数</td>
+</tr>
+<tr>
+<td>微服务隐藏</td>
+<td>提高安全性和解耦性</td>
+</tr>
+</tbody>
+</table>
+<h3 id="1_1">1.请求的路由和转发</h3>
+<pre><code>
+</code></pre>
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+  <script>var tabs=__md_get("__tabs");if(Array.isArray(tabs))e:for(var set of document.querySelectorAll(".tabbed-set")){var labels=set.querySelector(".tabbed-labels");for(var tab of tabs)for(var label of labels.getElementsByTagName("label"))if(label.innerText.trim()===tab){var input=document.getElementById(label.htmlFor);input.checked=!0;continue e}}</script>
+
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+          <button type="button" class="md-top md-icon" data-md-component="top" hidden>
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8z"/></svg>
+  Back to top
+</button>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+    
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+      <div class="md-progress" data-md-component="progress" role="progressbar"></div>
+    
+    
+    
+      
+      
+      <script id="__config" type="application/json">{"annotate": null, "base": "../..", "features": ["announce.dismiss", "content.action.edit", "content.action.view", "content.code.annotate", "content.code.copy", "content.code.select", "content.tabs.link", "content.tooltips", "navigation.footer", "navigation.indexes", "navigation.instant.prefetch", "navigation.instant.progress", "navigation.path", "navigation.sections", "navigation.tabs", "navigation.tabs.sticky", "navigation.top", "navigation.tracking", "search.highlight", "search.share", "search.suggest", "toc.follow"], "search": "../../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+    
+    
+      <script src="../../assets/javascripts/bundle.79ae519e.min.js"></script>
+      
+    
+  </body>
+</html>

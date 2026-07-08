@@ -1,0 +1,3783 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+      
+      
+      
+      
+      
+        
+      
+      
+      <link rel="icon" href="../../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.6">
+    
+    
+      
+        <title>LangChain结构化输出 - gzulmc's 随笔记录</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../assets/stylesheets/main.484c7ddc.min.css">
+      
+        
+        <link rel="stylesheet" href="../../assets/stylesheets/palette.ab4e12ef.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+    <script>__md_scope=new URL("../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+  </head>
+  
+  
+    
+    
+      
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#langchain" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow md-header--lifted" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href="../.." title="gzulmc&#39;s 随笔记录" class="md-header__button md-logo" aria-label="gzulmc's 随笔记录" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            gzulmc's 随笔记录
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              LangChain结构化输出
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+        <form class="md-header__option" data-md-component="palette">
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo"  aria-label="Switch to dark mode"  type="radio" name="__palette" id="__palette_0">
+    
+      <label class="md-header__button md-icon" title="Switch to dark mode" for="__palette_1" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a4 4 0 0 0-4 4 4 4 0 0 0 4 4 4 4 0 0 0 4-4 4 4 0 0 0-4-4m0 10a6 6 0 0 1-6-6 6 6 0 0 1 6-6 6 6 0 0 1 6 6 6 6 0 0 1-6 6m8-9.31V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12z"/></svg>
+      </label>
+    
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="slate" data-md-color-primary="indigo" data-md-color-accent="indigo"  aria-label="Switch to light mode"  type="radio" name="__palette" id="__palette_1">
+    
+      <label class="md-header__button md-icon" title="Switch to light mode" for="__palette_0" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 18c-.89 0-1.74-.2-2.5-.55C11.56 16.5 13 14.42 13 12s-1.44-4.5-3.5-5.45C10.26 6.2 11.11 6 12 6a6 6 0 0 1 6 6 6 6 0 0 1-6 6m8-9.31V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12z"/></svg>
+      </label>
+    
+  
+</form>
+      
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+          <a href="javascript:void(0)" class="md-search__icon md-icon" title="Share" aria-label="Share" data-clipboard data-clipboard-text="" data-md-component="search-share" tabindex="-1">
+            
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M18 16.08c-.76 0-1.44.3-1.96.77L8.91 12.7c.05-.23.09-.46.09-.7s-.04-.47-.09-.7l7.05-4.11c.54.5 1.25.81 2.04.81a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3c0 .24.04.47.09.7L8.04 9.81C7.5 9.31 6.79 9 6 9a3 3 0 0 0-3 3 3 3 0 0 0 3 3c.79 0 1.5-.31 2.04-.81l7.12 4.15c-.05.21-.08.43-.08.66 0 1.61 1.31 2.91 2.92 2.91s2.92-1.3 2.92-2.91A2.92 2.92 0 0 0 18 16.08"/></svg>
+          </a>
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+        <div class="md-search__suggest" data-md-component="search-suggest"></div>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      
+    
+    
+  </nav>
+  
+    
+      
+<nav class="md-tabs" aria-label="Tabs" data-md-component="tabs">
+  <div class="md-grid">
+    <ul class="md-tabs__list">
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../Python/%E9%9D%A2%E5%90%91%E5%AF%B9%E8%B1%A1%E5%9F%BA%E7%A1%80/" class="md-tabs__link">
+          
+  
+  
+    
+  
+  Python
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../Django/Django%E5%9F%BA%E7%A1%80/" class="md-tabs__link">
+          
+  
+  
+    
+  
+  Django
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../Docker/Docker%E8%AF%A6%E8%A7%A3/" class="md-tabs__link">
+          
+  
+  
+    
+  
+  Docker
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../.." class="md-tabs__link">
+          
+  
+  
+    
+  
+  Java
+
+        </a>
+      </li>
+    
+  
+
+      
+    </ul>
+  </div>
+</nav>
+    
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+  
+
+
+<nav class="md-nav md-nav--primary md-nav--lifted" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../.." title="gzulmc&#39;s 随笔记录" class="md-nav__button md-logo" aria-label="gzulmc's 随笔记录" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    gzulmc's 随笔记录
+  </label>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_1" >
+        
+          
+          <label class="md-nav__link" for="__nav_1" id="__nav_1_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Python
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_1_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_1">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Python
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../Python/%E9%9D%A2%E5%90%91%E5%AF%B9%E8%B1%A1%E5%9F%BA%E7%A1%80/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    面向对象基础
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../Python/%E9%9D%A2%E5%90%91%E5%AF%B9%E8%B1%A1%E8%BF%9B%E9%98%B6/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    面向对象进阶
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../Python/%E8%BF%9B%E7%A8%8B%E5%92%8C%E7%BA%BF%E7%A8%8B/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    进程和线程
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../Python/%E5%9B%BE%E5%83%8F%E5%92%8C%E6%96%87%E6%A1%A3%E5%A4%84%E7%90%86/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    图像和文档处理
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../Python/%E7%BD%91%E7%BB%9C%E7%BC%96%E7%A8%8B%E5%BA%94%E7%94%A8/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    网络编程应用
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../Python/%E6%96%87%E4%BB%B6%E5%92%8C%E5%BC%82%E5%B8%B8/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    文件和异常
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2" >
+        
+          
+          <label class="md-nav__link" for="__nav_2" id="__nav_2_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Django
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_2_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Django
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../Django/Django%E5%9F%BA%E7%A1%80/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Django基础
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../Django/%E6%95%B0%E6%8D%AE%E6%A8%A1%E5%9E%8B/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    数据模型
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+      
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3" >
+        
+          
+          <label class="md-nav__link" for="__nav_3" id="__nav_3_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Docker
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_3">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Docker
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../Docker/Docker%E8%AF%A6%E8%A7%A3/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Docker详解
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4" >
+        
+          
+          <div class="md-nav__link md-nav__container">
+            <a href="../.." class="md-nav__link ">
+              
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Java
+  
+
+    
+  </span>
+  
+  
+
+            </a>
+            
+          </div>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_4_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Java
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#prompt" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Prompt:
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#response" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Response:
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              
+                
+
+
+
+
+              
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+
+<h1 id="langchain">LangChain结构化输出</h1>
+<p><strong>User:</strong> Anonymous<br />
+<strong>Created:</strong> 6/18/2026 21:20:10<br />
+<strong>Updated:</strong> 6/18/2026 23:01:36<br />
+<strong>Exported:</strong> 6/19/2026 14:09:33<br />
+<strong>Link:</strong> <a href="https://chatgpt.com/c/6a33f08a-12e8-83e8-ab83-92efe8388e95">https://chatgpt.com/c/6a33f08a-12e8-83e8-ab83-92efe8388e95</a>  </p>
+<h2 id="prompt">Prompt:</h2>
+<p>2026/6/18 21:24:49</p>
+<p>https://docs.langchain.com/oss/python/langchain/structured-output
+带我详细学习这篇文档的内容</p>
+<h2 id="response">Response:</h2>
+<p>2026/6/18 21:24:52</p>
+<p>下面我按“<strong>这篇 LangChain structured output 文档的真实设计思路</strong>”给你系统拆解一遍，不只是翻译，而是带你理解它在工程里到底在解决什么问题。</p>
+<hr />
+<h1 id="1">1. 这篇文档在讲什么（核心目标）</h1>
+<p>这篇文档讲的不是“怎么让模型输出 JSON”，而是：</p>
+<blockquote>
+<p>如何在 LangChain Agent 中，让 LLM <strong>稳定返回可验证的结构化数据（structured data）</strong></p>
+</blockquote>
+<p>也就是把：</p>
+<ul>
+<li>❌ 自然语言输出<br />
+→ 变成  </li>
+<li>✅ 严格 schema 的 JSON / Pydantic / TypedDict / Zod 对象</li>
+</ul>
+<p>最终目标是：</p>
+<blockquote>
+<p>让 LLM 输出“像 API 返回值一样可靠的数据”</p>
+</blockquote>
+<hr />
+<h1 id="2-structured-output">2. structured output 的本质</h1>
+<p>在 LangChain 1.x 中，structured output 不是 prompt 技巧，而是：</p>
+<blockquote>
+<p><strong>Agent execution pipeline 的一个“输出协议层”</strong></p>
+</blockquote>
+<p>核心点：</p>
+<ul>
+<li>模型不直接“回答文本”</li>
+<li>而是“调用一个结构化输出机制”</li>
+<li>最终结果被解析成 <code>structured_response</code></li>
+</ul>
+<hr />
+<h1 id="3-create_agent-response_format">3. create_agent 的关键参数：response_format</h1>
+<p>这是全文核心 API：</p>
+<pre><code class="language-python">create_agent(
+    model=...,
+    response_format=...
+)
+</code></pre>
+<p>它控制：</p>
+<blockquote>
+<p>LLM 最终输出“长什么结构”</p>
+</blockquote>
+<hr />
+<h2 id="31">3.1 三种输入方式</h2>
+<h3 id="1-schema">（1）直接传 Schema（最常见）</h3>
+<pre><code class="language-python">class ContactInfo(BaseModel):
+    name: str
+    email: str
+</code></pre>
+<pre><code class="language-python">response_format=ContactInfo
+</code></pre>
+<p>👉 LangChain 会自动选择策略</p>
+<hr />
+<h3 id="2toolstrategy">（2）ToolStrategy（工具调用方案）</h3>
+<pre><code class="language-python">ToolStrategy[Schema]
+</code></pre>
+<p>👉 用 tool call 模拟 structured output</p>
+<hr />
+<h3 id="3providerstrategy">（3）ProviderStrategy（模型原生支持）</h3>
+<pre><code class="language-python">ProviderStrategy[Schema]
+</code></pre>
+<p>👉 走模型 API 原生 JSON schema（最稳定）</p>
+<hr />
+<h1 id="4">4. 两种执行策略（非常关键）</h1>
+<p>LangChain 本质上有两条路径：</p>
+<hr />
+<h1 id="41-providerstrategy">4.1 ProviderStrategy（优先级最高）</h1>
+<p>适用模型：</p>
+<ul>
+<li>OpenAI GPT-4o / GPT-5 系列</li>
+<li>Anthropic Claude</li>
+<li>Gemini</li>
+<li>xAI Grok</li>
+</ul>
+<p>特点：</p>
+<blockquote>
+<p>直接由模型 API 保证 JSON schema 正确性</p>
+</blockquote>
+<p>流程：</p>
+<pre><code>User → Model API（带 schema） → 返回 JSON → LangChain validate
+</code></pre>
+<p>优点：</p>
+<ul>
+<li>❌ 不依赖 prompt</li>
+<li>❌ 不依赖解析器</li>
+<li>✅ 强约束</li>
+<li>✅ 低失败率</li>
+</ul>
+<hr />
+<h1 id="42-toolstrategy">4.2 ToolStrategy（兜底方案）</h1>
+<p>适用：</p>
+<ul>
+<li>不支持 structured output 的模型</li>
+<li>或 open-source 模型（Llama, Qwen 等）</li>
+</ul>
+<p>流程：</p>
+<pre><code>User
+ → Agent
+ → LLM 生成 tool call
+ → tool args = JSON
+ → LangChain validate schema
+</code></pre>
+<p>本质：</p>
+<blockquote>
+<p>把“结构化输出”伪装成一个 tool function call</p>
+</blockquote>
+<hr />
+<h1 id="5-structured_response">5. structured_response 在哪里？</h1>
+<p>官方规定：</p>
+<blockquote>
+<p>最终结构化结果存放在：</p>
+</blockquote>
+<pre><code class="language-python">result[&quot;structured_response&quot;]
+</code></pre>
+<p>也就是说：</p>
+<pre><code class="language-python">result = agent.invoke(...)
+print(result[&quot;structured_response&quot;])
+</code></pre>
+<hr />
+<h1 id="6">6. 为什么要这样设计（重点理解）</h1>
+<p>传统方式问题：</p>
+<h3 id="prompt-json">❌ prompt 输出 JSON</h3>
+<pre><code class="language-text">Return JSON:
+{name: &quot;...&quot;, email: &quot;...&quot;}
+</code></pre>
+<p>问题：</p>
+<ul>
+<li>容易多字段</li>
+<li>容易格式错误</li>
+<li>容易 hallucinate</li>
+<li>需要手写 parser</li>
+</ul>
+<hr />
+<h3 id="parser">❌ 手写 parser</h3>
+<pre><code class="language-python">json.loads()
+</code></pre>
+<p>问题：</p>
+<ul>
+<li>不稳定</li>
+<li>容错复杂</li>
+</ul>
+<hr />
+<h1 id="langchain_1">LangChain 的解法：</h1>
+<blockquote>
+<p>把“结构约束”提升到 agent runtime 层</p>
+</blockquote>
+<hr />
+<h1 id="7-structured-output">7. structured output 的数据流（非常重要）</h1>
+<p>整体流程是：</p>
+<pre><code>User Input
+   ↓
+Agent
+   ↓
+LLM（带 schema / tool）
+   ↓
+structured output generator
+   ↓
+validation（Pydantic / JSON Schema）
+   ↓
+structured_response
+</code></pre>
+<hr />
+<h1 id="8">8. 错误处理机制（文档重点）</h1>
+<p>LangChain 特别强调 3 类错误：</p>
+<hr />
+<h2 id="81-schema-validation-error">8.1 schema validation error</h2>
+<p>模型输出：</p>
+<pre><code class="language-json">{&quot;name&quot;: 123}
+</code></pre>
+<p>但 schema 要 string</p>
+<p>→ 自动 retry 或 error feedback</p>
+<hr />
+<h2 id="82-multiple-tool-calls-error">8.2 multiple tool calls error</h2>
+<p>模型同时调用多个 structured tools：</p>
+<p>→ LangChain 会：</p>
+<ul>
+<li>发送 ToolMessage</li>
+<li>要求重新生成</li>
+</ul>
+<hr />
+<h2 id="83-handle_errors">8.3 handle_errors（可配置）</h2>
+<pre><code class="language-python">ToolStrategy(
+    schema=...,
+    handle_errors=True
+)
+</code></pre>
+<p>支持：</p>
+<ul>
+<li>bool</li>
+<li>自定义错误处理函数</li>
+<li>exception 类型过滤</li>
+</ul>
+<hr />
+<h1 id="9-streaming">9. Streaming（非常重要的高级能力）</h1>
+<p>新版本支持：</p>
+<blockquote>
+<p>structured output 可以“边生成边渲染”</p>
+</blockquote>
+<p>流程：</p>
+<pre><code>partial JSON → UI 渲染 → 完整 JSON → finalize
+</code></pre>
+<p>用途：</p>
+<ul>
+<li>chatbot UI 卡片</li>
+<li>表单生成</li>
+<li>recipe / report 实时展示</li>
+</ul>
+<hr />
+<h1 id="10">10. 实际开发中的推荐用法（重点）</h1>
+<h2 id="1_1">推荐 1（生产级）</h2>
+<pre><code class="language-python">response_format=MyPydanticModel
+</code></pre>
+<p>👉 自动走 ProviderStrategy（如果模型支持）</p>
+<hr />
+<h2 id="2">推荐 2（兼容性强）</h2>
+<pre><code class="language-python">ToolStrategy(MySchema)
+</code></pre>
+<p>👉 所有模型都能用</p>
+<hr />
+<h2 id="3">推荐 3（复杂系统）</h2>
+<ul>
+<li>tool schema + structured output + sub-agent</li>
+</ul>
+<p>用于：</p>
+<ul>
+<li>RAG</li>
+<li>SQL agent</li>
+<li>multi-step reasoning</li>
+</ul>
+<hr />
+<h1 id="11">11. 你应该如何理解这篇文档（总结模型）</h1>
+<p>一句话总结：</p>
+<blockquote>
+<p>LangChain structured output = “LLM 输出 API 化”</p>
+</blockquote>
+<p>不是 prompt 技巧，而是：</p>
+<ul>
+<li>schema-driven generation</li>
+<li>execution-time validation</li>
+<li>agent runtime control</li>
+</ul>
+<hr />
+<h1 id="_1">如果你想继续深入（建议路线）</h1>
+<p>我可以带你往这 3 个方向深入：</p>
+<h3 id="a-structured-output-agent">A. 手写一个 structured output agent（最推荐）</h3>
+<ul>
+<li>Pydantic schema</li>
+<li>ToolStrategy</li>
+<li>streaming UI</li>
+</ul>
+<h3 id="b-openai-claude-deepseek-structured-output">B. 对比 OpenAI / Claude / DeepSeek structured output</h3>
+<ul>
+<li>哪个最稳定</li>
+<li>fallback策略</li>
+</ul>
+<h3 id="c-langgraph-structured-output">C. LangGraph + structured output</h3>
+<ul>
+<li>多节点结构化数据流</li>
+<li>RAG + structured output pipeline</li>
+</ul>
+<hr />
+<p>如果你说一句：</p>
+<blockquote>
+<p>“我要做一个真实项目示例”</p>
+</blockquote>
+<p>我可以直接带你做一个：
+👉 “RAG + structured output + API返回结构化JSON”的完整工程版 demo</p>
+<h2 id="prompt_1">Prompt:</h2>
+<p>2026/6/18 21:33:57</p>
+<p>没明白你说的,它的运行流程是怎么样的? 基于什么原理? 这都没说明白,我怎么能学懂?</p>
+<h2 id="response_1">Response:</h2>
+<p>2026/6/18 21:34:03</p>
+<p>好，这一版我不讲“概念”，只讲<strong>运行流程 + 底层原理 + 为什么能做到</strong>，你按这个理解就能真正看懂 LangChain structured output。</p>
+<hr />
+<h1 id="1_2">1. 先给你一句话本质</h1>
+<p>LangChain structured output 的本质是：</p>
+<blockquote>
+<p><strong>把“模型生成文本”改造成“模型生成可校验的数据 + 运行时强制修复”</strong></p>
+</blockquote>
+<p>它不是让模型“更聪明”，而是让系统“更强制”。</p>
+<hr />
+<h1 id="2_1">2. 整体运行流程（最重要）</h1>
+<p>无论你用 Pydantic / ToolStrategy / ProviderStrategy，本质流程都是：</p>
+<pre><code>① 用户输入
+② LangChain 选择输出策略
+③ 构造约束（schema / tool / JSON schema）
+④ 发给 LLM
+⑤ LLM 生成“带结构约束的输出”
+⑥ LangChain 解析输出
+⑦ 校验 schema
+⑧ 不合格 → 修复 / 重试
+⑨ 合格 → structured_response
+</code></pre>
+<hr />
+<h1 id="3_1">3. 分两种“真实执行路径”</h1>
+<p>LangChain内部其实只有两种机制：</p>
+<hr />
+<h1 id="aproviderstrategy">路径 A：ProviderStrategy（模型原生支持）</h1>
+<h2 id="_2">🔥 这是“最干净”的方式</h2>
+<h3 id="_3">流程：</h3>
+<pre><code>LangChain
+   ↓
+把 schema 转成 API 参数
+   ↓
+直接调用模型 API（带 response_format）
+   ↓
+模型直接返回 JSON
+   ↓
+LangChain validate
+</code></pre>
+<hr />
+<h2 id="openai-claude">🔧 举例（OpenAI / Claude）</h2>
+<p>请求大概长这样：</p>
+<pre><code class="language-json">{
+  &quot;input&quot;: &quot;介绍一个人&quot;,
+  &quot;response_format&quot;: {
+    &quot;type&quot;: &quot;json_schema&quot;,
+    &quot;schema&quot;: {
+      &quot;name&quot;: &quot;string&quot;,
+      &quot;age&quot;: &quot;number&quot;
+    }
+  }
+}
+</code></pre>
+<hr />
+<h2 id="_4">🧠 关键点</h2>
+<p>这里没有“prompt技巧”，只有：</p>
+<blockquote>
+<p><strong>模型 API 被强制要求输出 JSON</strong></p>
+</blockquote>
+<hr />
+<h2 id="_5">✔ 优点</h2>
+<ul>
+<li>几乎不会错</li>
+<li>不需要 retry</li>
+<li>不依赖 prompt engineering</li>
+</ul>
+<hr />
+<h2 id="_6">❌ 前提</h2>
+<p>模型必须支持：</p>
+<ul>
+<li>JSON Schema output</li>
+<li>structured output API</li>
+</ul>
+<hr />
+<h1 id="btoolstrategy-fallback">路径 B：ToolStrategy（核心 fallback）</h1>
+<p>这是 LangChain 最关键的“工程技巧”。</p>
+<hr />
+<h2 id="_7">🚀 本质一句话：</h2>
+<blockquote>
+<p>把 structured output 伪装成 “函数调用（tool call）”</p>
+</blockquote>
+<hr />
+<h2 id="_8">🔥 完整流程：</h2>
+<pre><code>① LangChain 把 schema 转成 tool definition
+② 发给 LLM
+③ LLM “调用工具”
+④ tool arguments = JSON
+⑤ LangChain 拿到 arguments
+⑥ 校验 schema
+⑦ 不对 → 让模型重新生成
+</code></pre>
+<hr />
+<h2 id="_9">📦 举个例子</h2>
+<p>你定义：</p>
+<pre><code class="language-python">class User(BaseModel):
+    name: str
+    age: int
+</code></pre>
+<p>LangChain 会变成：</p>
+<pre><code class="language-json">{
+  &quot;type&quot;: &quot;function&quot;,
+  &quot;name&quot;: &quot;User&quot;,
+  &quot;parameters&quot;: {
+    &quot;name&quot;: &quot;string&quot;,
+    &quot;age&quot;: &quot;integer&quot;
+  }
+}
+</code></pre>
+<hr />
+<h2 id="_10">🧠 模型实际输出不是文本，而是：</h2>
+<pre><code class="language-json">{
+  &quot;tool_call&quot;: {
+    &quot;name&quot;: &quot;User&quot;,
+    &quot;arguments&quot;: {
+      &quot;name&quot;: &quot;John&quot;,
+      &quot;age&quot;: 30
+    }
+  }
+}
+</code></pre>
+<hr />
+<h2 id="langchain_2">✔ LangChain 做了什么？</h2>
+<p>它只是做了三件事：</p>
+<ol>
+<li>把 schema → tool</li>
+<li>解析 tool_call</li>
+<li>校验 JSON</li>
+</ol>
+<hr />
+<h1 id="4_1">4. 最关键的底层原理（一定要懂）</h1>
+<p>structured output 不是魔法，是三个机制组合：</p>
+<hr />
+<h2 id="1-constraint-injection">① 约束生成（Constraint Injection）</h2>
+<p>模型输入里加：</p>
+<ul>
+<li>JSON schema</li>
+<li>tool description</li>
+<li>field type constraints</li>
+</ul>
+<p>👉 影响模型 token 生成概率</p>
+<hr />
+<h2 id="2-structured-decoding">② 结构化解码（Structured decoding）</h2>
+<p>模型输出时：</p>
+<ul>
+<li>要么直接 JSON</li>
+<li>要么 tool call JSON</li>
+</ul>
+<p>👉 本质是“格式约束生成”</p>
+<hr />
+<h2 id="3-runtime-validation">③ 运行时校验（Runtime validation）</h2>
+<p>LangChain 做：</p>
+<pre><code class="language-python">Pydantic.validate(output)
+</code></pre>
+<p>如果失败：</p>
+<p>→ 触发 retry / repair prompt</p>
+<hr />
+<h1 id="5-prompt-json">5. 为什么它比 prompt JSON 稳定？</h1>
+<p>我们对比一下：</p>
+<hr />
+<h2 id="_11">❌ 传统方式</h2>
+<pre><code>Prompt:
+Please output JSON
+
+LLM:
+可能乱写 / 多字段 / 少字段 / 非 JSON
+</code></pre>
+<p>问题：</p>
+<ul>
+<li>没有强约束</li>
+<li>完全靠模型自觉</li>
+</ul>
+<hr />
+<h2 id="structured-output">✅ structured output</h2>
+<pre><code>schema → tool / json schema → API层约束 → validator
+</code></pre>
+<p>变成：</p>
+<blockquote>
+<p>“模型不能随便输出了”</p>
+</blockquote>
+<hr />
+<h1 id="6-retry-repair">6. retry / repair 机制（非常重要）</h1>
+<p>如果 schema 不匹配：</p>
+<pre><code>Invalid output
+   ↓
+LangChain 生成 error feedback prompt
+   ↓
+让模型修复 JSON
+   ↓
+再校验
+</code></pre>
+<p>类似：</p>
+<pre><code>Your output is invalid because age must be int
+Fix it.
+</code></pre>
+<hr />
+<h1 id="7-structured_response">7. structured_response 到底是什么？</h1>
+<p>最终你拿到的是：</p>
+<pre><code class="language-python">result[&quot;structured_response&quot;]
+</code></pre>
+<p>它本质是：</p>
+<blockquote>
+<p>已通过 schema validation 的 Python 对象</p>
+</blockquote>
+<p>可能是：</p>
+<ul>
+<li>Pydantic model</li>
+<li>dict</li>
+<li>TypedDict</li>
+<li>dataclass</li>
+</ul>
+<hr />
+<h1 id="8_1">8. 一张完整“真实执行图”</h1>
+<pre><code>User Input
+   ↓
+LangChain Agent
+   ↓
+选择 Strategy
+   ├── ProviderStrategy → API直接强约束 JSON
+   └── ToolStrategy → tool call 伪装 JSON
+   ↓
+LLM 生成输出
+   ↓
+Parser（解析 JSON / tool call）
+   ↓
+Validator（Pydantic）
+   ↓
+❌失败 → retry / repair
+   ↓
+✅成功 → structured_response
+</code></pre>
+<hr />
+<h1 id="9">9. 你可以这样记（最核心抽象）</h1>
+<p>LangChain structured output =</p>
+<blockquote>
+<p><strong>“LLM + JSON约束 + tool机制 + runtime校验”</strong></p>
+</blockquote>
+<p>不是一个功能，是一套 pipeline。</p>
+<hr />
+<h1 id="10-3">10. 如果你还没真正理解，我建议你抓住这 3 个点</h1>
+<p>只要你理解这三个，就彻底懂了：</p>
+<h3 id="1-json-json">1️⃣ 模型不是“被教会输出 JSON”，而是“被系统限制必须输出 JSON”</h3>
+<hr />
+<h3 id="2-tool-call-structured-output">2️⃣ tool call = structured output 的替代语法</h3>
+<hr />
+<h3 id="3-langchain">3️⃣ LangChain 的工作不是生成，而是：</h3>
+<blockquote>
+<p>校验 + 修复 + 重试控制</p>
+</blockquote>
+<hr />
+<h1 id="_12">如果你下一步想学透（我建议这样走）</h1>
+<p>我可以带你做一个“真正跑起来”的版本：</p>
+<h3 id="step-1">👉 Step 1</h3>
+<p>手写 Pydantic structured output</p>
+<h3 id="step-2">👉 Step 2</h3>
+<p>看 tool call 实际 JSON</p>
+<h3 id="step-3">👉 Step 3</h3>
+<p>模拟 LangChain retry loop</p>
+<h3 id="step-4">👉 Step 4</h3>
+<p>对比 OpenAI / DeepSeek / Claude 行为差异</p>
+<hr />
+<p>如果你愿意，我可以直接给你画一个：</p>
+<blockquote>
+<p>“LangChain structured output 运行时源码级流程图（带伪代码）”</p>
+</blockquote>
+<p>这个会让你彻底通。</p>
+<h2 id="prompt_2">Prompt:</h2>
+<p>2026/6/18 21:44:48</p>
+<p>你的回答中说了很多schema,如: 把 schema → tool,JSON Schema output,把 schema 转成 API 参数等. 这里的你说的schema是什么?</p>
+<h2 id="response_2">Response:</h2>
+<p>2026/6/18 21:44:51</p>
+<p>这个问题你问得很关键，因为<strong>structured output 的“schema”其实不是一个单一概念</strong>，而是 LangChain 在不同层做了“几种不同形式的结构约束表达”。</p>
+<p>我给你把它彻底拆清楚。</p>
+<hr />
+<h1 id="1-schema_1">1. 一句话定义 schema 是什么</h1>
+<p>在 LangChain structured output 里：</p>
+<blockquote>
+<p><strong>schema = 对“模型输出长什么样”的机器可验证描述</strong></p>
+</blockquote>
+<p>它本质不是“数据”，而是：</p>
+<blockquote>
+<p><strong>规则（contract / contract definition）</strong></p>
+</blockquote>
+<hr />
+<h1 id="2-schema-3">2. schema 在不同层其实有 3 种形态</h1>
+<p>你看到的“schema”其实可能指这三种之一：</p>
+<hr />
+<h1 id="1-pydantic-schemapython">① Pydantic Schema（Python层）</h1>
+<p>这是你写得最多的：</p>
+<pre><code class="language-python">class User(BaseModel):
+    name: str
+    age: int
+</code></pre>
+<hr />
+<h2 id="_13">它本质是什么？</h2>
+<p>这是：</p>
+<blockquote>
+<p>Python 对“数据结构”的类型定义</p>
+</blockquote>
+<p>等价于：</p>
+<pre><code class="language-json">{
+  &quot;name&quot;: &quot;string&quot;,
+  &quot;age&quot;: &quot;int&quot;
+}
+</code></pre>
+<hr />
+<h2 id="langchain_3">在 LangChain 里作用：</h2>
+<ul>
+<li>输入 → 转换成约束</li>
+<li>输出 → 校验是否符合</li>
+</ul>
+<hr />
+<h2 id="_14">你可以理解为：</h2>
+<blockquote>
+<p>“给 LLM 的数据结构说明书（Python版）”</p>
+</blockquote>
+<hr />
+<h1 id="2-json-schemaapi">② JSON Schema（模型/API层）</h1>
+<p>LangChain最终会把 Pydantic 转成：</p>
+<pre><code class="language-json">{
+  &quot;type&quot;: &quot;object&quot;,
+  &quot;properties&quot;: {
+    &quot;name&quot;: {&quot;type&quot;: &quot;string&quot;},
+    &quot;age&quot;: {&quot;type&quot;: &quot;integer&quot;}
+  },
+  &quot;required&quot;: [&quot;name&quot;, &quot;age&quot;]
+}
+</code></pre>
+<hr />
+<h2 id="schema">这个 schema 是干嘛的？</h2>
+<p>它是：</p>
+<blockquote>
+<p><strong>给模型 API 用的结构约束语言</strong></p>
+</blockquote>
+<hr />
+<h2 id="_15">作用：</h2>
+<ul>
+<li>OpenAI / Claude / Gemini API 可以直接吃这个</li>
+<li>用来限制输出格式</li>
+</ul>
+<hr />
+<h2 id="_16">你可以理解为：</h2>
+<blockquote>
+<p>“机器之间通用的数据结构协议”</p>
+</blockquote>
+<hr />
+<h1 id="3-tool-schemaagent">③ Tool Schema（Agent层）</h1>
+<p>如果走 ToolStrategy，会变成：</p>
+<pre><code class="language-json">{
+  &quot;type&quot;: &quot;function&quot;,
+  &quot;name&quot;: &quot;User&quot;,
+  &quot;parameters&quot;: {
+    &quot;name&quot;: &quot;string&quot;,
+    &quot;age&quot;: &quot;integer&quot;
+  }
+}
+</code></pre>
+<hr />
+<h2 id="_17">它本质是什么？</h2>
+<p>这是：</p>
+<blockquote>
+<p>把 schema 包装成“函数调用接口”</p>
+</blockquote>
+<hr />
+<h2 id="_18">为什么要这样做？</h2>
+<p>因为：</p>
+<blockquote>
+<p>很多 LLM 不支持 JSON schema，但支持 tool/function call</p>
+</blockquote>
+<hr />
+<h2 id="_19">所以：</h2>
+<p>Tool schema = JSON schema + function wrapper</p>
+<hr />
+<h1 id="3-schema">3. 这三种 schema 的关系（核心图）</h1>
+<pre><code>Pydantic Schema (Python)
+        ↓ 转换
+JSON Schema (API标准)
+        ↓ 再包装
+Tool Schema (function call)
+</code></pre>
+<hr />
+<h1 id="4-langchain-schema">4. LangChain 里“schema”到底指哪一个？</h1>
+<p>⚠️ 这是你最容易混乱的点</p>
+<p>在文档里说：</p>
+<blockquote>
+<p>“schema”</p>
+</blockquote>
+<p>通常是<strong>统称</strong>，不特指某一个。</p>
+<p>它可能指：</p>
+<table>
+<thead>
+<tr>
+<th>场景</th>
+<th>schema类型</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Python代码</td>
+<td>Pydantic schema</td>
+</tr>
+<tr>
+<td>API调用</td>
+<td>JSON schema</td>
+</tr>
+<tr>
+<td>ToolStrategy</td>
+<td>function schema</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h1 id="5">5. 最关键理解（核心本质）</h1>
+<p>不管是哪一种 schema，本质都是：</p>
+<blockquote>
+<p><strong>对 LLM 输出结构的“约束描述”</strong></p>
+</blockquote>
+<p>区别只是：</p>
+<table>
+<thead>
+<tr>
+<th>层级</th>
+<th>干什么</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Python</td>
+<td>定义数据结构</td>
+</tr>
+<tr>
+<td>LangChain</td>
+<td>转换/适配</td>
+</tr>
+<tr>
+<td>LLM API</td>
+<td>强制输出格式</td>
+</tr>
+<tr>
+<td>Runtime</td>
+<td>校验结果</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h1 id="6-schema">6. 为什么必须有 schema？</h1>
+<p>因为 LLM 本质是：</p>
+<blockquote>
+<p>token 预测模型（不是结构生成器）</p>
+</blockquote>
+<p>所以它天然会输出：</p>
+<ul>
+<li>多字段</li>
+<li>少字段</li>
+<li>乱格式</li>
+<li>解释性文本</li>
+</ul>
+<hr />
+<p>schema 的作用就是：</p>
+<blockquote>
+<p>把“自由文本生成”变成“结构化约束生成”</p>
+</blockquote>
+<hr />
+<h1 id="7">7. 用一个直觉类比（非常重要）</h1>
+<p>你可以这样理解 schema：</p>
+<h3 id="schema_1">没 schema：</h3>
+<blockquote>
+<p>让一个人“随便写一段介绍”</p>
+</blockquote>
+<hr />
+<h3 id="schema_2">有 schema：</h3>
+<blockquote>
+<p>给他一个表格模板：</p>
+</blockquote>
+<pre><code>姓名：_____
+年龄：_____
+邮箱：_____
+</code></pre>
+<p>他必须填表</p>
+<hr />
+<h1 id="8-langchain">8. 再进一步（LangChain真正做的事）</h1>
+<p>LangChain 做的是：</p>
+<h3 id="step-1-schema">Step 1：定义 schema</h3>
+<p>（Pydantic / JSON / Tool）</p>
+<h3 id="step-2-schema">Step 2：转换 schema</h3>
+<p>（适配不同模型）</p>
+<h3 id="step-3-llm">Step 3：喂给 LLM</h3>
+<h3 id="step-4_1">Step 4：解析输出</h3>
+<h3 id="step-5">Step 5：校验</h3>
+<h3 id="step-6">Step 6：失败就修复</h3>
+<hr />
+<h1 id="9_1">9. 最容易误解的一点（重点）</h1>
+<p>❌ schema 不是“让模型更聪明”</p>
+<p>✔ schema 是：</p>
+<blockquote>
+<p>“让模型输出变得可控”</p>
+</blockquote>
+<hr />
+<h1 id="10_1">10. 如果你只记一句话</h1>
+<p>你可以记这个：</p>
+<blockquote>
+<p>schema = “控制 LLM 输出格式的规则定义（Python → JSON → Tool 三种形态）”</p>
+</blockquote>
+<hr />
+<h1 id="_20">如果你还想继续深入</h1>
+<p>我可以帮你再拆一个更底层的问题：</p>
+<h3 id="schema-token-llm">👉 “schema 是怎么影响 token 生成的？（LLM 为什么会听约束）”</h3>
+<p>这个会涉及：</p>
+<ul>
+<li>logit bias</li>
+<li>constrained decoding</li>
+<li>function calling mechanism</li>
+<li>grammar-based generation</li>
+</ul>
+<p>这个才是真正底层原理。</p>
+<h2 id="prompt_3">Prompt:</h2>
+<p>2026/6/18 21:59:35</p>
+<p>你给举具体的案例来说一下吧,</p>
+<h2 id="response_3">Response:</h2>
+<p>2026/6/18 21:59:38</p>
+<p>好，这次我不用抽象概念，直接给你一个<strong>完整可运行的“真实案例 + 三种 schema 如何一步步变化 + LLM 实际发生了什么”</strong>，你看完就会彻底通。</p>
+<hr />
+<h1 id="_21">🎯 场景：从一句话提取用户信息</h1>
+<p>用户输入：</p>
+<blockquote>
+<p>“张三今年28岁，在上海工作”</p>
+</blockquote>
+<p>我们要让模型输出：</p>
+<pre><code class="language-json">{
+  &quot;name&quot;: &quot;张三&quot;,
+  &quot;age&quot;: 28,
+  &quot;city&quot;: &quot;上海&quot;
+}
+</code></pre>
+<hr />
+<h1 id="1-python-schemapydantic">1️⃣ 第一层：Python Schema（Pydantic）</h1>
+<p>你在 LangChain 里写：</p>
+<p>```python id="p1"
+from pydantic import BaseModel</p>
+<p>class UserInfo(BaseModel):
+    name: str
+    age: int
+    city: str</p>
+<pre><code>
+---
+
+## 👉 这一层“schema”是什么？
+
+就是：
+
+&gt; Python 里的“数据结构定义”
+
+---
+
+## 👉 它本身不会给模型看！
+
+它只是：
+
+- 给 LangChain 用
+- 用来“转换成别的 schema”
+
+---
+
+# 2️⃣ 第二层：JSON Schema（给模型/API）
+
+LangChain 会把它转换成：
+
+```json id=&quot;p2&quot;
+{
+  &quot;type&quot;: &quot;object&quot;,
+  &quot;properties&quot;: {
+    &quot;name&quot;: { &quot;type&quot;: &quot;string&quot; },
+    &quot;age&quot;: { &quot;type&quot;: &quot;integer&quot; },
+    &quot;city&quot;: { &quot;type&quot;: &quot;string&quot; }
+  },
+  &quot;required&quot;: [&quot;name&quot;, &quot;age&quot;, &quot;city&quot;]
+}
+</code></pre>
+<hr />
+<h2 id="schema_3">👉 这一层“schema”是什么？</h2>
+<p>这是：</p>
+<blockquote>
+<p><strong>机器通用的结构描述语言</strong></p>
+</blockquote>
+<hr />
+<h2 id="_22">👉 它的作用是：</h2>
+<p>告诉模型：</p>
+<ul>
+<li>必须有 name</li>
+<li>age 必须是 integer</li>
+<li>city 必须存在</li>
+</ul>
+<hr />
+<h1 id="3-tool-schema-toolstrategy">3️⃣ 第三层：Tool Schema（如果走 ToolStrategy）</h1>
+<p>LangChain 会再包一层：</p>
+<p>```json id="p3"
+{
+  "type": "function",
+  "name": "UserInfo",
+  "parameters": {
+    "type": "object",
+    "properties": {
+      "name": { "type": "string" },
+      "age": { "type": "integer" },
+      "city": { "type": "string" }
+    },
+    "required": ["name", "age", "city"]
+  }
+}</p>
+<pre><code>
+---
+
+## 👉 这一层 schema 是什么？
+
+这是：
+
+&gt; “函数调用协议”
+
+---
+
+## 👉 为什么要这样？
+
+因为很多模型（Claude / GPT / DeepSeek）支持：
+
+&gt; function calling / tool calling
+
+---
+
+# 4️⃣ 真实运行流程（最重要）
+
+现在我们来看真正发生什么👇
+
+---
+
+## Step 1：用户输入
+
+</code></pre>
+<p>张三今年28岁，在上海工作</p>
+<pre><code>
+---
+
+## Step 2：LangChain 把 schema 交给模型
+
+如果是 ToolStrategy：
+
+```text
+Please extract information and call this function:
+
+function UserInfo(name, age, city)
+</code></pre>
+<hr />
+<h2 id="step-3-tool-call">Step 3：模型“不是输出文本”，而是输出 tool call</h2>
+<p>模型返回：</p>
+<p>```json id="r1"
+{
+  "tool_call": {
+    "name": "UserInfo",
+    "arguments": {
+      "name": "张三",
+      "age": 28,
+      "city": "上海"
+    }
+  }
+}</p>
+<pre><code>
+---
+
+# ⚠️ 注意这里的关键
+
+模型做的不是：
+
+&gt; “写一句话”
+
+而是：
+
+&gt; “调用一个函数”
+
+---
+
+# 5️⃣ LangChain 做的事（关键）
+
+LangChain 收到这个 JSON 后：
+
+### Step A：解析 tool_call
+
+```python id=&quot;a1&quot;
+args = {
+  &quot;name&quot;: &quot;张三&quot;,
+  &quot;age&quot;: 28,
+  &quot;city&quot;: &quot;上海&quot;
+}
+</code></pre>
+<hr />
+<h3 id="step-b-schemapydantic">Step B：校验 schema（Pydantic）</h3>
+<p>```python id="a2"
+UserInfo(**args)</p>
+<pre><code>
+---
+
+### Step C：验证成功 → 输出：
+
+```python id=&quot;a3&quot;
+UserInfo(name=&quot;张三&quot;, age=28, city=&quot;上海&quot;)
+</code></pre>
+<hr />
+<h1 id="6_1">6️⃣ 如果模型输出错了，会发生什么？</h1>
+<p>比如模型输出：</p>
+<p>```json id="bad1"
+{
+  "name": "张三",
+  "age": "28岁",
+  "city": "上海"
+}</p>
+<pre><code>
+---
+
+## ❌ 校验失败
+
+因为：
+
+- age 应该是 int
+- 但现在是 string
+
+---
+
+## LangChain 会做：
+
+### Step 1：告诉模型错误
+
+```text
+age must be integer, not string
+</code></pre>
+<hr />
+<h3 id="step-2_1">Step 2：让模型重新生成</h3>
+<p>```json id="fix1"
+{
+  "name": "张三",
+  "age": 28,
+  "city": "上海"
+}</p>
+<pre><code>
+---
+
+### Step 3：再次校验 → 通过
+
+---
+
+# 7️⃣ ProviderStrategy（更高级版本）
+
+如果是 OpenAI / Claude：
+
+LangChain 甚至不会走 tool call，而是直接：
+
+```json id=&quot;api1&quot;
+{
+  &quot;response_format&quot;: {
+    &quot;type&quot;: &quot;json_schema&quot;,
+    &quot;schema&quot;: {...}
+  }
+}
+</code></pre>
+<hr />
+<h2 id="_23">模型直接返回：</h2>
+<p>```json id="api2"
+{
+  "name": "张三",
+  "age": 28,
+  "city": "上海"
+}</p>
+<pre><code>
+---
+
+👉 没有 prompt parsing，没有 tool
+
+---
+
+# 8️⃣ 三种 schema 在这个案例里的关系
+
+用一句图总结：
+
+</code></pre>
+<p>Python Schema (Pydantic)
+        ↓
+JSON Schema (通用规则)
+        ↓
+Tool Schema (函数包装)
+        ↓
+LLM 输出 tool call / JSON
+        ↓
+LangChain 校验 + 转对象</p>
+<pre><code>
+---
+
+# 9️⃣ 最关键理解（一定要记住）
+
+你刚才问“schema 是什么”，在这个例子里答案是：
+
+&gt; schema = 一种“强制模型输出结构”的约束规则
+
+但它在系统里有三种形态：
+
+| 层级 | schema形态 | 作用 |
+|------|------------|------|
+| Python | Pydantic | 定义结构 |
+| API | JSON Schema | 控制模型输出 |
+| Agent | Tool Schema | 强制函数调用 |
+
+---
+
+# 🔥 最直观一句话总结
+
+这个案例本质是：
+
+&gt; 把“自由生成文本”变成“填表 + 校验 + 修正”的过程
+
+---
+
+# 如果你还想继续往下学（建议）
+
+我可以继续帮你拆 3 个更关键的点（非常重要）：
+
+### ① LLM 为什么会“听 schema”（底层 token 原理）
+### ② tool call 为什么比 prompt JSON 稳定 10 倍
+### ③ LangChain retry loop 源码级实现
+
+你只要说一声“继续”，我可以带你直接进底层机制。
+
+## Prompt:
+2026/6/18 22:16:21
+
+你的意思是在定义UserInfo的时候,create_agent(response_format=UserInfo)调用invoke()的时候,LangChain会将这个UserInfo转为:
+{
+  &quot;type&quot;: &quot;object&quot;,
+  &quot;properties&quot;: {
+    &quot;name&quot;: { &quot;type&quot;: &quot;string&quot; },
+    &quot;age&quot;: { &quot;type&quot;: &quot;integer&quot; },
+    &quot;city&quot;: { &quot;type&quot;: &quot;string&quot; }
+  },
+  &quot;required&quot;: [&quot;name&quot;, &quot;age&quot;, &quot;city&quot;]
+} 的json格式,然后发给大模型? 如果只是发这样的数据给大模型吗? 是不是LangChain会加其他的prompt告诉大模型强制要求返回什么格式的数据?
+在来, 你说的ToolStrategy 是不是就是LangChain在底层自己生成了一个tool 方法,并且让大模型返回响应数据时必须调用这个tool方法,按照tool方法的格式构建返回的数据格式? 然后大模型在调用工具方法后返回的数据给用户前,LangChain再次拦截对数据进行校验,校验通过则返回给用户,不通过则再次调用工具方法强制要求返回tool 方法要求的格式?
+
+## Response:
+2026/6/18 22:16:25
+
+你这两段理解已经非常接近“源码级真实流程”了，我帮你逐句校准一下，把**哪些是对的、哪些还差一点、真实机制是什么**讲清楚。
+
+---
+
+# 先回答你的第一个问题（JSON Schema + prompt）
+
+你问的是：
+
+&gt; LangChain 会不会把 Pydantic → JSON Schema 发给模型？  
+&gt; 只发这个 JSON 吗？还是还会加 prompt？
+
+## ✅ 结论：两者都会
+
+LangChain做的是：
+
+&gt; **“Schema + Prompt +（可能的 API 参数）三者一起发给模型”**
+
+---
+
+## 🔧 真实情况（重要）
+
+当你写：
+
+```python
+create_agent(
+    model=llm,
+    response_format=UserInfo
+)
+</code></pre>
+<p>LangChain内部会构造类似：</p>
+<hr />
+<h2 id="1-system-developer-prompt">① System / Developer Prompt（会有）</h2>
+<p>类似这种：</p>
+<pre><code class="language-text">Extract structured information from the user input.
+
+Return data that matches the given schema exactly.
+Do not include extra fields.
+Do not output explanations.
+</code></pre>
+<p>👉 这一步是“行为约束”</p>
+<hr />
+<h2 id="2-json-schema">② JSON Schema（或等价结构）（会有）</h2>
+<p>你说的这个：</p>
+<pre><code class="language-json">{
+  &quot;type&quot;: &quot;object&quot;,
+  &quot;properties&quot;: {
+    &quot;name&quot;: {&quot;type&quot;: &quot;string&quot;},
+    &quot;age&quot;: {&quot;type&quot;: &quot;integer&quot;},
+    &quot;city&quot;: {&quot;type&quot;: &quot;string&quot;}
+  },
+  &quot;required&quot;: [&quot;name&quot;, &quot;age&quot;, &quot;city&quot;]
+}
+</code></pre>
+<p>👉 是“结构约束”</p>
+<hr />
+<h2 id="3-few-shot">③ 可能还会加 few-shot（有些模型）</h2>
+<p>比如：</p>
+<pre><code class="language-text">Input: 张三28岁在上海
+Output:
+{&quot;name&quot;:&quot;张三&quot;,&quot;age&quot;:28,&quot;city&quot;:&quot;上海&quot;}
+</code></pre>
+<p>👉 用来“强化格式概率”</p>
+<hr />
+<h2 id="_24">⚠️ 关键点（你容易误解的地方）</h2>
+<p>不是：</p>
+<blockquote>
+<p>❌ 只把 JSON Schema 发给模型</p>
+</blockquote>
+<p>而是：</p>
+<blockquote>
+<p>✅ prompt + schema + 输出约束 一起作用</p>
+</blockquote>
+<hr />
+<h1 id="toolstrategy">再回答第二个问题（ToolStrategy）</h1>
+<p>你这段理解：</p>
+<blockquote>
+<p>LangChain 会生成 tool 方法<br />
+强制模型调用 tool<br />
+LangChain 再校验<br />
+不通过再重试</p>
+</blockquote>
+<hr />
+<h2 id="90">✅ 结论：你这个理解是“90%正确”，但我帮你补齐关键细节</h2>
+<hr />
+<h1 id="toolstrategy_1">ToolStrategy 的真实机制（完整流程）</h1>
+<h2 id="step-1langchain-schema-tool-definition">Step 1：LangChain 把 schema → tool definition</h2>
+<p>例如：</p>
+<pre><code class="language-json">{
+  &quot;type&quot;: &quot;function&quot;,
+  &quot;name&quot;: &quot;UserInfo&quot;,
+  &quot;parameters&quot;: {
+    &quot;type&quot;: &quot;object&quot;,
+    &quot;properties&quot;: {
+      &quot;name&quot;: {&quot;type&quot;: &quot;string&quot;},
+      &quot;age&quot;: {&quot;type&quot;: &quot;integer&quot;},
+      &quot;city&quot;: {&quot;type&quot;: &quot;string&quot;}
+    },
+    &quot;required&quot;: [&quot;name&quot;,&quot;age&quot;,&quot;city&quot;]
+  }
+}
+</code></pre>
+<hr />
+<h2 id="step-2-prompt-tool-schema">Step 2：发给模型（不是 prompt，而是 tool schema）</h2>
+<p>请求结构类似：</p>
+<pre><code class="language-json">{
+  &quot;messages&quot;: [...],
+  &quot;tools&quot;: [UserInfo tool definition]
+}
+</code></pre>
+<hr />
+<h2 id="step-3-tool_call">Step 3：模型输出 tool_call（关键）</h2>
+<p>模型返回的是：</p>
+<pre><code class="language-json">{
+  &quot;tool_calls&quot;: [
+    {
+      &quot;name&quot;: &quot;UserInfo&quot;,
+      &quot;arguments&quot;: {
+        &quot;name&quot;: &quot;张三&quot;,
+        &quot;age&quot;: 28,
+        &quot;city&quot;: &quot;上海&quot;
+      }
+    }
+  ]
+}
+</code></pre>
+<hr />
+<h2 id="_25">⚠️ 重点纠正你一个点</h2>
+<p>你说：</p>
+<blockquote>
+<p>“LangChain 让模型必须调用 tool”</p>
+</blockquote>
+<h3 id="_26">❌ 不完全正确</h3>
+<p>真实是：</p>
+<blockquote>
+<p>是 API 层“建议/限制 tool usage”，不是强制执行代码级调用</p>
+</blockquote>
+<p>模型仍然“生成 token”，只是：</p>
+<ul>
+<li>输出空间被限制成 tool call 格式</li>
+<li>decoding 被约束</li>
+</ul>
+<hr />
+<h1 id="step-4langchain-tool_call">Step 4：LangChain 拦截 tool_call</h1>
+<p>LangChain 做：</p>
+<pre><code class="language-python">args = tool_call[&quot;arguments&quot;]
+</code></pre>
+<hr />
+<h2 id="step-5-schemapydantic">Step 5：校验 schema（Pydantic）</h2>
+<pre><code class="language-python">UserInfo(**args)
+</code></pre>
+<hr />
+<h2 id="step-6_1">Step 6：成功 → 返回</h2>
+<pre><code class="language-python">UserInfo(name=&quot;张三&quot;, age=28, city=&quot;上海&quot;)
+</code></pre>
+<hr />
+<h2 id="step-7-retry-loop">Step 7：失败 → retry loop</h2>
+<p>如果：</p>
+<pre><code class="language-json">{&quot;age&quot;: &quot;28岁&quot;}
+</code></pre>
+<p>LangChain 会：</p>
+<h3 id="1_3">① 把错误反馈给模型</h3>
+<pre><code class="language-text">Invalid:
+age must be integer, not string
+</code></pre>
+<h3 id="2_2">② 再调用一次模型</h3>
+<hr />
+<h1 id="_27">⚠️ 关键纠正你的一句话</h1>
+<p>你说：</p>
+<blockquote>
+<p>“必须调用 tool 方法”</p>
+</blockquote>
+<h3 id="_28">❌ 不完全对</h3>
+<p>真实机制是：</p>
+<blockquote>
+<p>tool schema + decoding constraint → 模型“倾向/被限制”输出 tool_call</p>
+</blockquote>
+<p>不是硬函数调用，而是：</p>
+<blockquote>
+<p><strong>概率空间被强制收缩</strong></p>
+</blockquote>
+<hr />
+<h1 id="_29">🔥 最核心原理（非常重要）</h1>
+<p>LangChain structured output 不是：</p>
+<blockquote>
+<p>“让模型执行函数”</p>
+</blockquote>
+<p>而是：</p>
+<blockquote>
+<p><strong>改变模型“输出 token 的合法空间”</strong></p>
+</blockquote>
+<hr />
+<h1 id="_30">🧠 用一个更底层的视角理解</h1>
+<h2 id="llm">普通 LLM：</h2>
+<pre><code>token = softmax(all tokens)
+</code></pre>
+<hr />
+<h2 id="tool-schema">Tool / Schema 模式：</h2>
+<pre><code>token = softmax(被限制的 token 子集)
+</code></pre>
+<p>比如只能生成：</p>
+<ul>
+<li>JSON key</li>
+<li>tool_call结构</li>
+<li>number / string</li>
+</ul>
+<hr />
+<h1 id="_31">🔥 一句话总结你两个问题</h1>
+<hr />
+<h2 id="json-schema-prompt">✔ JSON Schema + Prompt</h2>
+<blockquote>
+<p>LangChain = prompt + schema + validation 三层约束一起用</p>
+</blockquote>
+<hr />
+<h2 id="toolstrategy_2">✔ ToolStrategy</h2>
+<blockquote>
+<p>ToolStrategy = 把“结构化输出”变成“受约束的 tool_call 生成问题”，再由 LangChain 做解析 + 校验 + retry</p>
+</blockquote>
+<hr />
+<h1 id="_32">如果你想再往“真正底层”走一步（很关键）</h1>
+<p>我可以继续帮你拆这两个最核心问题：</p>
+<h3 id="1-llm-schema-logits-decoding">① LLM 为什么能“被 schema 约束”？（logits / decoding层）</h3>
+<h3 id="2-tool-calling-prompt-json-10-api">② tool calling 为什么比 prompt JSON 稳 10 倍？（API机制）</h3>
+<p>这两个才是你真正理解“为什么 structured output 能用”的关键。</p>
+<h2 id="prompt_4">Prompt:</h2>
+<p>2026/6/18 22:24:11</p>
+<p>tool calling 为什么比 prompt JSON 稳 10 倍？ 如果不是在工具方法里对数据进行校验的话, 工具调用也只是一种类型的prompt啊</p>
+<h2 id="response_4">Response:</h2>
+<p>2026/6/18 22:24:15</p>
+<p>你这个问题已经问到“本质分界线”了：<strong>tool calling vs prompt JSON 的差别，不在“有没有校验”，而在“生成机制被不被约束”</strong>。</p>
+<p>你说得对一半：</p>
+<blockquote>
+<p>“tool calling 也是一种 prompt”</p>
+</blockquote>
+<p>✔ 表面看是<br />
+❌ 但系统层完全不是同一类约束方式</p>
+<p>下面我给你拆清楚为什么它稳定能高一个量级。</p>
+<hr />
+<h1 id="1_4">1. 先纠正一个关键误区</h1>
+<p>你说：</p>
+<blockquote>
+<p>tool calling 只是另一种 prompt</p>
+</blockquote>
+<h3 id="_33">❌ 不准确</h3>
+<p>更准确是：</p>
+<blockquote>
+<p>tool calling = prompt + API级结构约束 + decoding限制</p>
+</blockquote>
+<p>而 JSON prompt 是：</p>
+<blockquote>
+<p>prompt-only 约束（纯软约束）</p>
+</blockquote>
+<hr />
+<h1 id="2_3">2. 核心差别一句话</h1>
+<h2 id="prompt-json_1">❌ prompt JSON：</h2>
+<blockquote>
+<p>“请你输出 JSON”</p>
+</blockquote>
+<p>👉 模型仍然在自由生成 token</p>
+<hr />
+<h2 id="tool-calling">✅ tool calling：</h2>
+<blockquote>
+<p>“你只能在 tool schema 定义的结构里生成”</p>
+</blockquote>
+<p>👉 模型输出空间被“硬收缩”</p>
+<hr />
+<h1 id="3-prompt-json">3. 为什么 prompt JSON 不稳定？</h1>
+<p>我们看这个：</p>
+<pre><code class="language-text">请输出 JSON：
+{name: 张三, age: 28}
+</code></pre>
+<p>模型实际在做的是：</p>
+<pre><code class="language-text">token 预测（完全自由）
+</code></pre>
+<p>所以会出现：</p>
+<ul>
+<li><code>json
+  {name: "张三", age: "28岁"}</code></li>
+<li><code>json
+  我觉得应该是：
+  {
+    "name": "张三"
+  }</code></li>
+<li>或直接解释文本</li>
+</ul>
+<hr />
+<h2 id="_34">本质问题：</h2>
+<blockquote>
+<p>❌ 没有“结构约束解码”，只有“语言提示”</p>
+</blockquote>
+<hr />
+<h1 id="4-tool-calling">4. tool calling 为什么稳定？</h1>
+<p>关键来了👇</p>
+<hr />
+<h1 id="41-api">4.1 API层把“输出空间”改了</h1>
+<p>tool calling 不是：</p>
+<blockquote>
+<p>“请输出 JSON”</p>
+</blockquote>
+<p>而是：</p>
+<blockquote>
+<p>“只能输出 tool_call 结构”</p>
+</blockquote>
+<hr />
+<h2 id="_35">模型输出被限制成：</h2>
+<pre><code class="language-json">{
+  &quot;tool_calls&quot;: [
+    {
+      &quot;name&quot;: &quot;...&quot;,
+      &quot;arguments&quot;: {...}
+    }
+  ]
+}
+</code></pre>
+<hr />
+<p>👉 注意：这已经不是“随便生成文本”了</p>
+<hr />
+<h1 id="42-decoding">4.2 decoding 层发生了变化（关键点）</h1>
+<p>这是最重要的一点：</p>
+<h2 id="prompt-json_2">prompt JSON：</h2>
+<pre><code class="language-text">token = softmax(全词表)
+</code></pre>
+<hr />
+<h2 id="tool-calling_1">tool calling：</h2>
+<pre><code class="language-text">token = softmax(被mask后的词表)
+</code></pre>
+<p>也就是：</p>
+<blockquote>
+<p>一部分 token 直接“不允许生成”</p>
+</blockquote>
+<hr />
+<h2 id="_36">举例：</h2>
+<p>模型在 tool calling 模式下：</p>
+<p>❌ 不能输出：</p>
+<ul>
+<li>“我觉得”</li>
+<li>“当然可以”</li>
+<li>Markdown</li>
+<li>随机解释</li>
+</ul>
+<p>✔ 只能输出：</p>
+<ul>
+<li>JSON key</li>
+<li>schema字段</li>
+<li>tool结构</li>
+</ul>
+<hr />
+<h1 id="5_1">5. 这就是为什么稳定性提升</h1>
+<p>我们拆成 3 层差异：</p>
+<hr />
+<h1 id="51">5.1 输出空间不同（核心）</h1>
+<table>
+<thead>
+<tr>
+<th>模式</th>
+<th>输出空间</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>prompt JSON</td>
+<td>全token空间</td>
+</tr>
+<tr>
+<td>tool calling</td>
+<td>结构化token子空间</td>
+</tr>
+</tbody>
+</table>
+<p>👉 tool calling 是“收缩搜索空间”</p>
+<hr />
+<h1 id="52">5.2 语法不是“建议”，而是“协议”</h1>
+<p>prompt JSON：</p>
+<blockquote>
+<p>“请尽量输出 JSON”</p>
+</blockquote>
+<p>tool calling：</p>
+<blockquote>
+<p>“这是你的返回协议（contract）”</p>
+</blockquote>
+<hr />
+<h1 id="53-tool">5.3 模型训练数据强化了 tool 格式</h1>
+<p>现代 LLM：</p>
+<ul>
+<li>GPT</li>
+<li>Claude</li>
+<li>Gemini</li>
+</ul>
+<p>都在训练中见过：</p>
+<pre><code class="language-json">tool_calls
+function_call
+</code></pre>
+<p>👉 这是“高概率结构”</p>
+<hr />
+<h1 id="6-langchain">6. 那 LangChain 校验是不是关键？</h1>
+<p>你问：</p>
+<blockquote>
+<p>如果没有校验呢？</p>
+</blockquote>
+<hr />
+<h2 id="_37">答案：仍然更稳</h2>
+<p>因为：</p>
+<blockquote>
+<p>tool calling 的稳定性主要来自“生成阶段约束”，不是校验</p>
+</blockquote>
+<hr />
+<h2 id="_38">校验只是：</h2>
+<table>
+<thead>
+<tr>
+<th>作用</th>
+<th>层级</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>修错</td>
+<td>后处理</td>
+</tr>
+<tr>
+<td>retry</td>
+<td>兜底</td>
+</tr>
+<tr>
+<td>safety</td>
+<td>保证</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2 id="_39">真正关键在：</h2>
+<blockquote>
+<p>decoding + schema constrained output</p>
+</blockquote>
+<hr />
+<h1 id="7_1">7. 用一个直觉类比</h1>
+<h2 id="prompt-json_3">prompt JSON：</h2>
+<blockquote>
+<p>给你一张白纸，让你“尽量填表”</p>
+</blockquote>
+<hr />
+<h2 id="tool-calling_2">tool calling：</h2>
+<blockquote>
+<p>给你一个 Excel 表格，你只能填指定格子</p>
+</blockquote>
+<hr />
+<h2 id="difference">difference：</h2>
+<table>
+<thead>
+<tr>
+<th>prompt</th>
+<th>tool</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>自由写</td>
+<td>结构限制</td>
+</tr>
+<tr>
+<td>容易跑偏</td>
+<td>强约束</td>
+</tr>
+<tr>
+<td>解释性输出</td>
+<td>结构输出</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h1 id="8-10">8. 为什么“稳 10 倍”这个说法成立？</h1>
+<p>因为减少了三类错误：</p>
+<hr />
+<h2 id="1-format-drift">❌ 1. format drift（格式漂移）</h2>
+<p>prompt JSON：</p>
+<ul>
+<li>JSON 不完整</li>
+<li>多文本</li>
+<li>语法错</li>
+</ul>
+<p>tool calling：</p>
+<ul>
+<li>几乎不会</li>
+</ul>
+<hr />
+<h2 id="2-semantic-drift">❌ 2. semantic drift（语义漂移）</h2>
+<p>prompt JSON：</p>
+<pre><code class="language-text">“这是JSON：”
+→ 模型开始解释
+</code></pre>
+<p>tool calling：</p>
+<blockquote>
+<p>被禁止输出解释 token</p>
+</blockquote>
+<hr />
+<h2 id="3-schema-violation">❌ 3. schema violation（结构错误）</h2>
+<p>prompt JSON：</p>
+<ul>
+<li>字段丢失</li>
+<li>类型错误</li>
+</ul>
+<p>tool calling：</p>
+<ul>
+<li>API层直接限制字段结构</li>
+</ul>
+<hr />
+<h1 id="9_2">9. 最关键结论（一定要记住）</h1>
+<h2 id="tool-calling_3">❗ tool calling 的稳定性来自三层叠加：</h2>
+<h3 id="1-decoding-mask">① decoding mask（最重要）</h3>
+<p>→ 限制 token 空间</p>
+<h3 id="2-schema-contract">② schema contract</h3>
+<p>→ 限制结构</p>
+<h3 id="3-prompt-instruction">③ prompt instruction</h3>
+<p>→ 限制行为</p>
+<hr />
+<h2 id="prompt-json_4">❗ prompt JSON 只有一层：</h2>
+<ul>
+<li>prompt instruction（弱约束）</li>
+</ul>
+<hr />
+<h1 id="10_2">10. 一句话终极总结</h1>
+<blockquote>
+<p>tool calling 不是“更好的 prompt”，而是“把生成问题变成受约束的结构生成问题（constrained decoding problem）”。</p>
+</blockquote>
+<hr />
+<h1 id="_40">如果你想再深入一步（真正底层）</h1>
+<p>我可以继续帮你拆这两个“核心机制”：</p>
+<h3 id="1-constrained-decoding-token-mask">① constrained decoding 是怎么实现 token mask 的？</h3>
+<h3 id="2-openai-claude-api">② OpenAI / Claude 是如何在 API 层做结构约束的？</h3>
+<p>这两块才是“为什么 LLM 能被结构化控制”的真正底层。</p>
+<h2 id="prompt_5">Prompt:</h2>
+<p>2026/6/18 22:32:16</p>
+<p>我理解不了,我的理解是大模型在调用工具方法,工具返回数据给大模型后,大模型也是会对返回数据进行总结修饰后,按照它认为的方式返回数据. 除非在tool方法中设置return_direct=True 不是吗?</p>
+<h2 id="response_5">Response:</h2>
+<p>2026/6/18 22:32:19</p>
+<p>你这个理解里其实混进去了一个<strong>常见误解点</strong>，我帮你把它彻底拆开。</p>
+<p>你现在的模型是：</p>
+<blockquote>
+<p>“tool = 让 LLM 调用函数 → 得到返回值 → LLM 再加工 → 再输出”</p>
+</blockquote>
+<p>这个理解在<strong>普通 function calling 场景是对的</strong>，但：</p>
+<blockquote>
+<p>❗ structured output / LangChain ToolStrategy 不是这个模式</p>
+</blockquote>
+<p>我们分清两种完全不同的系统。</p>
+<hr />
+<h1 id="1_5">1. 你说的这个流程（只在“普通工具调用”成立）</h1>
+<p>你描述的是：</p>
+<pre><code class="language-text">LLM → 调用 tool → tool返回数据 → LLM再总结 → 输出给用户
+</code></pre>
+<p>这个流程在：</p>
+<h3 id="agent">✔ Agent（带工具执行）模式</h3>
+<p>成立，例如：</p>
+<pre><code class="language-python">agent.invoke(&quot;查天气&quot;)
+</code></pre>
+<p>流程是：</p>
+<pre><code class="language-text">LLM
+ → tool: get_weather()
+ → 返回 {&quot;temp&quot;: 20}
+ → LLM 再生成回答：
+   “今天温度20度，很适合出门”
+</code></pre>
+<hr />
+<h2 id="_41">👉 这里你说的这句是对的：</h2>
+<blockquote>
+<p>“LLM 会对 tool 返回的数据再加工”</p>
+</blockquote>
+<p>✔ 是真的（Agent 模式）</p>
+<hr />
+<h2 id="_42">👉 但关键点来了：</h2>
+<blockquote>
+<p>structured output 不是这个模式</p>
+</blockquote>
+<hr />
+<h1 id="2-structured-output-langchain">2. structured output（你正在问的 LangChain 机制）</h1>
+<p>重点：</p>
+<blockquote>
+<p>structured output ≠ agent reasoning ≠ tool usage chain</p>
+</blockquote>
+<p>而是：</p>
+<blockquote>
+<p>❗“模型只负责生成结构，不负责再解释”</p>
+</blockquote>
+<hr />
+<h2 id="_43">关键流程是：</h2>
+<pre><code class="language-text">User
+  ↓
+LLM（被 schema 限制输出）
+  ↓
+直接输出 JSON / tool_call
+  ↓
+LangChain 解析 + 校验
+  ↓
+返回 structured_response
+</code></pre>
+<hr />
+<h1 id="_44">🚨 核心区别来了</h1>
+<h2 id="_45">❌ 没有这一步：</h2>
+<pre><code class="language-text">LLM 再加工 tool 返回结果
+</code></pre>
+<hr />
+<h1 id="3-toolstrategy">3. ToolStrategy 的真实流程（重点）</h1>
+<p>你说的 tool calling 在 LangChain structured output 里其实是：</p>
+<hr />
+<h2 id="step-1llm">Step 1：LLM 不是“调用工具做计算”</h2>
+<p>而是：</p>
+<blockquote>
+<p>“假装在调用工具，输出结构化 JSON”</p>
+</blockquote>
+<hr />
+<h2 id="step-2tool">Step 2：tool 并不会执行业务逻辑</h2>
+<p>比如：</p>
+<pre><code class="language-python">UserInfo(name, age, city)
+</code></pre>
+<p>⚠️ 这个 tool：</p>
+<blockquote>
+<p>❗不是业务函数<br />
+❗不是执行逻辑<br />
+❗只是“schema容器”</p>
+</blockquote>
+<hr />
+<h2 id="step-3llm">Step 3：LLM 输出的是：</h2>
+<pre><code class="language-json">{
+  &quot;name&quot;: &quot;张三&quot;,
+  &quot;age&quot;: 28,
+  &quot;city&quot;: &quot;上海&quot;
+}
+</code></pre>
+<p>或者：</p>
+<pre><code class="language-json">tool_call.arguments
+</code></pre>
+<hr />
+<h2 id="step-4langchain">Step 4：LangChain 做的是：</h2>
+<pre><code class="language-text">parse → validate → return
+</code></pre>
+<hr />
+<h1 id="_46">❗重点结论</h1>
+<blockquote>
+<p>tool 在 structured output 里 ≠ 工具执行函数<br />
+tool = “结构化输出的容器定义”</p>
+</blockquote>
+<hr />
+<h1 id="4-return_directtrue">4. 你提到的 return_direct=True 是什么？</h1>
+<p>你说：</p>
+<blockquote>
+<p>tool 返回后不让 LLM 再加工？</p>
+</blockquote>
+<hr />
+<h2 id="return_direct-agent">✔ return_direct 的作用（在 Agent 里）</h2>
+<p>这是：</p>
+<pre><code class="language-text">tool结果 → 直接返回用户（跳过LLM）
+</code></pre>
+<p>例如：</p>
+<pre><code class="language-python">@tool(return_direct=True)
+def get_weather():
+    return {&quot;temp&quot;: 20}
+</code></pre>
+<hr />
+<h2 id="_47">流程变成：</h2>
+<pre><code class="language-text">LLM → tool → return → 用户
+❌ 不经过 LLM 再加工
+</code></pre>
+<hr />
+<h2 id="_48">但注意：</h2>
+<p>👉 这个机制属于：</p>
+<blockquote>
+<p>Agent tool execution</p>
+</blockquote>
+<p>❌ 不属于 structured output</p>
+<hr />
+<h1 id="5_2">5. 最关键纠正你的一句话</h1>
+<p>你原话：</p>
+<blockquote>
+<p>tool 返回数据 → LLM 再总结修饰 → 再返回</p>
+</blockquote>
+<hr />
+<h2 id="structured-output_1">❌ 在 structured output 中不成立</h2>
+<p>因为：</p>
+<blockquote>
+<p>structured output 根本没有“再生成回答”这一步</p>
+</blockquote>
+<hr />
+<h1 id="6_2">6. 一张图帮你彻底分清</h1>
+<h2 id="agent_1">🧠 Agent（你说的那种）</h2>
+<pre><code class="language-text">LLM
+ → tool执行
+ → tool返回数据
+ → LLM再加工
+ → final answer
+</code></pre>
+<hr />
+<h2 id="structured-outputlangchain">🧠 Structured Output（LangChain）</h2>
+<pre><code class="language-text">LLM（直接生成结构化JSON）
+ → LangChain校验
+ → 返回Python对象
+</code></pre>
+<hr />
+<h1 id="7_2">7. 为什么你会混淆？</h1>
+<p>因为 LangChain 里两个东西名字太像：</p>
+<table>
+<thead>
+<tr>
+<th>概念</th>
+<th>是否有LLM二次加工</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Agent tool calling</td>
+<td>✔ 有</td>
+</tr>
+<tr>
+<td>ToolStrategy structured output</td>
+<td>❌ 没有</td>
+</tr>
+<tr>
+<td>Provider JSON schema output</td>
+<td>❌ 没有</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h1 id="8_2">8. 一句话终极区分</h1>
+<h2 id="agent_2">✔ Agent工具调用：</h2>
+<blockquote>
+<p>LLM 在“思考 + 调用 + 再表达”</p>
+</blockquote>
+<hr />
+<h2 id="structured-output_2">✔ structured output：</h2>
+<blockquote>
+<p>LLM 只做一件事：填结构</p>
+</blockquote>
+<hr />
+<h1 id="_49">如果你想彻底打通这个知识点</h1>
+<p>我可以下一步帮你讲一个非常关键的底层：</p>
+<h2 id="llm_1">👉 “LLM什么时候是在推理？什么时候只是输出结构？”</h2>
+<p>以及：</p>
+<ul>
+<li>为什么 tool calling 不是 agent reasoning</li>
+<li>为什么 JSON schema 会改变 token sampling</li>
+<li>为什么 structured output 可以做到接近 100% 稳定</li>
+</ul>
+<p>这个才是真正把这块吃透的关键。</p>
+<h2 id="prompt_6">Prompt:</h2>
+<p>2026/6/18 22:37:05</p>
+<p>LLM什么时候是在推理？什么时候只是输出结构？为什么 tool calling 不是 agent reasoning
+为什么 JSON schema 会改变 token sampling
+为什么 structured output 可以做到接近 100% 稳定</p>
+<h2 id="response_6">Response:</h2>
+<p>2026/6/18 22:37:09</p>
+<p>很好，这四个问题其实是在问同一件事的不同切面：</p>
+<blockquote>
+<p><strong>LLM 到底是在“思考”，还是在“被约束生成”？约束到底改了什么？</strong></p>
+</blockquote>
+<p>我用“机制级别”给你讲清楚，不讲概念包装。</p>
+<hr />
+<h1 id="1-llm">1️⃣ LLM 什么时候是在“推理”？什么时候只是“输出结构”？</h1>
+<h2 id="_50">🔴 核心区分不是“有没有工具”</h2>
+<p>而是这一点：</p>
+<blockquote>
+<p><strong>当前 token 生成是否允许自由表达语义路径</strong></p>
+</blockquote>
+<hr />
+<h2 id="areasoning">🧠 情况 A：真正“推理”（reasoning）</h2>
+<p>例如：</p>
+<blockquote>
+<p>“张三28岁，在上海，帮我推断他可能从事什么职业”</p>
+</blockquote>
+<h3 id="_51">模型内部在做：</h3>
+<pre><code class="language-text">输入 → 多路径语义展开 → 多候选推理 → 选择最优解释路径
+</code></pre>
+<p>输出空间：</p>
+<ul>
+<li>可以说原因</li>
+<li>可以组织语言</li>
+<li>可以扩展信息</li>
+<li>可以引入常识</li>
+</ul>
+<p>👉 这是“自由语义生成”</p>
+<hr />
+<h2 id="bstructured-output">🧱 情况 B：结构输出（structured output）</h2>
+<p>例如：</p>
+<pre><code class="language-json">{name: &quot;...&quot;, age: ..., city: &quot;...&quot;}
+</code></pre>
+<h3 id="_52">模型此时在做：</h3>
+<pre><code class="language-text">输入 → 填槽（slot filling）→ 受约束 token 选择
+</code></pre>
+<p>输出空间：</p>
+<ul>
+<li>只能填 name/age/city</li>
+<li>不能解释</li>
+<li>不能扩展</li>
+<li>不能改结构</li>
+</ul>
+<p>👉 这是“受约束生成”</p>
+<hr />
+<h2 id="_53">🎯 一句话区别</h2>
+<table>
+<thead>
+<tr>
+<th>模式</th>
+<th>本质</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>推理</td>
+<td>在“思考路径空间”搜索</td>
+</tr>
+<tr>
+<td>结构输出</td>
+<td>在“字段空间”填空</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h1 id="2-tool-calling-agent-reasoning">2️⃣ 为什么 tool calling 不是 agent reasoning？</h1>
+<p>你之前的理解是：</p>
+<blockquote>
+<p>tool → 执行 → LLM再加工 = reasoning</p>
+</blockquote>
+<p>这个只对 <strong>Agent system</strong> 成立，但 tool calling 本身不是 reasoning。</p>
+<hr />
+<h2 id="tool-calling_4">❌ tool calling 本身做的事是：</h2>
+<pre><code class="language-text">LLM → 选择工具 + 填参数
+</code></pre>
+<p>仅此而已。</p>
+<hr />
+<h2 id="_54">🧠 它本质是：</h2>
+<blockquote>
+<p><strong>action selection（动作选择），不是 reasoning（推理）</strong></p>
+</blockquote>
+<hr />
+<h2 id="_55">🔥 关键区别</h2>
+<h3 id="agent-reasoning">Agent reasoning：</h3>
+<pre><code class="language-text">思考 → 计划 → 多步决策 → 执行 → 再思考
+</code></pre>
+<hr />
+<h3 id="tool-calling_5">tool calling：</h3>
+<pre><code class="language-text">输入 → 选择 tool → 输出 JSON 参数
+</code></pre>
+<hr />
+<h2 id="_56">🚨 最重要区别</h2>
+<table>
+<thead>
+<tr>
+<th>项</th>
+<th>tool calling</th>
+<th>reasoning agent</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>是否多步思考</td>
+<td>❌ 否</td>
+<td>✔ 是</td>
+</tr>
+<tr>
+<td>是否有反馈循环</td>
+<td>❌ 否</td>
+<td>✔ 有</td>
+</tr>
+<tr>
+<td>是否改变目标</td>
+<td>❌ 否</td>
+<td>✔ 会</td>
+</tr>
+<tr>
+<td>是否生成解释</td>
+<td>❌ 否</td>
+<td>✔ 会</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2 id="_57">🎯 结论</h2>
+<blockquote>
+<p>tool calling = “结构化动作输出”</p>
+<p>❌ 不是 reasoning
+✔ 是 execution interface</p>
+</blockquote>
+<hr />
+<h1 id="3-json-schema-token-sampling">3️⃣ 为什么 JSON Schema 会改变 token sampling？</h1>
+<p>这是核心机制问题（非常关键）。</p>
+<hr />
+<h2 id="llm_2">🧠 LLM 本质</h2>
+<p>LLM 在做：</p>
+<pre><code class="language-text">P(next_token | previous_tokens)
+</code></pre>
+<hr />
+<h2 id="prompt-json_5">❌ 普通 prompt JSON</h2>
+<p>token space：</p>
+<pre><code class="language-text">全词表 = 50k tokens
+</code></pre>
+<p>模型可以输出：</p>
+<ul>
+<li>“name”</li>
+<li>“姓名”</li>
+<li>“我觉得应该是…”</li>
+<li>“{”</li>
+<li>random text</li>
+</ul>
+<p>👉 完全自由</p>
+<hr />
+<h2 id="json-schema-tool-calling">✅ JSON Schema / tool calling</h2>
+<p>系统会加一个“约束层”：</p>
+<h3 id="_58">👉 叫做：</h3>
+<blockquote>
+<p>constrained decoding / grammar mask</p>
+</blockquote>
+<hr />
+<h2 id="_59">🔧 实际发生了什么？</h2>
+<p>在生成 token 时：</p>
+<pre><code class="language-text">原始 logits → mask非法token → softmax → sampling
+</code></pre>
+<hr />
+<h2 id="_60">🎯 举例：</h2>
+<p>当前必须生成：</p>
+<pre><code class="language-json">&quot;name&quot;:
+</code></pre>
+<p>系统会：</p>
+<h3 id="_61">❌ 屏蔽：</h3>
+<ul>
+<li>中文解释</li>
+<li>random words</li>
+<li>非 JSON key</li>
+</ul>
+<h3 id="_62">✔ 只允许：</h3>
+<ul>
+<li>"name"</li>
+<li>"age"</li>
+<li>"city"</li>
+<li>JSON语法token</li>
+</ul>
+<hr />
+<h2 id="_63">🧠 结果：</h2>
+<p>token sampling 从：</p>
+<blockquote>
+<p>“自由写作空间”</p>
+</blockquote>
+<p>变成：</p>
+<blockquote>
+<p>“结构语法空间”</p>
+</blockquote>
+<hr />
+<h1 id="4-structured-output-100">4️⃣ 为什么 structured output 可以接近 100% 稳定？</h1>
+<p>这是三层叠加的结果：</p>
+<hr />
+<h1 id="1_6">🧱 第1层：输出空间被缩小（最重要）</h1>
+<pre><code class="language-text">自由语言空间 → JSON语法空间
+</code></pre>
+<p>错误率直接下降一个数量级</p>
+<hr />
+<h1 id="2apitool-schema">🧱 第2层：API约束（tool / schema）</h1>
+<p>模型被限制：</p>
+<ul>
+<li>必须 output JSON</li>
+<li>必须符合 schema</li>
+<li>必须结构完整</li>
+</ul>
+<hr />
+<h1 id="3-retry">🧱 第3层：运行时校验 + retry</h1>
+<p>LangChain 做：</p>
+<pre><code class="language-text">if invalid:
+    feed error back to model
+    retry
+</code></pre>
+<hr />
+<h2 id="_64">🎯 三层合起来：</h2>
+<table>
+<thead>
+<tr>
+<th>层级</th>
+<th>作用</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>decoding mask</td>
+<td>防错（预防）</td>
+</tr>
+<tr>
+<td>schema constraint</td>
+<td>限制结构</td>
+</tr>
+<tr>
+<td>validation retry</td>
+<td>修复错误</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2 id="_65">🚀 结果</h2>
+<p>错误来源被切成三段削弱：</p>
+<ul>
+<li>语法错误 → 几乎消失</li>
+<li>字段错误 → 大幅减少</li>
+<li>类型错误 → 可修复</li>
+</ul>
+<hr />
+<h1 id="5_3">5️⃣ 一个最关键的统一理解（非常重要）</h1>
+<p>你可以用这个模型理解全部问题：</p>
+<hr />
+<h2 id="llm_3">🧠 LLM 有两个模式空间：</h2>
+<h3 id="reasoning">🟡 自由模式（reasoning）</h3>
+<pre><code class="language-text">语义空间（semantic space）
+</code></pre>
+<ul>
+<li>可以说任何话</li>
+<li>可以解释</li>
+<li>可以推理</li>
+</ul>
+<hr />
+<h3 id="structured-output_3">🔵 约束模式（structured output）</h3>
+<pre><code class="language-text">结构空间（schema space）
+</code></pre>
+<ul>
+<li>只能填字段</li>
+<li>不能扩展语义</li>
+<li>只能生成合法结构</li>
+</ul>
+<hr />
+<h1 id="_66">🎯 最终总结（最重要一句）</h1>
+<blockquote>
+<p>tool calling / structured output 的本质不是“让模型更聪明”，而是“把语言生成问题变成结构受限的概率采样问题”。</p>
+</blockquote>
+<hr />
+<h1 id="_67">如果你还想再往深一层（真正底层）</h1>
+<p>我可以继续帮你拆：</p>
+<h3 id="1-constrained-decoding-logits">🔥 ① constrained decoding 是怎么改 logits 的（源码级）</h3>
+<h3 id="2-transformer">🔥 ② 为什么 transformer 能被“语法限制”控制</h3>
+<h3 id="3-tool-calling-vs-function-calling-vs-grammar-decoding">🔥 ③ tool calling vs function calling vs grammar decoding 三者区别</h3>
+<p>这三块你一通，就是真正理解 LLM 运行机制了。</p>
+<h2 id="prompt_7">Prompt:</h2>
+<p>2026/6/18 22:45:26</p>
+<p>你的意思这是两种不同的模式, 类似我刚才表达的是大模型的推理模式,你说的是大模型的结构化模式呗. 只是我只了解或只见过大模型的推理模式,所以理解不了你说的结构化模式呗</p>
+<h2 id="response_7">Response:</h2>
+<p>2026/6/18 22:45:30</p>
+<p>你的这个理解方向<strong>是对的，但还差最后一层关键纠偏</strong>。我帮你把它“完全对齐现实机制”。</p>
+<hr />
+<h1 id="1_7">1️⃣ 你现在的理解（基本正确）</h1>
+<p>你说的是：</p>
+<blockquote>
+<p>大模型有“推理模式”和“结构化模式”</p>
+</blockquote>
+<p>✔ 这个直觉是对的<br />
+✔ 而且这是理解 structured output 的正确入口</p>
+<hr />
+<p>但要修正一句关键点：</p>
+<blockquote>
+<p>❌ 不是“模型切换了模式（mode）”
+✅ 而是“同一个模型，被系统改变了输出空间约束”</p>
+</blockquote>
+<hr />
+<h1 id="2_4">2️⃣ 更精确的说法（非常重要）</h1>
+<p>LLM 并没有真正的：</p>
+<ul>
+<li>推理模式</li>
+<li>结构模式</li>
+</ul>
+<p>它只有一个东西：</p>
+<blockquote>
+<p>👉 next-token prediction（下一 token 预测）</p>
+</blockquote>
+<hr />
+<h2 id="_68">所谓“模式差异”其实是：</h2>
+<table>
+<thead>
+<tr>
+<th>你看到的“模式”</th>
+<th>实际发生的事情</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>推理模式</td>
+<td>输出空间很自由</td>
+</tr>
+<tr>
+<td>结构化模式</td>
+<td>输出空间被约束（mask / schema）</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h1 id="3_2">3️⃣ 关键本质（最重要一句）</h1>
+<blockquote>
+<p>❗不是模型变了<br />
+❗是“允许生成的 token 集合变了”</p>
+</blockquote>
+<hr />
+<h1 id="4_2">4️⃣ 用一个很直观的例子</h1>
+<h2 id="_69">🟡 推理模式（你熟悉的）</h2>
+<p>输入：</p>
+<blockquote>
+<p>张三28岁在上海</p>
+</blockquote>
+<p>模型可以输出：</p>
+<pre><code class="language-text">他可能是一个工程师，因为……
+</code></pre>
+<p>👉 token 空间：</p>
+<ul>
+<li>完全开放</li>
+<li>可以写任何句子</li>
+<li>可以解释、推理、扩展</li>
+</ul>
+<hr />
+<h2 id="structured-output_4">🔵 structured output</h2>
+<p>输入：</p>
+<pre><code class="language-json">{name, age, city}
+</code></pre>
+<p>模型只能输出：</p>
+<pre><code class="language-json">{
+  &quot;name&quot;: &quot;张三&quot;,
+  &quot;age&quot;: 28,
+  &quot;city&quot;: &quot;上海&quot;
+}
+</code></pre>
+<p>👉 token 空间变成：</p>
+<ul>
+<li>只能生成字段名</li>
+<li>只能生成 JSON 结构</li>
+<li>不能输出解释文本</li>
+</ul>
+<hr />
+<h1 id="5_4">5️⃣ 关键纠正你的理解点</h1>
+<p>你说：</p>
+<blockquote>
+<p>是不是两种模式？</p>
+</blockquote>
+<h3 id="_70">✔ 可以“这样理解”（工程视角）</h3>
+<p>但要加一句关键修正：</p>
+<hr />
+<h2 id="_71">❗不是模型在切换“思考方式”</h2>
+<p>而是：</p>
+<blockquote>
+<p>系统在限制模型“能说什么”</p>
+</blockquote>
+<hr />
+<h1 id="6-tool-calling">6️⃣ tool calling 也是同理</h1>
+<p>你之前问 tool calling，本质也是：</p>
+<hr />
+<h2 id="_72">❌ 不是：</h2>
+<blockquote>
+<p>LLM 在“调用工具思考问题”</p>
+</blockquote>
+<hr />
+<h2 id="_73">✅ 而是：</h2>
+<blockquote>
+<p>LLM 在“被限制生成 tool_call JSON”</p>
+</blockquote>
+<hr />
+<h1 id="7_3">7️⃣ 为什么你会感觉像“模式切换”？</h1>
+<p>因为：</p>
+<p>LangChain / OpenAI API 在做三件事：</p>
+<h3 id="1-prompt">① prompt 改变（行为约束）</h3>
+<h3 id="2-schema-tool">② schema / tool 定义（结构约束）</h3>
+<h3 id="3-decoding-token">③ decoding 限制（token约束）</h3>
+<hr />
+<p>这三层叠加后，你“看到的行为”就像：</p>
+<blockquote>
+<p>模型换了一个模式</p>
+</blockquote>
+<hr />
+<h1 id="8-mode">8️⃣ 但底层没有 mode 这个东西</h1>
+<p>从严格机制讲：</p>
+<p>LLM 永远是：</p>
+<pre><code class="language-text">P(next_token | context)
+</code></pre>
+<hr />
+<p>所谓“模式差异”只是：</p>
+<blockquote>
+<p>context + constraints 不同</p>
+</blockquote>
+<hr />
+<h1 id="9_3">9️⃣ 用一个最关键比喻（帮你彻底打通）</h1>
+<h2 id="_74">🧠 同一个大脑（模型）</h2>
+<hr />
+<h3 id="_75">🟡 推理模式：</h3>
+<blockquote>
+<p>给你白纸，让你自由写作文</p>
+</blockquote>
+<hr />
+<h3 id="_76">🔵 结构模式：</h3>
+<blockquote>
+<p>给你 Excel 表格，只能填格子</p>
+</blockquote>
+<hr />
+<h2 id="_77">👉 大脑没变</h2>
+<p>变的是：</p>
+<blockquote>
+<p>“你允许写什么”</p>
+</blockquote>
+<hr />
+<h1 id="10_3">10️⃣ 回到你的原话（帮你校准）</h1>
+<p>你说：</p>
+<blockquote>
+<p>我只见过推理模式，所以理解不了结构化模式</p>
+</blockquote>
+<hr />
+<h3 id="_78">✔ 更准确版本是：</h3>
+<blockquote>
+<p>你只见过“开放 token 空间”的生成方式<br />
+没见过“受约束 token 空间”的生成方式</p>
+</blockquote>
+<hr />
+<h1 id="11_1">11️⃣ 最终一句话总结（核心）</h1>
+<blockquote>
+<p>❗LLM 没有推理模式和结构模式<br />
+❗只有“自由生成”与“受约束生成”两种输出空间</p>
+</blockquote>
+<hr />
+<h1 id="_79">如果你想再往下一层（真正底层）</h1>
+<p>我可以帮你继续拆一个最关键的问题：</p>
+<h2 id="json-schema-token">👉 “JSON Schema 是怎么在 token 层面限制生成的？”</h2>
+<p>会涉及：</p>
+<ul>
+<li>logits mask</li>
+<li>constrained decoding</li>
+<li>grammar decoding</li>
+<li>function calling API内部机制</li>
+</ul>
+<p>这个才是你真正会“顿悟”的一层。</p>
+<h2 id="prompt_8">Prompt:</h2>
+<p>2026/6/18 22:51:55</p>
+<p>那就有一个问了,大模型为什么改变了?必定是外界传入什么东西给大模型才会让大模型从自由输出到结构化输出的改变吧? 就像调用一个方法,如果输入参数是一样的输出肯定也是一样的啊, 如果输出不一样那必然是输入参数变了啊. 那这个变量是什么?</p>
+<h2 id="response_8">Response:</h2>
+<p>2026/6/18 22:51:59</p>
+<p>你这个问题已经问到“系统本质”了，而且你用“函数输入决定输出”这个类比是对的，但需要补一层关键修正：</p>
+<blockquote>
+<p>❗LLM 的“输入”不只是 user prompt，而是 <strong>一整套运行时控制信号</strong></p>
+</blockquote>
+<hr />
+<h1 id="1_8">1️⃣ 你说的核心判断是对的</h1>
+<p>你说：</p>
+<blockquote>
+<p>输出变了，一定是输入变了</p>
+</blockquote>
+<p>✔ 在 LLM 里成立</p>
+<p>但关键问题是：</p>
+<blockquote>
+<p>❗你以为“输入=prompt”
+❗实际上“输入=prompt + 控制参数 + 解码规则”</p>
+</blockquote>
+<hr />
+<h1 id="2-vs">2️⃣ 结构化 vs 自由输出，到底“变了什么输入”？</h1>
+<p>我们拆成 4 个真实变量：</p>
+<hr />
+<h2 id="4-1">🧠 输入变量 = 4 层（不是1层）</h2>
+<h3 id="1-prompt_1">① Prompt（你看到的）</h3>
+<pre><code class="language-text">“请输出用户信息”
+</code></pre>
+<hr />
+<h3 id="2-system-developer-instruction">② System / Developer instruction（隐藏）</h3>
+<pre><code class="language-text">Return valid JSON only
+Do not include explanation
+Follow schema strictly
+</code></pre>
+<hr />
+<h3 id="3-schema-tool-definition">③ Schema / Tool definition（结构约束）</h3>
+<pre><code class="language-json">{name: string, age: int, city: string}
+</code></pre>
+<hr />
+<h3 id="4-decoding-constraint">④ Decoding constraint（最关键但你最容易忽略）</h3>
+<pre><code class="language-text">logits mask / grammar constraint
+</code></pre>
+<hr />
+<h1 id="3_3">3️⃣ 真正导致“模式变化”的变量是什么？</h1>
+<h2 id="_80">❗答案是这一条：</h2>
+<blockquote>
+<p><strong>④ decoding constraint（解码约束）</strong></p>
+</blockquote>
+<hr />
+<h1 id="4_3">4️⃣ 为什么它才是“本质开关”？</h1>
+<p>因为：</p>
+<h2 id="prompt-schema">🟡 prompt / schema 都是“建议”</h2>
+<p>它们影响的是：</p>
+<blockquote>
+<p>token 的概率分布（soft influence）</p>
+</blockquote>
+<hr />
+<h2 id="decoding-constraint">🔵 decoding constraint 是“强制规则”</h2>
+<p>它影响的是：</p>
+<blockquote>
+<p>token 是否“能被选中”</p>
+</blockquote>
+<hr />
+<h1 id="5_5">5️⃣ 用一个函数类比（帮你打穿）</h1>
+<p>你说：</p>
+<blockquote>
+<p>输入一样，输出一定一样</p>
+</blockquote>
+<p>我们用“真实 LLM 函数”来修正：</p>
+<hr />
+<h2 id="_81">❌ 你理解的函数：</h2>
+<pre><code class="language-text">output = f(prompt)
+</code></pre>
+<hr />
+<h2 id="_82">✅ 实际是：</h2>
+<pre><code class="language-text">output = f(prompt, system_prompt, schema, decoding_rules)
+</code></pre>
+<hr />
+<h1 id="6_3">6️⃣ 关键点来了（最重要）</h1>
+<h2 id="schema_4">👉 schema 并不直接“改变模型”</h2>
+<p>它改变的是：</p>
+<blockquote>
+<p><strong>token sampling 的合法集合</strong></p>
+</blockquote>
+<hr />
+<h1 id="7_4">7️⃣ 举个非常具体的例子</h1>
+<hr />
+<h2 id="_83">🟡 普通模式（自由生成）</h2>
+<p>token候选：</p>
+<pre><code class="language-text">&quot;我觉得&quot;
+&quot;张三&quot;
+&quot;28&quot;
+&quot;{&quot;
+&quot;hello&quot;
+</code></pre>
+<p>👉 全都可以选</p>
+<hr />
+<h2 id="structured-modetool-schema">🔵 structured mode（tool / schema）</h2>
+<p>token候选：</p>
+<pre><code class="language-text">&quot;name&quot;
+&quot;age&quot;
+&quot;city&quot;
+&quot;{&quot;
+&quot;:&quot;
+数字
+字符串
+</code></pre>
+<p>👉 非法 token 被直接 mask 掉</p>
+<hr />
+<h1 id="8_3">8️⃣ 所以“输入变量”到底是什么？</h1>
+<p>我们可以精确回答你问题：</p>
+<hr />
+<h2 id="_84">❗真正的变量是：</h2>
+<blockquote>
+<p><strong>“解码空间（decoding space）是否被约束”</strong></p>
+</blockquote>
+<hr />
+<h1 id="9_4">9️⃣ 一句话彻底回答你的问题</h1>
+<p>你问：</p>
+<blockquote>
+<p>到底是什么让模型从自由变结构？</p>
+</blockquote>
+<hr />
+<h2 id="_85">✔ 精确答案：</h2>
+<blockquote>
+<p>不是 prompt 变了<br />
+也不是模型变了<br />
+而是 <strong>token 采样空间被 API / schema / tool calling 改写了</strong></p>
+</blockquote>
+<hr />
+<h1 id="10_4">🔥 10️⃣ 最关键理解（帮你彻底打通）</h1>
+<p>你可以这样记：</p>
+<hr />
+<h2 id="_86">🟡 自由模式：</h2>
+<blockquote>
+<p>“模型在所有词里选一个最可能的”</p>
+</blockquote>
+<hr />
+<h2 id="_87">🔵 结构模式：</h2>
+<blockquote>
+<p>“模型只能在允许的词里选一个最可能的”</p>
+</blockquote>
+<hr />
+<h1 id="11_2">11️⃣ 最终总结（核心一句）</h1>
+<blockquote>
+<p>❗LLM 输出变化不是因为“思考方式变了”，而是因为“可选 token 集合被系统重新定义了”</p>
+</blockquote>
+<hr />
+<h1 id="_88">如果你想继续深入（关键下一层）</h1>
+<p>我可以带你直接进入真正底层机制：</p>
+<h2 id="logits-mask-json-schema">👉 logits mask 是怎么实现 JSON schema 约束的？</h2>
+<h2 id="function-calling-grammar-level">👉 为什么 function calling 能做到 grammar-level 控制？</h2>
+<h2 id="transformer-decoding">👉 transformer 如何在 decoding 时被“规则系统”干预？</h2>
+<p>这一步你会彻底明白：  </p>
+<blockquote>
+<p>structured output 不是 prompt 技巧，而是“概率空间工程”。</p>
+</blockquote>
+<h2 id="prompt_9">Prompt:</h2>
+<p>2026/6/18 23:01:12</p>
+<p>也就是说LangChain最后发给大模型的数据或者调用大模型时的入参变了呗,能具体讲讲LangChain调用大模型的时候传了那些入参吗? 结构化输出和自由推理传给大模型的入参肯定不一样吧</p>
+<h2 id="response_9">Response:</h2>
+<p>2026/6/18 23:01:21</p>
+<p>对，这一层你已经抓到关键了：<strong>“入参变了”</strong>。但要把它说精确一点：</p>
+<blockquote>
+<p>❗变化的不只是 prompt，而是“请求结构 + 模型解码约束 + 输出协议”</p>
+</blockquote>
+<p>我给你拆 LangChain 实际调用模型时“到底传了什么”。</p>
+<hr />
+<h1 id="1_9">1️⃣ 先给你一个总图（最重要）</h1>
+<p>LangChain 调模型，本质都是：</p>
+<pre><code class="language-python">model.invoke(
+    messages,
+    model_kwargs=...
+)
+</code></pre>
+<p>但 structured output vs 自由模式，<strong>model_kwargs 完全不同</strong></p>
+<hr />
+<h1 id="2-chat">2️⃣ 自由推理模式（普通 Chat）</h1>
+<h2 id="_89">🔵 典型请求结构</h2>
+<p>```json id="m1"
+{
+  "messages": [
+    {"role": "system", "content": "You are a helpful assistant"},
+    {"role": "user", "content": "张三28岁在上海"}
+  ],
+  "temperature": 0.7,
+  "max_tokens": 500
+}</p>
+<pre><code>
+---
+
+## 👉 特点
+
+没有任何结构约束：
+
+- ❌ 没 schema
+- ❌ 没 tool
+- ❌ 没 response_format
+- ❌ 没 decoding constraint
+
+---
+
+## 👉 模型行为：
+
+&gt; 完全自由生成 token
+
+---
+
+# 3️⃣ structured output（Pydantic / JSON Schema）
+
+以：
+
+```python
+create_agent(response_format=UserInfo)
+</code></pre>
+<p>为例。</p>
+<hr />
+<h2 id="_90">🔵 请求结构会变成这样（核心变化）</h2>
+<p>```json id="m2"
+{
+  "messages": [
+    {
+      "role": "system",
+      "content": "Extract structured data. Output must match schema."
+    },
+    {
+      "role": "user",
+      "content": "张三28岁在上海"
+    }
+  ],
+  "response_format": {
+    "type": "json_schema",
+    "json_schema": {
+      "name": "UserInfo",
+      "schema": {
+        "type": "object",
+        "properties": {
+          "name": {"type": "string"},
+          "age": {"type": "integer"},
+          "city": {"type": "string"}
+        },
+        "required": ["name", "age", "city"]
+      }
+    }
+  },
+  "temperature": 0
+}</p>
+<pre><code>
+---
+
+## 🔥 关键差异点（非常重要）
+
+你注意这个字段：
+
+```text id=&quot;x3&quot;
+response_format
+</code></pre>
+<p>或在 tool 模式：</p>
+<p>```text id="x4"
+tools</p>
+<pre><code>
+---
+
+# 4️⃣ Tool calling 模式（LangChain ToolStrategy）
+
+## 🔵 请求变成：
+
+```json id=&quot;m3&quot;
+{
+  &quot;messages&quot;: [...],
+  &quot;tools&quot;: [
+    {
+      &quot;type&quot;: &quot;function&quot;,
+      &quot;function&quot;: {
+        &quot;name&quot;: &quot;UserInfo&quot;,
+        &quot;parameters&quot;: {
+          &quot;type&quot;: &quot;object&quot;,
+          &quot;properties&quot;: {
+            &quot;name&quot;: {&quot;type&quot;: &quot;string&quot;},
+            &quot;age&quot;: {&quot;type&quot;: &quot;integer&quot;},
+            &quot;city&quot;: {&quot;type&quot;: &quot;string&quot;}
+          }
+        }
+      }
+    }
+  ],
+  &quot;tool_choice&quot;: &quot;required&quot;
+}
+</code></pre>
+<hr />
+<h2 id="_91">👉 这个字段才是关键：</h2>
+<p>```text id="x5"
+tools
+tool_choice</p>
+<pre><code>
+---
+
+# 5️⃣ 这一步到底改变了什么？
+
+你问的核心问题来了：
+
+&gt; 入参到底改了什么？
+
+---
+
+## ❗改变不是 prompt，而是：
+
+### 🧠 1. 输出协议（output contract）
+
+| 模式 | 输出格式 |
+|------|---------|
+| 普通 | 自由文本 |
+| structured | JSON |
+| tool | tool_call JSON |
+
+---
+
+### 🧠 2. decoding policy（解码策略）
+
+在 tool / schema 模式：
+
+- temperature 通常变低或强制 0
+- 输出必须符合 grammar
+- 非法 token 被 mask
+
+---
+
+### 🧠 3. 允许输出的 token 集合
+
+这是最关键：
+
+| 模式 | token空间 |
+|------|----------|
+| 自由模式 | 全词表 |
+| structured | JSON语法子集 |
+| tool | function call子集 |
+
+---
+
+# 6️⃣ LangChain 实际做了什么（非常关键）
+
+LangChain 做的不是“调用模型”，而是：
+
+---
+
+## Step 1：解析 schema
+
+```python
+Pydantic → JSON Schema
+</code></pre>
+<hr />
+<h2 id="step-2_2">Step 2：选择策略</h2>
+<p>```text id="s1"
+if model supports response_format:
+    use ProviderStrategy
+else:
+    use ToolStrategy</p>
+<pre><code>
+---
+
+## Step 3：构造 model_kwargs
+
+```python id=&quot;s2&quot;
+model_kwargs = {
+    &quot;tools&quot;: [...],
+    &quot;response_format&quot;: {...},
+    &quot;tool_choice&quot;: &quot;required&quot;
+}
+</code></pre>
+<hr />
+<h2 id="step-4-api">Step 4：发给模型 API</h2>
+<hr />
+<h2 id="step-5_1">Step 5：解析返回</h2>
+<p><code>python id="s3"
+tool_call.arguments → Pydantic validate</code></p>
+<hr />
+<h1 id="7_5">7️⃣ 关键误解纠正（很重要）</h1>
+<p>你之前的理解是：</p>
+<blockquote>
+<p>LLM 被 tool 调用 → tool 返回 → LLM 再处理</p>
+</blockquote>
+<hr />
+<h2 id="agent-structured-output">❌ 这是 Agent 模式，不是 structured output</h2>
+<hr />
+<h2 id="structured-output_5">✔ structured output 实际是：</h2>
+<blockquote>
+<p>LLM 只做一件事：生成结构，不做二次思考</p>
+</blockquote>
+<hr />
+<h1 id="8_4">8️⃣ 用一句话彻底说清差异</h1>
+<hr />
+<h2 id="_92">🟡 自由模式：</h2>
+<blockquote>
+<p>“模型生成一段话”</p>
+</blockquote>
+<hr />
+<h2 id="structured">🔵 structured 模式：</h2>
+<blockquote>
+<p>“模型在一个被约束的输出空间里填字段”</p>
+</blockquote>
+<hr />
+<h2 id="tool-mode">🔴 tool mode：</h2>
+<blockquote>
+<p>“模型在一个函数签名空间里构造参数”</p>
+</blockquote>
+<hr />
+<h1 id="9_5">9️⃣ 最关键结论（你问题的答案）</h1>
+<p>你问：</p>
+<blockquote>
+<p>LangChain是不是改变了入参？</p>
+</blockquote>
+<hr />
+<h2 id="_93">✔ 精确答案：</h2>
+<blockquote>
+<p>是的，但改变的不只是 prompt，而是 <strong>整个“模型解码协议”</strong></p>
+</blockquote>
+<p>包括：</p>
+<ul>
+<li>messages（prompt）</li>
+<li>tools / schema（结构约束）</li>
+<li>response_format（输出协议）</li>
+<li>tool_choice（强制执行）</li>
+<li>decoding constraints（隐式）</li>
+</ul>
+<hr />
+<h1 id="10_5">🔥 10️⃣ 一句话终极理解</h1>
+<blockquote>
+<p>❗LLM 输出不同，不是因为“它想法变了”，而是因为“API给它的输出规则变了”</p>
+</blockquote>
+<hr />
+<h1 id="_94">如果你想继续深入（真正底层）</h1>
+<p>我可以帮你拆下一层：</p>
+<h2 id="openai-claude-token-schema-constraint">👉 OpenAI / Claude 是怎么在“token层”实现 schema constraint 的？</h2>
+<p>会涉及：</p>
+<ul>
+<li>logits masking</li>
+<li>grammar constrained decoding</li>
+<li>function calling runtime</li>
+<li>transformer sampling hook</li>
+</ul>
+<p>这个是你彻底打通 LLM 原理的最后一层。</p>
+<hr />
+<p>Powered by <a href="https://www.chatgptexporter.com">ChatGPT Exporter</a></p>
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+  <script>var tabs=__md_get("__tabs");if(Array.isArray(tabs))e:for(var set of document.querySelectorAll(".tabbed-set")){var labels=set.querySelector(".tabbed-labels");for(var tab of tabs)for(var label of labels.getElementsByTagName("label"))if(label.innerText.trim()===tab){var input=document.getElementById(label.htmlFor);input.checked=!0;continue e}}</script>
+
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+          <button type="button" class="md-top md-icon" data-md-component="top" hidden>
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8z"/></svg>
+  Back to top
+</button>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+    
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+      <div class="md-progress" data-md-component="progress" role="progressbar"></div>
+    
+    
+    
+      
+      
+      <script id="__config" type="application/json">{"annotate": null, "base": "../..", "features": ["announce.dismiss", "content.action.edit", "content.action.view", "content.code.annotate", "content.code.copy", "content.code.select", "content.tabs.link", "content.tooltips", "navigation.footer", "navigation.indexes", "navigation.instant.prefetch", "navigation.instant.progress", "navigation.path", "navigation.sections", "navigation.tabs", "navigation.tabs.sticky", "navigation.top", "navigation.tracking", "search.highlight", "search.share", "search.suggest", "toc.follow"], "search": "../../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+    
+    
+      <script src="../../assets/javascripts/bundle.79ae519e.min.js"></script>
+      
+    
+  </body>
+</html>
